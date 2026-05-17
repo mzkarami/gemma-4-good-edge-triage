@@ -97,3 +97,11 @@ Operational rule: keep secrets, raw judge tokens, private host details, and unpu
 Created by the Edge-Triage swarm for the Gemma 4 Good Hackathon.
 
 Gemma is a trademark of Google LLC.
+
+## Final Submission Links
+
+- Live demo: https://kaggle.nelly.work
+- Public repository: https://github.com/mzkarami/gemma-4-good-edge-triage
+- Final public video: https://youtu.be/5KFm1I6lfjg
+- Metrics: https://kaggle.nelly.work/metrics.html
+

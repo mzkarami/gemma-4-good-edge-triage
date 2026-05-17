@@ -7,7 +7,7 @@
 > Link placeholders to fill at submission time:
 > - Live demo: `https://kaggle.nelly.work`
 > - Code repository: `https://github.com/mzkarami/gemma-4-good-edge-triage`
-> - Video: `https://github.com/mzkarami/gemma-4-good-edge-triage/blob/main/media/video/demo/edge-triage-gemma-4-good-final-demo.mp4`
+> - Video: `https://youtu.be/5KFm1I6lfjg`
 
 ## 1. Plain-English Summary
 
@@ -137,7 +137,7 @@ Edge-Triage is a small prototype in that direction: conservative, auditable deci
 
 - Live demo: `https://kaggle.nelly.work`
 - Code repository: `https://github.com/mzkarami/gemma-4-good-edge-triage`
-- Video: `https://github.com/mzkarami/gemma-4-good-edge-triage/blob/main/media/video/demo/edge-triage-gemma-4-good-final-demo.mp4`
+- Video: `https://youtu.be/5KFm1I6lfjg`
 - Metrics source: `https://kaggle.nelly.work/metrics.html`
 - Roadmap: `https://kaggle.nelly.work/roadmap.html`
 - About the Builder: `https://kaggle.nelly.work/about.html`
