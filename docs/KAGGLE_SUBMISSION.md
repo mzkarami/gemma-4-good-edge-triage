@@ -102,6 +102,6 @@ Gemma is a trademark of Google LLC.
 
 - Live demo: https://kaggle.nelly.work
 - Public repository: https://github.com/mzkarami/gemma-4-good-edge-triage
-- Final public video: https://youtu.be/5KFm1I6lfjg
+- Final public video: https://youtu.be/kXVC07Od93E
 - Metrics: https://kaggle.nelly.work/metrics.html
 
