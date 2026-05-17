@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Edge-Triage | Roadmap</title>
+  <meta name="description" content="Future roadmap for Edge-Triage: native mobile apps, curated humanitarian guidance, multilingual low-bandwidth workflows, and NGO deployment kits." />
+  <link rel="icon" type="image/png" href="assets/brand/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="index.html" aria-label="Back to Edge-Triage demo">
+      <img class="brand-mark" src="assets/brand/edge-triage-logo-icon.png" alt="" />
+      <span>Edge-Triage</span>
+    </a>
+    <nav aria-label="Roadmap navigation">
+      <a href="index.html#volunteer">Volunteer Mode</a>
+      <a href="index.html#optimization">Optimization Mode</a>
+      <a href="metrics.html">Metrics</a>
+      <a href="about.html">About</a>
+    </nav>
+    <a class="ghost-button" href="index.html">Back to demo</a>
+  </header>
+
+  <main>
+    <section class="hero section-shell page-hero">
+      <div class="hero-copy">
+        <span class="eyebrow">Product roadmap</span>
+        <h1>What Edge-Triage could become next.</h1>
+        <p>
+          The hackathon demo proves the core idea: local Gemma 4 can turn messy field reports and photos into conservative triage support. The next step is turning that prototype into something response teams can safely deploy, train, and improve with trusted humanitarian guidance.
+        </p>
+      </div>
+      <aside class="hero-panel">
+        <div class="panel-header">
+          <span class="status-dot"></span>
+          <span>Near-term direction</span>
+        </div>
+        <p class="muted">Keep the app local-first, human-led, auditable, and useful under real field constraints: stress, low bandwidth, mixed languages, and limited training time.</p>
+      </aside>
+    </section>
+
+    <section class="section-shell roadmap-section">
+      <div class="section-heading-row">
+        <div>
+          <span class="eyebrow">Four practical extensions</span>
+          <h2>From demo to deployable humanitarian tool.</h2>
+        </div>
+        <p class="section-lead narrow">These are intentionally product-focused: each item would make the app easier to use in the field without changing the safety boundary that responders remain in control.</p>
+      </div>
+
+      <div class="roadmap-grid">
+        <article class="roadmap-card">
+          <span class="card-kicker">01 · Native field app</span>
+          <h3>Android and iOS interfaces for volunteers.</h3>
+          <p>Package Volunteer Mode as a native mobile app with offline scenario caching, camera capture, location-safe metadata, and a simple “send to incident command” handoff when connectivity returns.</p>
+        </article>
+        <article class="roadmap-card">
+          <span class="card-kicker">02 · Trusted guidance library</span>
+          <h3>Curated instructions from humanitarian sources.</h3>
+          <p>Extend safe next actions with source-linked guidance from organizations such as the UN, WHO, IFRC/Red Cross, and local emergency agencies, keeping advice contextual and auditable instead of improvised.</p>
+        </article>
+        <article class="roadmap-card">
+          <span class="card-kicker">03 · Low-bandwidth inclusion</span>
+          <h3>Multilingual, voice, and SMS-friendly workflows.</h3>
+          <p>Add voice notes, translation, short-message summaries, and low-data synchronization so volunteers can report in the language and channel they actually have during a crisis.</p>
+        </article>
+        <article class="roadmap-card">
+          <span class="card-kicker">04 · NGO deployment kit</span>
+          <h3>Training, governance, and local adaptation.</h3>
+          <p>Provide playbooks for NGOs to adapt labels, approve guidance sources, run tabletop drills, review model outputs, and contribute anonymized improvement cases back into the self-learning evaluation loop.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span>Edge-Triage · Gemma 4 Good Hackathon</span>
+    <span>Roadmap items are future work; the demo remains decision support only.</span>
+  </footer>
+</body>
+</html>

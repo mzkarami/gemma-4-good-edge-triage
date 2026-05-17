@@ -1,0 +1,10 @@
+{
+  "label": "rescue_volunteering_or_donation_effort",
+  "priority": "Active disaster response / responder activity",
+  "next_action": "Route to incident-response coordination; monitor responder safety, containment status, and any nearby evacuation or supply needs.",
+  "latency_ms": 21441.3,
+  "mode": "Volunteer Mode \u00b7 Speed Profile",
+  "scene_summary": "A volunteer is moving cleaning supply buckets from a truck in a paved outdoor area.",
+  "live_model": true,
+  "disclaimer": "Decision support only; not a replacement for trained responders."
+}

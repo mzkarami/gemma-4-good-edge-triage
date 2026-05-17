@@ -1,0 +1,10 @@
+{
+  "label": "infrastructure_and_utility_damage",
+  "priority": "High infrastructure priority",
+  "next_action": "Route to infrastructure response; keep civilians away from damaged structures and report coordinates.",
+  "latency_ms": 27446.29,
+  "mode": "Volunteer Mode \u00b7 Speed Profile",
+  "scene_summary": "A bridge and road crossing are damaged by a swollen creek, indicating flood damage.",
+  "live_model": true,
+  "disclaimer": "Decision support only; not a replacement for trained responders."
+}

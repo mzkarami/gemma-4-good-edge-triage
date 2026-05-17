@@ -1,0 +1,31 @@
+# Caddy reverse proxy example for kaggle.nelly.work when Caddy runs on the host.
+#
+# Run the demo container on localhost only:
+#   DEMO_BIND_ADDRESS=127.0.0.1 docker compose up -d --build edge-triage-demo
+#
+# Optional live API, only after model artifacts and EDGE_TRIAGE_JUDGE_TOKEN exist:
+#   LIVE_API_BIND_ADDRESS=127.0.0.1 docker compose --profile live up -d --build edge-triage-live-api
+#
+# Keep 4173/4180 localhost-only. Public traffic should enter only through 80/443.
+# Use `handle`, not `handle_path`, because live_api.py expects /api/triage upstream.
+
+kaggle.nelly.work {
+    encode zstd gzip
+
+    header {
+        Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+        X-Content-Type-Options "nosniff"
+        X-Frame-Options "DENY"
+        Referrer-Policy "strict-origin-when-cross-origin"
+        Permissions-Policy "camera=(), microphone=(), geolocation=()"
+    }
+
+    handle /api/* {
+        request_body {
+            max_size 25MB
+        }
+        reverse_proxy 127.0.0.1:4180
+    }
+
+    reverse_proxy 127.0.0.1:4173
+}

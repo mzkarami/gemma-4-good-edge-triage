@@ -1,0 +1,128 @@
+{
+  "frontier": [
+    {
+      "profile": "Volunteer Speed Profile",
+      "useCase": "High-volume field sorting",
+      "f1": 0.9794,
+      "accuracy": null,
+      "latencyMs": 158.61,
+      "samples": 50,
+      "run": "EDG-307 r0 / 20260427T200056Z",
+      "status": "keep"
+    },
+    {
+      "profile": "Critical Accuracy Profile",
+      "useCase": "High-stakes review",
+      "f1": 0.9818,
+      "accuracy": 0.98,
+      "latencyMs": 237.97,
+      "samples": 50,
+      "run": "EDG-480 r2 / 20260515T093558Z",
+      "status": "candidate"
+    }
+  ],
+  "experiments": [
+    {
+      "id": "EDG-480 r2",
+      "label": "Best high-accuracy profile",
+      "technicalLabel": "combined calibrations + narrow dt5 demotion",
+      "f1": 0.9818,
+      "latencyMs": 237.97,
+      "decision": "Keep for critical review",
+      "change": "Combined the strongest calibration fixes and made one narrow recovery rule more conservative.",
+      "detail": "Best current accuracy result. Use when a report may involve casualties, blocked evacuation, or other high-stakes ambiguity."
+    },
+    {
+      "id": "EDG-478 r1",
+      "label": "Good calibration, but replaced",
+      "technicalLabel": "combined priority calibrations",
+      "f1": 0.9798,
+      "latencyMs": 286.26,
+      "decision": "Superseded by EDG-480",
+      "change": "Improved priority handling for difficult examples, but kept one avoidable false alarm.",
+      "detail": "Useful evidence that the calibration direction worked, but EDG-480 kept the benefit with better final behavior."
+    },
+    {
+      "id": "EDG-479 r1",
+      "label": "Partial fix, not safe alone",
+      "technicalLabel": "other_dt0 priority only",
+      "f1": 0.9594,
+      "latencyMs": 260.33,
+      "decision": "Do not use alone",
+      "change": "Fixed one priority mistake but created another elsewhere.",
+      "detail": "This is why the loop measures every candidate before shipping it: a local improvement can still hurt the overall triage system."
+    },
+    {
+      "id": "EDG-479 r2",
+      "label": "Another partial fix, also rejected",
+      "technicalLabel": "none_dt5 priority only",
+      "f1": 0.9595,
+      "latencyMs": 214.79,
+      "decision": "Do not use alone",
+      "change": "Solved the opposite slice of the same problem, but still traded one error for another.",
+      "detail": "Rejected as a standalone profile, then used as evidence for the combined candidate that became EDG-480."
+    }
+  ],
+  "samples": [
+    {
+      "id": "bridge-collapse",
+      "title": "Collapsed bridge with blocked access road",
+      "report": "Photo from a field volunteer: bridge deck is visibly collapsed after flooding. No injured people are visible, but the road is blocked and utility crews are nearby.",
+      "imageHint": "Photo: flood-damaged bridge / blocked access route",
+      "label": "infrastructure_and_utility_damage",
+      "priority": "High infrastructure priority",
+      "mode": "Volunteer Mode \u00b7 Speed Profile",
+      "latencyMs": 158.61,
+      "confidence": "Curated offline demo \u00b7 based on public-domain scenario photo",
+      "nextAction": "Route to infrastructure response; keep civilians away from the bridge and report coordinates to incident command.",
+      "reason": "Image evidence shows a damaged bridge/access route. The curated analysis routes this to infrastructure response; Live Gemma scenario captures produced the same family label.",
+      "imageSrc": "assets/scenarios/bridge-flood-damage.jpg",
+      "imageAlt": "Flood-damaged bridge and road crossing over a swollen creek"
+    },
+    {
+      "id": "injured-person",
+      "title": "Possible casualty near damaged building",
+      "report": "Public-domain FEMA photo scenario: rescue workers search rubble near a damaged building after a disaster. A field volunteer reports a possible motionless person nearby and requests medical help.",
+      "imageHint": "Photo: search-and-rescue near damaged building / possible casualty review",
+      "label": "affected_injured_or_dead_people",
+      "priority": "Critical human-safety priority",
+      "mode": "Volunteer Mode \u00b7 Critical Accuracy Profile",
+      "latencyMs": 237.97,
+      "confidence": "Curated offline demo \u00b7 based on public-domain FEMA rescue photo",
+      "nextAction": "Escalate to trained medical/rescue team; avoid moving the person unless there is immediate danger.",
+      "reason": "The report contains direct casualty cues and the image context shows responders working in rubble near a damaged structure. This demonstrates when the Critical Accuracy Profile is useful without showing graphic casualty imagery.",
+      "imageSrc": "assets/scenarios/possible-casualty-damaged-building.jpg",
+      "imageAlt": "Rescue workers searching rubble near a damaged building after a disaster"
+    },
+    {
+      "id": "supply-drive",
+      "title": "Relief supplies being moved",
+      "report": "Public-domain FEMA photo: a disaster relief volunteer is moving cleaning-supply buckets from a truck for local recovery operations.",
+      "imageHint": "Photo: relief supplies / volunteer logistics",
+      "label": "rescue_volunteering_or_donation_effort",
+      "priority": "Active disaster response / responder activity",
+      "mode": "Volunteer Mode \u00b7 Speed Profile",
+      "latencyMs": 158.61,
+      "confidence": "Curated offline demo \u00b7 based on public-domain scenario photo",
+      "nextAction": "Route to incident-response coordination; verify supply needs before sending additional donations.",
+      "reason": "Image evidence shows organized relief logistics rather than casualty or infrastructure damage. Live Gemma scenario capture labeled this as rescue/volunteering/donation effort.",
+      "imageSrc": "assets/scenarios/relief-cleaning-supplies.jpg",
+      "imageAlt": "Volunteer moving cleaning supply buckets from a truck"
+    },
+    {
+      "id": "unrelated-crowd",
+      "title": "Evacuation assistance by helicopter",
+      "report": "Public-domain FEMA photo: responders are assisting evacuees near a helicopter after a disaster, with no gore or sensitive casualty imagery.",
+      "imageHint": "Photo: evacuation assistance / responders",
+      "label": "rescue_volunteering_or_donation_effort",
+      "priority": "Active disaster response / responder activity",
+      "mode": "Volunteer Mode \u00b7 Speed Profile",
+      "latencyMs": 158.61,
+      "confidence": "Curated offline demo \u00b7 based on public-domain scenario photo",
+      "nextAction": "Route to incident-response coordination; monitor responder safety, evacuation status, and nearby support needs.",
+      "reason": "Image evidence shows responders assisting people near an aircraft. Live Gemma scenario capture labeled this as rescue/volunteering/donation effort.",
+      "imageSrc": "assets/scenarios/helicopter-evacuation-assistance.jpg",
+      "imageAlt": "Responders assisting evacuees near a helicopter"
+    }
+  ]
+}

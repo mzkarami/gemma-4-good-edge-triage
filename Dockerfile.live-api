@@ -1,0 +1,39 @@
+FROM python:3.12-slim
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_NO_CACHE_DIR=1
+
+WORKDIR /app
+
+RUN useradd --create-home --shell /usr/sbin/nologin appuser
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends build-essential cmake \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN python -m pip install --no-cache-dir \
+    fastapi>=0.115 \
+    "uvicorn[standard]>=0.34" \
+    python-multipart>=0.0.20 \
+    pillow>=12.0.0 \
+    llama-cpp-python>=0.3.20
+
+COPY live_api.py ./
+
+RUN mkdir -p /tmp/edge-triage-live /app/models \
+    && chown -R appuser:appuser /app /tmp/edge-triage-live
+
+USER appuser
+
+ENV EDGE_TRIAGE_TEMP_ROOT=/tmp/edge-triage-live \
+    EDGE_TRIAGE_MAX_UPLOAD_MB=25 \
+    EDGE_TRIAGE_MODEL_PATH=/app/models/Edge-Triage-gemma-4-E4B-it-Q3_K_M.gguf \
+    EDGE_TRIAGE_MMPROJ_PATH=/app/models/Edge-Triage-mmproj-F16.gguf
+
+EXPOSE 8080
+
+HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \
+  CMD python -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/healthz', timeout=2).read()" || exit 1
+
+CMD ["uvicorn", "live_api:app", "--host", "0.0.0.0", "--port", "8080", "--workers", "1"]

@@ -1,0 +1,121 @@
+# Developer Guide: Setting Up Edge-Triage
+
+Welcome to the **Edge-Triage Hybrid Searcher** development guide. This document will help you get the project running on your local machine for further research or deployment.
+
+## 1. Prerequisites
+*   **Operating System:** Linux (Ubuntu 22.04+ recommended) or macOS.
+*   **Python:** 3.11+ (Managed via `uv`).
+*   **Hardware:** 8GB+ RAM. A GPU is recommended but not required (we have optimized for CPU execution).
+*   **Tooling:** Install [uv](https://github.com/astral-sh/uv) for lightning-fast dependency management.
+
+## 2. Fast Setup
+```bash
+# 1. Clone the repository
+git clone https://github.com/mzkarami/Gemma-4-Edge-Triage.git
+cd Gemma-4-Edge-Triage
+
+# 2. Sync dependencies
+uv sync
+
+# 3. Authenticate with Hugging Face (Needed for dataset/model access)
+uv run huggingface-cli login
+```
+
+## 3. Preparing Data & Models
+The project uses **QCRI/MEDIC** for multimodal triage and **Gemma 4 GGUF/LiteRT** for local inference.
+
+```bash
+# Manual download (GGUF, Multimodal Projector, and .litertlm)
+uv run prepare.py
+uv run download_litert.py
+
+# Extract the local Gold Set (Images + Labels)
+uv run local_extractor.py
+```
+
+**Note on Autonomous Setup:** The `triage_sandbox.py` now includes an **Autonomous Bootloader**. If you run the sandbox and the main GGUF model or `mmproj-F16.gguf` multimodal projector are missing or misnamed, it will autonomously trigger the downloader and apply the mandatory `Edge-Triage-` prefix to comply with naming guidelines. The public live API container still expects these artifacts to already be mounted under `/app/models`; run `uv run prepare.py` or otherwise populate `~/.cache/autoresearch/models/` before enabling live model mode.
+
+## 4. Data Strategy: Local vs. Global Cache
+Edge-Triage uses a "Hybrid Data Strategy" to balance high-performance research with easy deployment:
+
+1.  **Global Cache (`~/.cache/autoresearch/`):**
+    *   **Models:** Multi-GB weights (GGUF, LiteRT) are stored here once.
+    *   **Tokenizer:** Shared BPE tokenizer assets.
+    *   **Purpose:** Prevents redundant downloads across different project versions.
+
+2.  **Local Workspace (`data/`):**
+    *   **Raw Shards:** Drop `.parquet` files here for ingestion.
+    *   **Gold Set:** The active `gold_set.json` used for the current benchmark.
+    *   **Active Images:** The `data/images/` folder contains only the images needed for the current run.
+    *   **Archive:** Processed shards are automatically moved to `data/archive/` post-run.
+    *   **Purpose:** Enables the "Zero-Touch" autonomous lifecycle (extraction, hashing, and purging) without affecting the global system state.
+
+## 5. Running Experiments
+The `triage_sandbox.py` is the main entry point for research. It measures **Accuracy (F1)** and **Latency**.
+
+```bash
+# Run the current best configuration (Vision + Multimodal)
+mkdir -p logs
+uv run triage_sandbox.py > logs/run.log 2>&1
+```
+
+Keep generated logs under `logs/`, not in the project root. Named experiment logs should follow the same pattern, for example `logs/run_edg479_r1.log`. The repository keeps `logs/.gitkeep` for fresh checkouts, while generated `*.log` files stay ignored.
+
+## 6. Dual-Path Architecture
+The project is split into two primary workflows:
+
+1. **The Research Sandbox (`triage_sandbox.py`)**: 
+   - Used by the **Researcher Agent** to autonomously optimize prompt templates and reasoning steps.
+   - Logs results to `results.tsv`.
+   
+2. **The Field CLI (`edge-triage-cli.py`)**:
+   - A simplified tool for volunteers on the ground.
+   - Imports the latest `TRIAGE_PROMPT_TEMPLATE` from the sandbox to ensure field-readiness.
+
+## 7. Deployment Backends
+We support three high-performance edge backends:
+
+### A. Ollama (One-Click)
+```bash
+ln -s ~/.cache/autoresearch/models/Edge-Triage-gemma-4-E4B-it-UD-Q2_K_XL.gguf .
+ollama create edge-triage -f Modelfile
+ollama run edge-triage
+```
+*   **Current frontier:** use `docs/CURRENT_FRONTIER.md` for competition-facing metrics. The current validated full-50 profiles are Volunteer Speed Profile (`0.9794` F1 at `158.61 ms`) and Critical Accuracy Profile (`0.9818` F1 at `237.97 ms`), both under the 4s field budget.
+
+### B. LiteRT-LM (Google AI Edge)
+```bash
+# Run with the native .litertlm model (for mobile/NPU hardware)
+litert-lm run ~/.cache/autoresearch/models/Edge-Triage-gemma-4-E2B-it.litertlm --prompt "Triage: Flood in district."
+```
+
+### C. llama.cpp (Research & Vision)
+Native high-fidelity support provided via `llama-cpp-python` in `triage_sandbox.py` and the `edge-triage-cli.py`.
+
+## 8. The Self-Improving Nature of Edge-Triage
+Edge-Triage is built on the **AutoResearch** framework. It is designed to be a "living" system that self-heals and self-optimizes:
+
+*   **Continuous Optimization:** The `triage_sandbox.py` is meant to be edited by an AI agent (Researcher Swarm). It can autonomously test 100+ prompt variations overnight to "heal" accuracy drops caused by new dataset noise.
+*   **Self-Benchmarking:** Every change is automatically validated against the `data/gold_set.json` using `prepare.py`.
+*   **Codebase Evolution:** The project instructions in `docs/superpowers/specs/agent_instruction.md` allow the agent to refactor its own inference logic to support newer versions of Gemma (e.g., Gemma 5) without human intervention.
+
+## 9. Submitting Changes
+1.  Always run a full 50-sample benchmark to verify your changes.
+2.  Log your results in `results.tsv` using this schema:
+
+| Column | Description |
+|--------|-------------|
+| `run_id` | UTC timestamp id for the run (`YYYYMMDDTHHMMSSZ`) |
+| `state_hash` | Hash of prompt + gold set + active image payload |
+| `model` | The specific model variant used (e.g., Edge-Triage-gemma-4-E4B-it-UD-Q2_K_XL.gguf) |
+| `f1_score` | F1 score from `evaluate_triage` |
+| `latency_ms` | Average per-sample latency in milliseconds |
+| `vram_gb` | Peak CUDA allocation in GB (0 on CPU-only runs) |
+| `total_samples` | Number of evaluated samples |
+| `status` | `keep`, `skip`, `blocked`, `crash`, or `legacy` |
+| `description` | Human-readable run note or remediation guidance |
+
+3.  Open a branch for substantial changes, or commit directly only when intentionally preparing the final submission package.
+
+---
+*Gemma is a trademark of Google LLC.*

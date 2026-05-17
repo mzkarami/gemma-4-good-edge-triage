@@ -1,0 +1,114 @@
+{
+  "purpose": "Kaggle submission and 3-minute video media library for Edge-Triage.",
+  "canonical_metrics": {
+    "speed_mode": {
+      "f1": 0.9794,
+      "latency_ms": 158.61,
+      "run": "EDG-307 r0 / 20260427T200056Z"
+    },
+    "critical_accuracy_mode": {
+      "f1": 0.9818,
+      "latency_ms": 237.97,
+      "run": "EDG-480 r2 / 20260515T093558Z"
+    }
+  },
+  "brand_assets": [
+    {
+      "path": "media/brand/edge-triage-logo-square.png",
+      "use": "Square logo derived from the cropped center circle of the selected Unsplash source image.",
+      "source_page": "https://unsplash.com/photos/IZJ7_z-L0sc",
+      "license": "Unsplash License",
+      "credit": "Photo by Mehrzad Karami on Unsplash"
+    },
+    {
+      "path": "media/brand/edge-triage-logo-icon.png",
+      "use": "Round transparent logo used in the site header and hero.",
+      "source_page": "https://unsplash.com/photos/IZJ7_z-L0sc",
+      "license": "Unsplash License",
+      "credit": "Photo by Mehrzad Karami on Unsplash"
+    },
+    {
+      "path": "media/brand/edge-triage-cover-1600x900.jpg",
+      "use": "Kaggle/media-gallery cover image with logo, project title, and canonical metrics.",
+      "source_page": "https://unsplash.com/photos/IZJ7_z-L0sc",
+      "license": "Unsplash License",
+      "credit": "Photo by Mehrzad Karami on Unsplash"
+    },
+    {
+      "path": "media/brand/edge-triage-cover-1200x675.jpg",
+      "use": "README/social cover image derived from the Kaggle cover.",
+      "source_page": "https://unsplash.com/photos/IZJ7_z-L0sc",
+      "license": "Unsplash License",
+      "credit": "Photo by Mehrzad Karami on Unsplash"
+    }
+  ],
+  "live_scenario_assets": [
+    {
+      "input": "media/scenario-inputs/bridge-flood-damage.jpg",
+      "result": "media/live-results/bridge-flood-damage.json",
+      "screenshot": "media/screenshots/06-live-optimization-bridge-flood.png",
+      "scenario_family": "infrastructure_and_utility_damage",
+      "source_page": "https://commons.wikimedia.org/wiki/File:Bridge_damaged_by_flood_-_NARA_-_279864.jpg",
+      "license": "Public domain",
+      "credit": "U.S. National Archives and Records Administration / Wikimedia Commons"
+    },
+    {
+      "input": "media/scenario-inputs/relief-cleaning-supplies.jpg",
+      "result": "media/live-results/relief-cleaning-supplies.json",
+      "screenshot": "media/screenshots/07-live-optimization-relief-supplies.png",
+      "scenario_family": "rescue_volunteering_or_donation_effort",
+      "source_page": "https://commons.wikimedia.org/wiki/File:FEMA_-_39470_-_Cleaning_supplies_being_moved_in_Texas_by_a_volunteer.jpg",
+      "license": "Public domain",
+      "credit": "FEMA / Wikimedia Commons"
+    },
+    {
+      "input": "media/scenario-inputs/helicopter-evacuation-assistance.jpg",
+      "result": "media/live-results/helicopter-evacuation-assistance.json",
+      "screenshot": "media/screenshots/08-live-optimization-evacuation-assistance.png",
+      "scenario_family": "rescue_volunteering_or_donation_effort",
+      "source_page": "https://commons.wikimedia.org/wiki/File:FEMA_-_14826_-_Photograph_by_Win_Henderson_taken_on_09-03-2005_in_Louisiana.jpg",
+      "license": "Public domain",
+      "credit": "FEMA / Wikimedia Commons"
+    }
+  ],
+  "curated_scenario_assets": [
+    {
+      "input": "media/scenario-inputs/possible-casualty-damaged-building.jpg",
+      "site_asset": "site/assets/scenarios/possible-casualty-damaged-building.jpg",
+      "scenario_family": "affected_injured_or_dead_people",
+      "source_page": "https://commons.wikimedia.org/wiki/File:FEMA_-_1261_-_Photograph_by_FEMA_News_Photo_taken_on_04-26-1995_in_Oklahoma.jpg",
+      "license": "Public domain",
+      "credit": "FEMA News Photo / Wikimedia Commons"
+    }
+  ],
+  "assets": [
+    {
+      "path": "media/screenshots/01-landing-hero.png",
+      "use": "Video opening shot showing the product framing and frontier metrics."
+    },
+    {
+      "path": "media/screenshots/02-volunteer-mode.png",
+      "use": "Shows the field-facing triage workflow and curated offline demo."
+    },
+    {
+      "path": "media/screenshots/03-optimization-mode.png",
+      "use": "Shows frontier evidence and autonomous research/ablation story."
+    },
+    {
+      "path": "media/screenshots/04-metrics-page.png",
+      "use": "Shows the validated Speed/Accuracy profile metrics."
+    },
+    {
+      "path": "media/screenshots/05-live-result-card.png",
+      "use": "Close-up of the polished live Gemma 4 vision result card."
+    },
+    {
+      "path": "media/charts/research-progress.png",
+      "use": "Autonomous research progress chart for writeup/video b-roll."
+    }
+  ],
+  "notes": [
+    "Do not store judge tokens, .env values, private host details, or non-public Kaggle notes in media assets.",
+    "Regenerate screenshots after logo or major UI changes with: python3 scripts/capture_media_assets.py"
+  ]
+}

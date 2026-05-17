@@ -1,0 +1,40 @@
+# Keep Docker build contexts small and prevent accidental artifact leakage.
+.git
+.venv
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache
+.mypy_cache
+.ruff_cache
+
+# Local/generated research artifacts
+logs/
+results/
+queue/
+worktrees/
+.worktrees/
+run.log
+*.log
+
+# Secrets and local env
+.env
+.env.*
+*.pem
+*.key
+*.token
+.hf_token
+
+# Large local model/data artifacts
+data/
+models/
+*.gguf
+*.safetensors
+*.pt
+*.pth
+*.onnx
+
+# Editor noise
+.idea/
+.vscode/

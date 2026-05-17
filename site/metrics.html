@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Edge-Triage | Metrics Source</title>
+  <meta name="description" content="Human-readable source for Edge-Triage metrics: what the Speed and Accuracy profiles mean, why raw ledger maxima are filtered, and which runs support the public claims." />
+  <link rel="icon" type="image/png" href="assets/brand/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="index.html" aria-label="Back to Edge-Triage demo">
+      <img class="brand-mark" src="assets/brand/edge-triage-logo-icon.png" alt="" />
+      <span>Edge-Triage</span>
+    </a>
+    <nav aria-label="Metrics sections">
+      <a href="index.html#volunteer">Volunteer Mode</a>
+      <a href="index.html#optimization">Optimization Mode</a>
+      <a href="#source-files">Source files</a>
+      <a href="roadmap.html">Roadmap</a>
+      <a href="about.html">About</a>
+    </nav>
+    <a class="ghost-button" href="index.html">Back to demo</a>
+  </header>
+
+  <main>
+    <section class="hero section-shell">
+      <div class="hero-copy">
+        <span class="eyebrow">Metrics source</span>
+        <h1>Current validated frontier.</h1>
+        <p>
+          A judge-friendly summary of what the numbers mean, which runs support the public claims, and why the public story uses a trusted full-50 frontier instead of the raw maximum row in a research ledger.
+          The canonical repository file is <code>docs/CURRENT_FRONTIER.md</code>.
+        </p>
+      </div>
+      <aside class="hero-panel">
+        <div class="panel-header">
+          <span class="status-dot"></span>
+          <span>Validated on 50 MEDIC/QCRI samples</span>
+        </div>
+        <div class="metric-grid">
+          <div>
+            <span class="metric-label">Volunteer Speed F1</span>
+            <strong>0.9794</strong>
+            <span class="metric-sub">158.61 ms</span>
+          </div>
+          <div>
+            <span class="metric-label">Critical Accuracy F1</span>
+            <strong>0.9818</strong>
+            <span class="metric-sub">237.97 ms</span>
+          </div>
+        </div>
+        <p class="muted">Both profiles remain far below the 4,000 ms field-response budget.</p>
+      </aside>
+    </section>
+
+    <section class="section-shell">
+      <div class="experiment-intro metrics-intro" aria-label="How to read these metrics">
+        <div>
+          <span class="eyebrow">What these numbers mean</span>
+          <h3>Two profiles, two response needs.</h3>
+        </div>
+        <p>
+          Volunteer Speed Profile is for high-volume field sorting; Critical Accuracy Profile is for slower, more careful review. Both are measured on the same 50-sample MEDIC/QCRI gold set and stay far below the 4-second response budget, so the tradeoff is about operational fit, not waiting minutes for a model.
+        </p>
+      </div>
+      <div class="section-heading-row">
+        <div>
+          <span class="eyebrow">Decision</span>
+          <h2>We present a Pareto frontier, not a single magic number.</h2>
+        </div>
+        <p class="section-lead narrow">Speed matters for volunteer sorting. Accuracy matters for critical incident review. Judges can inspect both profiles in Optimization Mode while the Web UI keeps only two top-level experiences.</p>
+      </div>
+      <div class="frontier-grid">
+        <article class="frontier-card">
+          <span class="card-kicker">KEEP · 50 samples</span>
+          <h3>Volunteer Speed Profile</h3>
+          <span class="big-number">0.9794</span>
+          <p><span class="decision">Latency:</span> 158.61 ms</p>
+          <p class="muted">Best for high-volume field reports where responders need fast safe routing.</p>
+          <p class="muted small">Run: EDG-307 r0 / 20260427T200056Z</p>
+        </article>
+        <article class="frontier-card">
+          <span class="card-kicker">CANDIDATE · 50 samples</span>
+          <h3>Critical Accuracy Profile</h3>
+          <span class="big-number">0.9818</span>
+          <p><span class="decision">Latency:</span> 237.97 ms</p>
+          <p class="muted">Best for high-stakes review where a small latency cost is acceptable.</p>
+          <p class="muted small">Run: EDG-480 r2 / 20260515T093558Z</p>
+        </article>
+        <article class="frontier-card">
+          <span class="card-kicker">FIELD BUDGET</span>
+          <h3>4,000 ms ceiling</h3>
+          <span class="big-number">&lt; 0.3s</span>
+          <p class="muted">The current profiles preserve most of the time budget for human judgment and communications.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section-shell">
+      <div class="experiment-intro metrics-intro" aria-label="Why the raw ledger maximum is not the headline metric">
+        <div>
+          <span class="eyebrow">Metric discipline</span>
+          <h3>Why not just show the raw maximum?</h3>
+        </div>
+        <p>
+          <code>results.tsv</code> is an experiment ledger, not a leaderboard. It includes diagnostics, guarded CPU runs, low-VRAM checks, and historical artifact rows. Public claims therefore use trustworthy comparable full-50 rows from <code>docs/CURRENT_FRONTIER.md</code>, with exact run IDs preserved for auditability.
+        </p>
+      </div>
+    </section>
+
+    <section id="source-files" class="section-shell">
+      <div class="section-heading-row">
+        <div>
+          <span class="eyebrow">Readable source details</span>
+          <h2>Open the evidence without leaving the demo.</h2>
+        </div>
+        <p class="section-lead narrow">For safety and judge usability, this page exposes curated, versioned excerpts instead of serving every raw research log or repository file from the public site.</p>
+      </div>
+      <div class="source-grid">
+        <details class="source-card">
+          <summary>
+            <span>
+              <span class="eyebrow">Canonical file</span>
+              <strong>docs/CURRENT_FRONTIER.md</strong>
+            </span>
+            <span class="source-action">View excerpt</span>
+          </summary>
+          <p>The repository source of truth says to present two validated profiles rather than one headline number:</p>
+          <ul>
+            <li><strong>Volunteer Speed Profile:</strong> 0.9794 weighted F1 at 158.61 ms.</li>
+            <li><strong>Critical Accuracy Profile:</strong> 0.9818 weighted F1 at 237.97 ms.</li>
+            <li><strong>Decision:</strong> EDG-480 is the current Pareto/frontier candidate; EDG-479 ablations should not replace it alone.</li>
+          </ul>
+        </details>
+        <details class="source-card">
+          <summary>
+            <span>
+              <span class="eyebrow">Experiment ledger</span>
+              <strong>results.tsv</strong>
+            </span>
+            <span class="source-action">View rows</span>
+          </summary>
+          <p>Judge-facing rows from the run ledger:</p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Run</th><th>Weighted F1</th><th>Latency</th><th>Decision</th></tr></thead>
+              <tbody>
+                <tr><td>EDG-307 r0</td><td>0.9794</td><td>158.61 ms</td><td>Keep for speed</td></tr>
+                <tr><td>EDG-478 r1</td><td>0.9798</td><td>286.26 ms</td><td>Superseded by EDG-480</td></tr>
+                <tr><td>EDG-480 r2</td><td>0.9818</td><td>237.97 ms</td><td>Accuracy candidate</td></tr>
+                <tr><td>EDG-479 r1</td><td>0.9594</td><td>260.33 ms</td><td>Do not use alone</td></tr>
+                <tr><td>EDG-479 r2</td><td>0.9595</td><td>214.79 ms</td><td>Do not use alone</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </details>
+        <details class="source-card">
+          <summary>
+            <span>
+              <span class="eyebrow">Demo data</span>
+              <strong>site/data.json</strong>
+            </span>
+            <span class="source-action">View data</span>
+          </summary>
+          <p>The interactive cards are powered by a small static JSON file. It is safe to expose because it contains only public metrics and curated demo examples.</p>
+          <pre><code>{
+  "frontier": [
+    { "profile": "Volunteer Speed Profile", "f1": 0.9794, "latencyMs": 158.61 },
+    { "profile": "Critical Accuracy Profile", "f1": 0.9818, "latencyMs": 237.97 }
+  ]
+}</code></pre>
+          <p><a class="ghost-button" href="data.json">Open full demo JSON</a></p>
+        </details>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span>Edge-Triage · Gemma 4 Good Hackathon</span>
+    <span><a href="index.html">Return to interactive demo</a></span>
+  </footer>
+</body>
+</html>

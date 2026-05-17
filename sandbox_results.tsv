@@ -1,0 +1,58 @@
+run_id	state_hash	model	f1_score	latency_ms	vram_gb	total_samples	status	description
+20260413T203231Z	e90077597f469dfcbbe298a244d75e32	Edge-Triage-gemma-4-E4B-it-Q3_K_M.gguf	0.3499	964.19	4.13	50	keep	Research Phase 1: Zero-shot & Few-shot Sweep
+20260413T211337Z	93aad91dcf21010e5bfb64be6bbfb51f	Edge-Triage-gemma-4-E4B-it-Q3_K_M.gguf	0.6165	957.4	4.19	50	keep	Research Phase 1: Zero-shot & Few-shot Sweep
+20260413T211503Z	9a953ba2cba6b74caa0c46697bff280f	Edge-Triage-gemma-4-E4B-it-Q3_K_M.gguf	0.6211	980.27	4.19	50	keep	Research Phase 1: Zero-shot & Few-shot Sweep
+20260413T211637Z	186a0f96011c948f9854608577506a52	Edge-Triage-gemma-4-E4B-it-Q3_K_M.gguf	0.6211	980.38	4.19	50	keep	Research Phase 1: Zero-shot & Few-shot Sweep
+20260413T211852Z	724ed80a9df09f45d39767ee8b196ce9	Edge-Triage-gemma-4-E4B-it-Q3_K_M.gguf	0.6211	1103.08	4.19	50	keep	Research Phase 1: Zero-shot & Few-shot Sweep
+20260413T212101Z	50ab615b956b69b6378b77bc4f4ac4dc	Edge-Triage-gemma-4-E4B-it-Q3_K_M.gguf	0.6211	1038.41	4.19	50	keep	Research Phase 1: Zero-shot & Few-shot Sweep
+20260413T212201Z	024e299fd0bd6a5d06fad101c8fbfd41	Edge-Triage-gemma-4-E4B-it-Q3_K_M.gguf	0.0549	500.45	4.14	50	keep	Research Phase 1: Zero-shot & Few-shot Sweep
+20260413T212325Z	729619b01a39f914bc8aea6f08789b79	Edge-Triage-gemma-4-E4B-it-Q3_K_M.gguf	0.6987	971.62	4.19	50	keep	Research Phase 1: Zero-shot & Few-shot Sweep
+20260413T212510Z	5aa28047b70d1d5769347930a7e543c0	Edge-Triage-gemma-4-E4B-it-Q3_K_M.gguf	0.6389	1019.86	4.19	50	keep	Research Phase 1: Zero-shot & Few-shot Sweep
+20260413T212727Z	36ea1a6f84578668cfccdda55f9ff41b	Edge-Triage-gemma-4-E4B-it-Q3_K_M.gguf	0.6823	985.19	4.2	50	keep	Research Phase 1: Zero-shot & Few-shot Sweep
+20260413T212846Z	b49540bcd1991b6c8276caa9f8f0d528	Edge-Triage-gemma-4-E4B-it-Q3_K_M.gguf	0.6599	913.56	4.73	50	keep	Research Phase 2: Chain-of-Thought (CoT) Exploration
+20260413T213044Z	19955642a33dadf54391d36a5fd85f85	Edge-Triage-gemma-4-E4B-it-Q3_K_M.gguf	0.692	1667.31	4.6	50	keep	Research Phase 2: Chain-of-Thought (CoT) Exploration
+20260413T213343Z	dcfc5579aaa2ba4ae9b4d3d0297aa146	Edge-Triage-gemma-4-E4B-it-Q3_K_M.gguf	0.6987	960.37	4.21	50	keep	Research Phase 2: Chain-of-Thought (CoT) Exploration
+20260413T213518Z	714744bf731c1dbf94c49c5be80d4801	Edge-Triage-gemma-4-E4B-it-Q3_K_M.gguf	0.6987	978.41	4.35	50	keep	Research Phase 2: Chain-of-Thought (CoT) Exploration
+20260413T213838Z	6160c2f10a61620a5295982a767b7291	Edge-Triage-gemma-4-E4B-it-Q3_K_M.gguf	0.6191	2234.44	4.21	50	keep	Research Phase 2: Chain-of-Thought (CoT) Exploration
+20260413T214007Z	396c333444f0ebcd2e33d6b47b17baae	Edge-Triage-gemma-4-E4B-it-Q3_K_M.gguf	0.6496	889.69	4.21	50	keep	Research Phase 2: Chain-of-Thought (CoT) Exploration
+20260414T194147Z	c323920ee50650b8b80f2ba220bc1521	Edge-Triage-gemma-4-E4B-it-Q3_K_M.gguf	0.6987	971.29	4.08	50	keep	Research Phase 2: Chain-of-Thought (CoT) Exploration
+20260414T194318Z	c729855c718aaea0d6e0174ac17bc6b5	Edge-Triage-gemma-4-E4B-it-Q3_K_M.gguf	0.5443	883.49	4.14	50	keep	Research Phase 2: Chain-of-Thought (CoT) Exploration
+20260414T194845Z	c3e66b4bab0bd0434895dff807e14165	Edge-Triage-gemma-4-E4B-it-Q3_K_M.gguf	0.6758	4988.69	4.2	50	discard	Research Phase 2: Chain-of-Thought (CoT) Exploration
+20260414T195125Z	70d095053ae16faeacc3a0c6ccd08ad6	Edge-Triage-gemma-4-E4B-it-Q3_K_M.gguf	0.6874	1732.33	4.07	50	keep	Research Phase 2: Chain-of-Thought (CoT) Exploration
+20260414T195232Z	d545007cac002ffaad48874e84aebf8d	Edge-Triage-gemma-4-E4B-it-Q3_K_M.gguf	0.6987	871.29	4.06	50	keep	Research Phase 3: Multimodal Projector Integration
+20260414T195355Z	6dfe9fe5119b3aa5f246141ba16fc5fc	Edge-Triage-gemma-4-E4B-it-Q3_K_M.gguf	0.6478	1024.0	4.03	50	keep	Research Phase 3: Multimodal Projector Integration
+20260414T195556Z	e76d5c5be18d4fbe571c3dc87c47f1b4	Edge-Triage-gemma-4-E4B-it-Q3_K_M.gguf	0.692	1713.0	4.02	50	keep	Research Phase 3: Multimodal Projector Integration
+20260414T195900Z	27e06321bc62d8048dcdbce1c4d6bc47	Edge-Triage-gemma-4-E4B-it-Q3_K_M.gguf	0.7155	3057.4	3.42	50	discard	Research Phase 3: Multimodal Projector Integration
+20260414T200145Z	0f52ecb9cfdebaa5355220681c58dd79	Edge-Triage-gemma-4-E4B-it-Q3_K_M.gguf	0.6599	2633.29	3.63	50	keep	Research Phase 3: Multimodal Projector Integration
+20260414T200528Z	014a8dfc9fa3b0c54d0d4ab20752b684	Edge-Triage-gemma-4-E4B-it-Q3_K_M.gguf	0.7155	3876.55	3.59	50	discard	Research Phase 3: Multimodal Projector Integration
+20260414T200800Z	6c6478142621f3c4a8cd065c0a5ed84f	Edge-Triage-gemma-4-E4B-it-Q3_K_M.gguf	0.6822	2441.89	3.67	50	keep	Research Phase 3: Multimodal Projector Integration
+20260414T201038Z	bf0b86a7e8b85aa281e8dfd031e0e8cb	Edge-Triage-gemma-4-E4B-it-Q3_K_M.gguf	0.7155	2670.89	3.62	50	keep	Research Phase 3: Multimodal Projector Integration
+20260414T201325Z	2b6a58132adee019cde2495c9e906800	Edge-Triage-gemma-4-E4B-it-Q3_K_M.gguf	0.7155	2756.24	3.61	50	keep	Research Phase 3: Multimodal Projector Integration
+20260414T201628Z	046b9868b939b9d4c6ef6fd2022480aa	Edge-Triage-gemma-4-E4B-it-Q3_K_M.gguf	0.7155	3160.36	3.61	50	discard	Research Phase 3: Multimodal Projector Integration
+20260415T181453Z	1d9aa40755f31830c554eeab88db02d0	Edge-Triage-gemma-4-E4B-it-Q3_K_M.gguf	0.6337	6494.72	4.10	50	discard	Research Phase 4: Quantization Pareto Search (Q2_K_XL)
+20260415T181740Z	a1042a2e42cb35be1bd78f3318f87c31	Edge-Triage-gemma-4-E4B-it-Q3_K_M.gguf	0.656	2422.3	4.10	50	keep	Research Phase 4: Quantization Pareto Search (Q2_K_XL)
+20260415T181947Z	5c07e62e608229280f4e6cdfc9df4683	Edge-Triage-gemma-4-E4B-it-Q3_K_M.gguf	0.6439	1818.58	4.57	50	keep	Research Phase 4: Quantization Pareto Search (Q2_K_XL)
+20260415T182223Z	c03a991f9d50941453df5460f6ff0e6d	Edge-Triage-gemma-4-E4B-it-Q3_K_M.gguf	0.6439	2622.43	4.04	50	keep	Research Phase 4: Quantization Pareto Search (Q2_K_XL)
+20260415T182457Z	999f597f28ba3d69d30756de369eb8cc	Edge-Triage-gemma-4-E4B-it-Q3_K_M.gguf	0.6632	2585.05	4.14	50	keep	Research Phase 4: Quantization Pareto Search (Q2_K_XL)
+20260415T182726Z	792177176e4ee39a9ce9e0a57b675a38	Edge-Triage-gemma-4-E4B-it-Q3_K_M.gguf	0.656	2464.99	4.19	50	keep	Research Phase 4: Quantization Pareto Search (Q2_K_XL)
+20260415T184138Z	d3532f32eb55c17d3fd3ef35cb3be3f4	Edge-Triage-gemma-4-E4B-it-Q3_K_M.gguf	0.6000	1859.23	4.29	5	keep	Research Phase 4: Quantization Pareto Search (Q2_K_XL)
+20260415T184434Z	ca727a1d92be3d79dfab4e0bb3910495	Edge-Triage-gemma-4-E4B-it-Q3_K_M.gguf	0.6000	2720.28	4.32	5	keep	Research Phase 4: Quantization Pareto Search (Q2_K_XL)
+20260415T191009Z	3bfb4af3f88b3df1c5628455e08ae12f	Edge-Triage-gemma-4-E4B-it-Q3_K_M.gguf	0.6203	4126.83	4.19	50	discard	Research Phase 4: Quantization Pareto Search (Q2_K_XL)
+20260415T192913Z	45a26a5e2db8e3596188db9158a77f85	Edge-Triage-gemma-4-E4B-it-Q3_K_M.gguf	0.5486	1947.74	3.79	10	keep	Research Phase 5: Pareto Frontier Finalization
+20260415T193214Z	139c1f8c3f8b44e406f2adf3b089a14b	Edge-Triage-gemma-4-E4B-it-Q3_K_M.gguf	0.6504	2896.01	3.80	50	keep	Research Phase 5: Pareto Frontier Finalization
+20260415T195204Z	f5239709faf02ba483589b1a51960f51	Edge-Triage-gemma-4-E4B-it-Q3_K_M.gguf	0.6504	2517.77	3.89	50	keep	Research Phase 5: Pareto Frontier Finalization
+20260415T195704Z	ab1a8e20a803c0773c96401b72db5a10	Edge-Triage-gemma-4-E4B-it-Q3_K_M.gguf	0.6203	5480.07	4.07	50	discard	Research Phase 5: Pareto Frontier Finalization
+20260415T200037Z	b4f411f800dd9b8cd4940d84b24e34c5	Edge-Triage-gemma-4-E4B-it-Q3_K_M.gguf	0.6233	3688.31	3.81	50	discard	Research Phase 5: Pareto Frontier Finalization
+20260415T200340Z	f36296b1be856c30230cb2530cbc61e8	Edge-Triage-gemma-4-E4B-it-Q3_K_M.gguf	0.5743	2392.18	3.88	50	keep	Research Phase 5: Pareto Frontier Finalization
+20260415T200702Z	d921863de32d84fe89906cb57b5de9f2	Edge-Triage-gemma-4-E4B-it-Q3_K_M.gguf	0.6039	3335.61	3.98	50	discard	Research Phase 5: Pareto Frontier Finalization
+20260415T201004Z	7cdc1ff07c214860aedcc483474c3d01	Edge-Triage-gemma-4-E4B-it-Q3_K_M.gguf	0.6504	2706.23	3.88	50	keep	Research Phase 5: Pareto Frontier Finalization
+20260415T201402Z	12f8531de1fa86c9b4b9ea768329688b	Edge-Triage-gemma-4-E4B-it-Q3_K_M.gguf	0.6504	3627.99	3.85	50	discard	Research Phase 5: Pareto Frontier Finalization
+20260415T201718Z	59bfc763ff8544b26b850729d4890286	Edge-Triage-gemma-4-E4B-it-Q3_K_M.gguf	0.5743	3128.89	3.89	50	discard	Research Phase 5: Pareto Frontier Finalization
+20260415T202051Z	c5b69cf49f184ad9befea94bd9dc36be	Edge-Triage-gemma-4-E4B-it-Q3_K_M.gguf	0.6504	3590.98	3.88	50	discard	Research Phase 5: Pareto Frontier Finalization
+20260417T122855Z	ebaa9cda4ff37a68617d22a0daf9c895	Edge-Triage-gemma-4-E4B-it-UD-Q2_K_XL.gguf	0.6504	2535.57	3.68	50	keep	Research Phase 5: Pareto Frontier Finalization
+20260417T132401Z	1a83ce3f4f39b70a69e85c2a614ef6af	Edge-Triage-gemma-4-E4B-it-UD-Q2_K_XL.gguf	0.6560	2476.64	3.74	50	keep	Research Phase 5: Pareto Frontier Finalization
+20260417T191225Z	b28d32d409b5b21f716887fc8b04acce	Edge-Triage-gemma-4-E4B-it-Q3_K_M.gguf	0.6579	2050.36	3.58	50	keep	Research Phase 5: Pareto Frontier Finalization
+20260417T191534Z	3bd806311a9dee0768709a0a26596407	Edge-Triage-gemma-4-E4B-it-Q3_K_M.gguf	0.6614	2506.94	4.01	50	keep	Research Phase 5: Pareto Frontier Finalization
+20260417T191832Z	5ca3773bf50bb7709c403d4fd281dd42	Edge-Triage-gemma-4-E4B-it-Q3_K_M.gguf	0.6759	2648.41	3.87	50	keep	Research Phase 5: Pareto Frontier Finalization
+20260417T202826Z	32064cd9a06eb115620dda1495bc63a8	Edge-Triage-gemma-4-E4B-it-Q3_K_M.gguf	0.6579	2620.62	3.60	50	keep	Research Phase 5: Pareto Frontier Finalization
+20260419T195838Z	c558acacb66d0af4ef75b3f2461897fa	Edge-Triage-gemma-4-E4B-it-Q3_K_M.gguf	0.6000	1937.74	3.50	5	keep	Research Phase 5: Pareto Frontier Finalization

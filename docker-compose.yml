@@ -1,0 +1,52 @@
+services:
+  edge-triage-demo:
+    build: .
+    container_name: edge-triage-demo
+    restart: unless-stopped
+    ports:
+      - "${DEMO_BIND_ADDRESS:-127.0.0.1}:4173:8080"
+    read_only: true
+    tmpfs:
+      - /tmp
+      - /var/cache/nginx
+      - /var/run
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    pids_limit: 128
+    mem_limit: 128m
+
+  edge-triage-live-api:
+    profiles: ["live"]
+    build:
+      context: .
+      dockerfile: Dockerfile.live-api
+    container_name: edge-triage-live-api
+    restart: unless-stopped
+    ports:
+      - "${LIVE_API_BIND_ADDRESS:-127.0.0.1}:4180:8080"
+    environment:
+      # Leave empty by default so static-only compose commands do not require a secret.
+      # live_api.py fails closed with 503 until a real token is configured.
+      - EDGE_TRIAGE_JUDGE_TOKEN=${EDGE_TRIAGE_JUDGE_TOKEN:-}
+      - EDGE_TRIAGE_LIVE_MODEL=${EDGE_TRIAGE_LIVE_MODEL:-0}
+      - EDGE_TRIAGE_MODEL_PATH=${EDGE_TRIAGE_MODEL_PATH:-/app/models/Edge-Triage-gemma-4-E4B-it-Q3_K_M.gguf}
+      - EDGE_TRIAGE_MMPROJ_PATH=${EDGE_TRIAGE_MMPROJ_PATH:-/app/models/Edge-Triage-mmproj-F16.gguf}
+      - EDGE_TRIAGE_MAX_UPLOAD_MB=25
+      - EDGE_TRIAGE_RATE_LIMIT_PER_MINUTE=${EDGE_TRIAGE_RATE_LIMIT_PER_MINUTE:-6}
+      - EDGE_TRIAGE_RATE_LIMIT_PER_DAY=${EDGE_TRIAGE_RATE_LIMIT_PER_DAY:-60}
+      - EDGE_TRIAGE_MODEL_TIMEOUT_SECONDS=${EDGE_TRIAGE_MODEL_TIMEOUT_SECONDS:-30}
+      - EDGE_TRIAGE_ALLOWED_ORIGINS=${EDGE_TRIAGE_ALLOWED_ORIGINS:-http://localhost:4173,http://127.0.0.1:4173,https://kaggle.nelly.work}
+      - TMPDIR=/tmp/edge-triage-live
+    read_only: true
+    tmpfs:
+      - /tmp/edge-triage-live:mode=1777,noexec,nosuid,nodev,size=64m
+    volumes:
+      - ${EDGE_TRIAGE_MODEL_DIR:-/path/to/edge-triage/models}:/app/models:ro
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    pids_limit: 256
+    mem_limit: 8g

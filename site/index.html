@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Edge-Triage | Gemma 4 Disaster Response Demo</title>
+  <meta name="description" content="Edge-Triage uses Gemma 4 on edge hardware to turn messy disaster reports and photos into triage labels, priorities, and conservative next actions when cloud connectivity is unreliable." />
+  <meta property="og:title" content="Edge-Triage | Gemma 4 Disaster Response Demo" />
+  <meta property="og:description" content="Local Gemma 4 disaster triage for volunteers, with a self-learning AutoResearch loop and run-backed speed/accuracy evidence." />
+  <meta property="og:image" content="assets/brand/edge-triage-cover-1600x900.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" type="image/png" href="assets/brand/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#top" aria-label="Edge-Triage home">
+      <img class="brand-mark" src="assets/brand/edge-triage-logo-icon.png" alt="" />
+      <span>Edge-Triage</span>
+    </a>
+    <nav aria-label="Demo sections">
+      <a href="#volunteer" data-mode-target="volunteer">Volunteer Mode</a>
+      <a href="#optimization" data-mode-target="optimization">Optimization Mode</a>
+      <a href="#evidence">Evidence</a>
+      <a href="roadmap.html">Roadmap</a>
+      <a href="about.html">About</a>
+    </nav>
+    <a class="ghost-button" href="metrics.html">Metrics source</a>
+  </header>
+
+  <main id="top">
+    <section class="hero section-shell">
+      <div class="hero-copy">
+        <img class="hero-logo" src="assets/brand/edge-triage-logo-icon.png" alt="Edge-Triage logo" />
+        <span class="eyebrow">Gemma 4 Good · Global Resilience</span>
+        <h1>Local disaster triage when the cloud is gone.</h1>
+        <p>
+          During floods, wildfires, earthquakes, and hurricanes, volunteers receive messy text reports and photos when connectivity may be unreliable. Edge-Triage uses Gemma 4 on edge hardware to turn each report into a triage label, priority, and conservative next action while keeping humans in control.
+        </p>
+        <div class="hero-flow" aria-label="Edge-Triage workflow summary">
+          <span>Messy field report</span>
+          <span>Gemma 4 local triage</span>
+          <span>Priority + safe next action</span>
+        </div>
+        <div class="hero-actions">
+          <a class="primary-button" href="#volunteer" data-mode-target="volunteer">Try Volunteer Mode</a>
+          <a class="ghost-button" href="#optimization" data-mode-target="optimization">View Optimization Mode</a>
+        </div>
+      </div>
+      <aside class="hero-panel" aria-label="Current frontier summary">
+        <div class="panel-header">
+          <span class="status-dot"></span>
+          <span>Current validated frontier</span>
+        </div>
+        <div class="metric-grid">
+          <div>
+            <span class="metric-label">Speed F1</span>
+            <strong>0.9794</strong>
+            <span class="metric-sub">158.61 ms</span>
+          </div>
+          <div>
+            <span class="metric-label">Accuracy F1</span>
+            <strong>0.9818</strong>
+            <span class="metric-sub">237.97 ms</span>
+          </div>
+        </div>
+        <p class="muted">Both validated profiles are far below the 4-second field-response budget.</p>
+      </aside>
+    </section>
+
+    <section class="section-shell judge-guide" aria-label="Judge guide">
+      <div class="evidence-heading-copy">
+        <span class="eyebrow">Judge guide</span>
+        <h2>Choose the lens you care about.</h2>
+        <p class="section-lead narrow">
+          Edge-Triage has something for field, ML, Gemma, agents, and responsible-AI reviewers. Use this guide to jump straight to the proof that matters for your judging lens.
+        </p>
+      </div>
+      <div class="judge-grid">
+        <article class="guide-card">
+          <span class="eyebrow">Field responder</span>
+          <h3>Can a volunteer use it quickly?</h3>
+          <p>Try Volunteer Mode: pick a scenario and inspect the label, priority, latency, scene summary, and conservative next action.</p>
+          <a href="#volunteer" data-mode-target="volunteer">Open Volunteer Mode →</a>
+        </article>
+        <article class="guide-card">
+          <span class="eyebrow">ML evaluator</span>
+          <h3>Are the numbers credible?</h3>
+          <p>Check the two validated profiles, full-50 run IDs, latency budget, and why the frontier is more honest than a raw ledger maximum.</p>
+          <a href="metrics.html">Open Metrics source →</a>
+        </article>
+        <article class="guide-card">
+          <span class="eyebrow">Agents / AutoResearch</span>
+          <h3>What improved automatically?</h3>
+          <p>Open Optimization Mode to see candidate profiles, keep/discard decisions, ablations, and the self-learning loop behind the final profiles.</p>
+          <a href="#optimization" data-mode-target="optimization">Open Optimization Mode →</a>
+        </article>
+        <article class="guide-card">
+          <span class="eyebrow">Safety / Gemma 4</span>
+          <h3>Why local, and why human-led?</h3>
+          <p>Read Evidence for local multimodal Gemma 4 value, privacy, human control boundaries, limitations, and reproducible proof.</p>
+          <a href="#evidence">Open Evidence →</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="section-shell next-pages" aria-label="More project context">
+      <article class="guide-card">
+        <span class="eyebrow">Future work</span>
+        <h3>Roadmap</h3>
+        <p>See four practical next steps: native mobile apps, trusted humanitarian guidance, multilingual low-bandwidth workflows, and NGO deployment kits.</p>
+        <a href="roadmap.html">Open Roadmap →</a>
+      </article>
+      <article class="guide-card">
+        <span class="eyebrow">Motivation</span>
+        <h3>About the Builder</h3>
+        <p>Read the name-free story behind the project: lived displacement, war-area context, and pro-bono Data/AI work with NGOs.</p>
+        <a href="about.html">Open About →</a>
+      </article>
+    </section>
+
+    <section class="mode-switcher section-shell" aria-label="Demo mode switcher">
+      <div>
+        <span class="eyebrow">Live demo switch</span>
+        <h2>Switch between the two judge experiences.</h2>
+        <p class="section-lead narrow">Volunteer Mode shows field-facing triage. Optimization Mode shows the frontier evidence behind the submitted profile.</p>
+        <div class="trust-strip" aria-label="Demo trust notes">
+          <span>Curated demo: fixed public-safe scenarios</span>
+          <span>Live preview: real token-gated Gemma API</span>
+          <span>Metrics: full-50 run-backed frontier</span>
+        </div>
+      </div>
+      <div class="mode-buttons" role="tablist" aria-label="Demo modes">
+        <button class="mode-button active" type="button" role="tab" aria-selected="true" aria-controls="volunteer" data-mode-target="volunteer">Volunteer Mode</button>
+        <button class="mode-button" type="button" role="tab" aria-selected="false" aria-controls="optimization" data-mode-target="optimization">Optimization Mode</button>
+      </div>
+    </section>
+
+    <section id="volunteer" class="section-shell two-column mode-section" data-mode-section="volunteer">
+      <div>
+        <span class="eyebrow">Volunteer Mode</span>
+        <h2>Pick a field report. See what the volunteer sees.</h2>
+        <p class="section-lead">
+          Curated offline demo is intentionally simple: choose one of the fixed public-safe scenarios below and the right-hand card updates with the related image and analysis.
+          Switch to Live Gemma preview only when you want to upload a new image to the guarded API.
+        </p>
+        <form class="upload-panel" id="upload-form">
+          <span class="callout-label">Choose demo path</span>
+          <div class="inference-toggle" role="radiogroup" aria-label="Inference mode">
+            <label><input type="radio" name="inference-mode" value="static" checked /> Curated offline demo</label>
+            <label><input type="radio" name="inference-mode" value="live" /> Live Gemma preview</label>
+          </div>
+          <p class="simulation-status" id="simulation-status" aria-live="polite">Curated offline demo selected: click a scenario below. No model call, upload, backend, or server request is made.</p>
+          <div class="live-inputs hidden" id="live-inputs" hidden>
+            <label class="file-drop" for="demo-image">
+              <input id="demo-image" type="file" accept="image/png,image/jpeg,image/webp" />
+              <span class="file-drop-copy">Upload a picture from your laptop</span>
+              <small>JPEG, PNG, or WebP · 25 MB maximum</small>
+              <span class="file-picker-row">
+                <span class="file-picker-button">Choose image</span>
+                <span class="file-name" id="file-name">No file selected</span>
+              </span>
+            </label>
+            <textarea id="demo-report" rows="4" maxlength="1000" placeholder="Optional field note, e.g. 'bridge washed out after flood, no injuries visible'"></textarea>
+            <div class="live-settings" id="live-settings">
+              <label>Judge token from Kaggle submission notes
+                <input id="judge-token" type="password" autocomplete="off" placeholder="Paste judge token" aria-describedby="judge-token-help judge-token-error" />
+                <small id="judge-token-help">The token is provided separately in the private submission notes, never embedded in this public page.</small>
+                <small id="judge-token-error" class="field-error" role="alert" aria-live="polite" hidden></small>
+              </label>
+              <label>Live API endpoint
+                <input id="api-endpoint" type="url" value="/api/triage" />
+              </label>
+            </div>
+            <button class="primary-button" id="run-upload-demo" type="submit">Run Live Gemma preview</button>
+            <p class="muted small">Live Gemma preview sends one sanitized image and note to the protected endpoint only when selected.</p>
+          </div>
+        </form>
+        <div id="curated-scenarios">
+          <span class="callout-label">Curated scenarios</span>
+          <div id="sample-list" class="sample-list" aria-label="Sample disaster reports"></div>
+        </div>
+      </div>
+
+      <article class="triage-card" aria-live="polite">
+        <div class="panel-header">
+          <span class="status-dot pulse"></span>
+          <span id="selected-mode">Volunteer Mode · Speed Profile</span>
+        </div>
+        <div class="image-placeholder" id="image-hint">Select a sample</div>
+        <h3 id="sample-title">Waiting for report</h3>
+        <p id="sample-report" class="muted">Choose one of the field examples to render the triage result.</p>
+        <div class="result-stack">
+          <div class="result-row">
+            <span>Label</span>
+            <strong id="result-label">—</strong>
+          </div>
+          <div class="result-row">
+            <span>Priority</span>
+            <strong id="result-priority">—</strong>
+          </div>
+          <div class="result-row">
+            <span>Latency</span>
+            <strong id="result-latency">—</strong>
+          </div>
+        </div>
+        <div class="callout">
+          <span class="callout-label">Safe next action</span>
+          <p id="result-action">Select a report to view conservative routing guidance.</p>
+        </div>
+        <div class="callout insight-callout">
+          <span class="callout-label" id="result-reason-label">Image scan</span>
+          <p id="result-reason">Select a report to see what the model understood from the scene.</p>
+        </div>
+      </article>
+    </section>
+
+    <section id="optimization" class="section-shell mode-section hidden" data-mode-section="optimization">
+      <div class="section-heading-row">
+        <div class="optimization-heading-copy">
+          <span class="eyebrow">Optimization Mode</span>
+          <h2>The app is backed by an autonomous research loop.</h2>
+          <p class="section-lead narrow">
+            Optimization Mode shows the self-learning loop behind the submitted profiles. When new disaster examples arrive, Gemma 4 helps propose and evaluate a candidate triage profile; the AutoResearch-inspired harness measures F1, latency, and keep/discard evidence on the gold set. Only changes that make field triage safer or faster under the 4-second budget become public profiles.
+          </p>
+          <div class="loop-steps" aria-label="Optimization loop summary">
+            <span>New crisis examples</span>
+            <span>Gemma 4 candidate profile</span>
+            <span>Measured keep/discard decision</span>
+          </div>
+          <div class="research-loop" aria-label="AutoResearch loop details">
+            <span>1. New examples arrive</span>
+            <span>2. Candidate profile</span>
+            <span>3. Gold-set evaluation</span>
+            <span>4. F1 + latency + safety check</span>
+            <span>5. Keep or discard</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="frontier-grid" id="frontier-grid"></div>
+      <div class="experiment-intro" aria-label="How to read the optimization experiments">
+        <div>
+          <span class="eyebrow">How to read the EDG cards</span>
+          <h3>Each card is a model improvement trial.</h3>
+        </div>
+        <p>
+          Think of an EDG card as a lab note: “we tried this change, measured whether it helped, and decided whether to keep it.” The public profiles above are the winners: fast enough for volunteers, accurate enough for high-stakes review, and still below the 4-second field budget.
+        </p>
+      </div>
+      <div class="experiment-board" id="experiment-board"></div>
+    </section>
+
+    <section id="evidence" class="section-shell evidence-section">
+      <div class="evidence-heading-copy">
+        <span class="eyebrow">Evidence</span>
+        <h2>Why this matters in a real disaster response.</h2>
+        <p class="section-lead narrow">
+          Edge-Triage is designed for the messy middle of a crisis: reports arrive fast, connectivity is uncertain, and responders need conservative routing support they can audit later. The demo evidence connects the product story to measured runs, public-safe scenarios, and reproducible documentation.
+        </p>
+      </div>
+      <div class="evidence-grid">
+        <article class="evidence-card">
+          <span class="eyebrow">Local Gemma 4</span>
+          <h3>Text and photos can stay near the incident.</h3>
+          <p>Gemma 4 is central because the same local multimodal model family can read short field notes plus image context, run through GGUF/llama.cpp-style edge packaging, and support both the volunteer workflow and the research evaluation loop.</p>
+        </article>
+        <article class="evidence-card">
+          <span class="eyebrow">Human-safe workflow</span>
+          <h3>The app routes; responders decide.</h3>
+          <p>The output is intentionally constrained to a label, priority, latency, confidence context, and conservative next action. It supports incident command and trained responders; it does not replace them.</p>
+        </article>
+        <article class="evidence-card">
+          <span class="eyebrow">Reproducible proof</span>
+          <h3>Public claims trace back to runs.</h3>
+          <p>The speed and accuracy profiles are tied to run IDs in <code>results.tsv</code> and summarized in <code>docs/CURRENT_FRONTIER.md</code>, keeping README, demo, video, and Kaggle writeup claims aligned.</p>
+        </article>
+        <article class="evidence-card limitation-card">
+          <span class="eyebrow">Known limits</span>
+          <h3>Honest fallback, human review required.</h3>
+          <p>Ambiguous reports still need responder judgment. Live Gemma preview is token-gated and rate-limited, so the curated offline demo remains the reliable public fallback; no medical or incident-command authority is delegated to the model.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span>Edge-Triage · Gemma 4 Good Hackathon</span>
+    <span>Decision support only; not a replacement for trained responders.</span>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
