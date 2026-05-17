@@ -12,7 +12,7 @@ Welcome to the **Edge-Triage Hybrid Searcher** development guide. This document 
 ```bash
 # 1. Clone the repository
 git clone https://github.com/mzkarami/gemma-4-good-edge-triage.git
-cd Gemma-4-Edge-Triage
+cd gemma-4-good-edge-triage
 
 # 2. Sync dependencies
 uv sync

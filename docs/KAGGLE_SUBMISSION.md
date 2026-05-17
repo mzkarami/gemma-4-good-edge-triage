@@ -81,7 +81,7 @@ Known limitations are stated explicitly in the demo materials: ambiguous or low-
 
 ## 8. Compliance and Artifacts
 
-- **Open source:** repository contains code, tests, docs, research logs, and metrics ledger.
+- **Open source:** repository contains code, tests, docs, media assets, and the public metrics ledger.
 - **Gemma 4 focus:** project is centered on Gemma 4 local multimodal inference paths.
 - **Social good:** addresses disaster response, offline resilience, and privacy-preserving humanitarian triage.
 - **Reproducibility:** key metrics are tied to run IDs and state hashes in `results.tsv`.
