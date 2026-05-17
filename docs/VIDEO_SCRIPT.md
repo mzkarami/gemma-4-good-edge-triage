@@ -183,7 +183,7 @@ Gemma 4 gives the project its local multimodal reasoning path. Edge-Triage wraps
 
 On-screen text:
 Live demo: kaggle.nelly.work
-Code: github.com/mzkarami/Gemma-4-Edge-Triage
+Code: github.com/mzkarami/gemma-4-good-edge-triage
 Metrics: kaggle.nelly.work/metrics.html
 
 ### 2:56-3:00 — Closing

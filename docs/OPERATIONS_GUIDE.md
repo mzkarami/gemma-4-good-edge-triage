@@ -6,7 +6,7 @@
 The tool is designed to run on Python 3.11+ with minimal dependencies.
 
 ```bash
-git clone https://github.com/mzkarami/Gemma-4-Edge-Triage.git
+git clone https://github.com/mzkarami/gemma-4-good-edge-triage.git
 cd Gemma-4-Edge-Triage
 uv sync
 ```
