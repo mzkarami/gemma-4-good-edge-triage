@@ -69,7 +69,7 @@ It includes:
 - Volunteer Mode with clickable curated disaster-report examples, related scenario imagery, triage labels, priority, next action, and latency badges.
 - Optional Live Gemma preview using a judge token from the Kaggle submission notes, 25 MB upload cap, rate limits, image metadata stripping, and no upload retention.
 - Optimization Mode with the current frontier, EDG-479/EDG-480 ablation decision, and research-ledger framing.
-- Evidence sections linking back to `docs/CURRENT_FRONTIER.md`, `results.tsv`, and research logs.
+- Evidence sections linking back to `docs/CURRENT_FRONTIER.md`, `results.tsv`, and the public metrics pages.
 
 ## 7. Responsible AI and Safety
 
