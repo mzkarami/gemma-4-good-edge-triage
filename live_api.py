@@ -21,8 +21,12 @@ TEMP_ROOT = os.getenv("EDGE_TRIAGE_TEMP_ROOT") or "/tmp"
 MODEL_LOCK = asyncio.Lock()
 RATE_LIMIT_PER_MINUTE = int(os.getenv("EDGE_TRIAGE_RATE_LIMIT_PER_MINUTE", "6"))
 RATE_LIMIT_PER_DAY = int(os.getenv("EDGE_TRIAGE_RATE_LIMIT_PER_DAY", "60"))
+PUBLIC_API_ENABLED = os.getenv("EDGE_TRIAGE_PUBLIC_API_ENABLED", "1") != "0"
+MAX_CONCURRENT_REQUESTS = int(os.getenv("EDGE_TRIAGE_MAX_CONCURRENT_REQUESTS", "2"))
 RATE_BUCKETS: dict[str, Deque[float]] = defaultdict(deque)
 DAY_BUCKETS: dict[str, Deque[float]] = defaultdict(deque)
+INFLIGHT_LOCK = asyncio.Lock()
+INFLIGHT_REQUESTS = 0
 LIVE_MODEL = os.getenv("EDGE_TRIAGE_LIVE_MODEL", "0") == "1"
 MODEL_PATH = os.getenv("EDGE_TRIAGE_MODEL_PATH", "/app/models/Edge-Triage-gemma-4-E4B-it-Q3_K_M.gguf")
 MMPROJ_PATH = os.getenv("EDGE_TRIAGE_MMPROJ_PATH", "/app/models/Edge-Triage-mmproj-F16.gguf")
@@ -158,6 +162,22 @@ def _check_rate_limit(key: str, now: float | None = None):
     if len(day_bucket) >= RATE_LIMIT_PER_DAY:
         _error(429, "Daily Live Gemma preview limit reached. The curated offline demo is still available.")
     day_bucket.append(now)
+
+
+async def _enter_public_request() -> None:
+    global INFLIGHT_REQUESTS
+    if not PUBLIC_API_ENABLED:
+        _error(503, "Live analysis is temporarily disabled; the curated offline demo is still available.")
+    async with INFLIGHT_LOCK:
+        if INFLIGHT_REQUESTS >= MAX_CONCURRENT_REQUESTS:
+            _error(429, "Live analysis is busy; please try again shortly. The curated offline demo is still available.")
+        INFLIGHT_REQUESTS += 1
+
+
+async def _leave_public_request() -> None:
+    global INFLIGHT_REQUESTS
+    async with INFLIGHT_LOCK:
+        INFLIGHT_REQUESTS = max(0, INFLIGHT_REQUESTS - 1)
 
 
 def sanitize_note(note: str | None) -> str:
@@ -323,30 +343,34 @@ async def triage(
     x_judge_token: str | None = Header(default=None),
 ):
     token = _extract_token(authorization, x_judge_token)
-    _check_rate_limit(_client_key(request, token))
-    started = time.perf_counter()
-    safe_note = sanitize_note(note)
-    upload_bytes = await read_limited_upload(image)
-
+    await _enter_public_request()
     try:
-        with tempfile.TemporaryDirectory(dir=TEMP_ROOT) as temp_dir:
-            sanitized_path = sanitize_image(upload_bytes, temp_dir)
-            async with MODEL_LOCK:
-                if LIVE_MODEL:
-                    try:
-                        label, scene_summary = await asyncio.wait_for(
-                            asyncio.to_thread(run_live_model, sanitized_path, safe_note),
-                            timeout=float(os.getenv("EDGE_TRIAGE_MODEL_TIMEOUT_SECONDS", "30")),
-                        )
-                        live = True
-                    except Exception:
-                        _error(503, "Live model unavailable; the curated offline demo is still available.")
-                else:
-                    label = fallback_classify(safe_note, image.filename)
-                    scene_summary = fallback_scene_summary(label, safe_note, image.filename)
-                    live = False
-    finally:
-        await image.close()
+        _check_rate_limit(_client_key(request, token))
+        started = time.perf_counter()
+        safe_note = sanitize_note(note)
+        upload_bytes = await read_limited_upload(image)
 
-    latency_ms = (time.perf_counter() - started) * 1000
-    return build_response(label, latency_ms, live, scene_summary)
+        try:
+            with tempfile.TemporaryDirectory(dir=TEMP_ROOT) as temp_dir:
+                sanitized_path = sanitize_image(upload_bytes, temp_dir)
+                async with MODEL_LOCK:
+                    if LIVE_MODEL:
+                        try:
+                            label, scene_summary = await asyncio.wait_for(
+                                asyncio.to_thread(run_live_model, sanitized_path, safe_note),
+                                timeout=float(os.getenv("EDGE_TRIAGE_MODEL_TIMEOUT_SECONDS", "30")),
+                            )
+                            live = True
+                        except Exception:
+                            _error(503, "Live model unavailable; the curated offline demo is still available.")
+                    else:
+                        label = fallback_classify(safe_note, image.filename)
+                        scene_summary = fallback_scene_summary(label, safe_note, image.filename)
+                        live = False
+        finally:
+            await image.close()
+
+        latency_ms = (time.perf_counter() - started) * 1000
+        return build_response(label, latency_ms, live, scene_summary)
+    finally:
+        await _leave_public_request()

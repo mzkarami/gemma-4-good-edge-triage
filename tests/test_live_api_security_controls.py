@@ -10,6 +10,8 @@ from PIL import Image
 
 class LiveApiSecurityControlsTest(unittest.TestCase):
     def setUp(self):
+        os.environ.pop("EDGE_TRIAGE_PUBLIC_API_ENABLED", None)
+        os.environ.pop("EDGE_TRIAGE_MAX_CONCURRENT_REQUESTS", None)
         os.environ["EDGE_TRIAGE_JUDGE_TOKEN"] = "test-token"
         os.environ["EDGE_TRIAGE_LIVE_MODEL"] = "0"
         os.environ["EDGE_TRIAGE_RATE_LIMIT_PER_MINUTE"] = "2"
@@ -58,6 +60,29 @@ class LiveApiSecurityControlsTest(unittest.TestCase):
             response = self.post_image()
         self.assertEqual(response.status_code, 503)
         self.assertNotIn("secret traceback", response.text)
+        self.assertIn("curated offline demo", response.json()["detail"].lower())
+
+    def test_public_api_kill_switch_disables_live_endpoint_without_secret_leak(self):
+        os.environ["EDGE_TRIAGE_PUBLIC_API_ENABLED"] = "0"
+        self.live_api = importlib.reload(self.live_api)
+        self.client = TestClient(self.live_api.app)
+
+        response = self.post_image(headers={}, token="")
+
+        self.assertEqual(response.status_code, 503)
+        self.assertIn("temporarily disabled", response.json()["detail"].lower())
+        self.assertNotIn("token", response.text.lower())
+
+    def test_concurrency_cap_rejects_extra_public_requests_instead_of_queueing(self):
+        os.environ["EDGE_TRIAGE_MAX_CONCURRENT_REQUESTS"] = "1"
+        self.live_api = importlib.reload(self.live_api)
+        self.client = TestClient(self.live_api.app)
+        self.live_api.INFLIGHT_REQUESTS = 1
+
+        response = self.post_image(headers={}, token="")
+
+        self.assertEqual(response.status_code, 429)
+        self.assertIn("busy", response.json()["detail"].lower())
         self.assertIn("curated offline demo", response.json()["detail"].lower())
 
 

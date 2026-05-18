@@ -58,6 +58,8 @@ class SiteLiveUiTest(unittest.TestCase):
         self.assertIn("Ready for coordinator handoff", app)
         self.assertIn("decision support, not emergency command", app.lower())
         self.assertIn("Run Edge-Triage", app)
+        self.assertIn("Do not upload sensitive personal data", app)
+        self.assertIn("sent to the guarded backend", app)
         self.assertIn('id="app-result-card"', app)
         self.assertIn("This report looks like", js)
         self.assertIn(".field-console", css)
