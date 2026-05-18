@@ -99,40 +99,39 @@ class SiteLiveUiTest(unittest.TestCase):
         self.assertIn("Ready for coordinator handoff", js)
         self.assertNotIn("Queued for coordinator sync. Human review required before action.", js)
 
-    def test_app_page_nav_matches_homepage_menu_order_and_labels(self):
-        app = Path("site/app.html").read_text()
-        nav_match = re.search(r'<nav aria-label="Demo sections">(.*?)</nav>', app, re.S)
-        assert nav_match is not None
-        nav = nav_match.group(1)
-        labels = re.findall(r'<a [^>]*>(.*?)</a>', nav)
-        hrefs = re.findall(r'<a href="([^"]+)"', nav)
+    def test_secondary_page_navs_match_homepage_menu_order_and_labels(self):
+        expected_labels = [
+            "Volunteer Mode",
+            "Optimization Mode",
+            "Evidence",
+            "Notebooks",
+            "Roadmap",
+            "Why it matters",
+            "Volunteer App",
+        ]
+        expected_hrefs = [
+            "index.html#volunteer",
+            "index.html#optimization",
+            "index.html#evidence",
+            "index.html#notebooks",
+            "roadmap.html",
+            "about.html",
+            "app.html",
+        ]
 
-        self.assertEqual(
-            labels,
-            [
-                "Volunteer Mode",
-                "Optimization Mode",
-                "Evidence",
-                "Notebooks",
-                "Roadmap",
-                "Why it matters",
-                "Volunteer App",
-            ],
-        )
-        self.assertEqual(
-            hrefs,
-            [
-                "index.html#volunteer",
-                "index.html#optimization",
-                "index.html#evidence",
-                "index.html#notebooks",
-                "roadmap.html",
-                "about.html",
-                "app.html",
-            ],
-        )
-        self.assertNotIn("Showcase", nav)
-        self.assertNotIn("Metrics</a>", nav)
+        for page in ["site/app.html", "site/roadmap.html", "site/about.html", "site/metrics.html"]:
+            with self.subTest(page=page):
+                html = Path(page).read_text()
+                nav_match = re.search(r'<nav aria-label="Demo sections">(.*?)</nav>', html, re.S)
+                assert nav_match is not None
+                nav = nav_match.group(1)
+                labels = re.findall(r'<a [^>]*>(.*?)</a>', nav)
+                hrefs = re.findall(r'<a href="([^"]+)"', nav)
+
+                self.assertEqual(labels, expected_labels)
+                self.assertEqual(hrefs, expected_hrefs)
+                self.assertNotIn("Showcase", nav)
+                self.assertNotIn("Metrics</a>", nav)
 
     def test_brand_assets_are_wired_for_site_and_submission(self):
         html = Path("site/index.html").read_text()
