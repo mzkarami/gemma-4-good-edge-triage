@@ -71,6 +71,10 @@ class SiteLiveUiTest(unittest.TestCase):
         self.assertIn("Messy field report", html)
         self.assertIn("Gemma 4 local triage", html)
         self.assertIn("Priority + safe next action", html)
+        hero_html = html.split('<section class="section-shell judge-guide"', 1)[0]
+        self.assertNotIn("Try Volunteer Mode", hero_html)
+        self.assertNotIn("View Optimization Mode", hero_html)
+        self.assertNotIn("hero-actions", hero_html)
         self.assertIn(".hero-flow", css)
 
     def test_optimization_mode_explains_edg_cards_for_nontechnical_judges(self):
