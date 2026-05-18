@@ -171,6 +171,24 @@ class SiteLiveUiTest(unittest.TestCase):
         self.assertIn(".roadmap-grid", css)
         self.assertIn(".story-card", css)
 
+    def test_notebook_section_explains_reproducibility_paths(self):
+        html = Path("site/index.html").read_text()
+        css = Path("site/styles.css").read_text()
+
+        self.assertIn('href="#notebooks"', html)
+        self.assertIn("Three ways judges can go deeper", html)
+        self.assertIn("Full codebase", html)
+        self.assertIn("submission_notebook.ipynb", html)
+        self.assertIn("Gemma 4 inference walkthrough", html)
+        self.assertIn("analysis.ipynb", html)
+        self.assertIn("Research ledger explorer", html)
+        self.assertIn("Google Colab", html)
+        self.assertIn("results.tsv", html)
+        self.assertIn("docs/CURRENT_FRONTIER.md", html)
+        self.assertIn(".notebook-grid", css)
+        self.assertTrue(Path("submission_notebook.ipynb").exists())
+        self.assertTrue(Path("analysis.ipynb").exists())
+
     def test_curated_samples_can_render_public_scenario_images(self):
         data = json.loads(Path("site/data.json").read_text())
         js = Path("site/app.js").read_text()

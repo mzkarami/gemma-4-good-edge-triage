@@ -25,6 +25,7 @@
       <a href="#volunteer" data-mode-target="volunteer">Volunteer Mode</a>
       <a href="#optimization" data-mode-target="optimization">Optimization Mode</a>
       <a href="#evidence">Evidence</a>
+      <a href="#notebooks">Notebooks</a>
       <a href="roadmap.html">Roadmap</a>
       <a href="about.html">About</a>
     </nav>
@@ -252,6 +253,36 @@
         </p>
       </div>
       <div class="experiment-board" id="experiment-board"></div>
+    </section>
+
+    <section id="notebooks" class="section-shell notebooks-section">
+      <div class="evidence-heading-copy">
+        <span class="eyebrow">Reproduce and inspect</span>
+        <h2>Three ways judges can go deeper.</h2>
+        <p class="section-lead narrow">
+          The live site is the fastest review path, but the repository also includes runnable notebooks for judges who want to inspect the Gemma 4 setup, the benchmark ledger, and the research loop directly. Use the notebooks from the public GitHub repository; no secrets are required for the offline analysis path.
+        </p>
+      </div>
+      <div class="notebook-grid">
+        <article class="guide-card notebook-card">
+          <span class="eyebrow">Full codebase</span>
+          <h3>Clone and run locally</h3>
+          <p>Use the repository for the static demo, live API, CLI, tests, Docker files, metrics ledger, and media assets. This is the best path for reviewers who want the complete implementation.</p>
+          <a href="https://github.com/mzkarami/gemma-4-good-edge-triage">Open public repo →</a>
+        </article>
+        <article class="guide-card notebook-card">
+          <span class="eyebrow">submission_notebook.ipynb</span>
+          <h3>Gemma 4 inference walkthrough</h3>
+          <p>Shows the competition-facing notebook flow: install dependencies, locate or download the GGUF model/projector, run a multimodal triage example, and connect the demo back to the current frontier. In Google Colab or Kaggle, use a GPU runtime and expect model downloads unless artifacts are already attached.</p>
+          <a href="https://github.com/mzkarami/gemma-4-good-edge-triage/blob/main/submission_notebook.ipynb">Open notebook →</a>
+        </article>
+        <article class="guide-card notebook-card">
+          <span class="eyebrow">analysis.ipynb</span>
+          <h3>Research ledger explorer</h3>
+          <p>Reads <code>results.tsv</code> and visualizes keep/discard outcomes, F1-over-time, and the autonomous optimization history. It is intentionally secondary to <code>docs/CURRENT_FRONTIER.md</code>, which filters diagnostic artifacts for public claims.</p>
+          <a href="https://github.com/mzkarami/gemma-4-good-edge-triage/blob/main/analysis.ipynb">Open analysis notebook →</a>
+        </article>
+      </div>
     </section>
 
     <section id="evidence" class="section-shell evidence-section">

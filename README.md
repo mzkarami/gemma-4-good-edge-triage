@@ -74,7 +74,7 @@ Main artifacts:
 - `results.tsv` — experiment ledger.
 - `docs/CURRENT_FRONTIER.md` — canonical public metric summary.
 - `media/` — public-safe screenshots and source media for Kaggle/video.
-- `submission_notebook.ipynb` and `kaggle_dataset_upload/` — Kaggle packaging assets.
+- `submission_notebook.ipynb`, `analysis.ipynb`, and `kaggle_dataset_upload/` — Kaggle packaging and research-ledger notebook assets.
 - `Modelfile` and `litert_backend.py` — Ollama and LiteRT/Google AI Edge deployment scaffolds.
 
 ## Quick start

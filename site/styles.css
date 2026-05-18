@@ -291,6 +291,20 @@ h3 { font-size: 1.25rem; letter-spacing: -0.024em; font-weight: 590; }
   padding-top: 0.5rem;
   padding-bottom: 1.5rem;
 }
+.notebooks-section {
+  padding-top: 1.5rem;
+}
+.notebook-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+.notebook-card code {
+  color: var(--secondary);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.84em;
+}
 .page-hero {
   min-height: auto;
 }
@@ -710,7 +724,7 @@ pre {
   .mode-buttons { width: 100%; }
   .mode-button { flex: 1; }
   .triage-card { position: static; }
-  .frontier-grid, .experiment-board, .evidence-grid, .judge-grid, .research-loop, .roadmap-grid, .next-pages { grid-template-columns: 1fr; }
+  .frontier-grid, .experiment-board, .evidence-grid, .judge-grid, .research-loop, .roadmap-grid, .next-pages, .notebook-grid { grid-template-columns: 1fr; }
   .section-heading-row { display: block; }
   .footer { flex-direction: column; align-items: flex-start; }
 }
