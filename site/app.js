@@ -12,6 +12,10 @@ async function loadData() {
   if (captureMode === 'volunteer' || captureMode === 'optimization') {
     document.body.dataset.capture = captureMode;
   }
+  if (document.querySelector('[data-volunteer-console]')) {
+    initVolunteerConsole();
+    return;
+  }
   bindModeSwitching();
   bindUploadDemo();
   renderSamples();
@@ -304,6 +308,77 @@ function renderExperiments() {
     `;
     board.appendChild(card);
   }
+}
+
+function initVolunteerConsole() {
+  const form = $('#field-console-form');
+  const reportInput = $('#field-report');
+  const imageInput = $('#field-image');
+  const audioInput = $('#field-audio');
+  const status = $('#field-console-status');
+  const bridgeButton = $('#load-bridge-example');
+  if (!form || !reportInput) return;
+
+  const bridgeSample = state.data?.samples?.find((sample) => sample.id === 'bridge-flood') || state.data?.samples?.[0];
+  const saveDraft = () => {
+    const draft = {
+      report: reportInput.value,
+      imageName: imageInput?.files?.[0]?.name || '',
+      audioName: audioInput?.files?.[0]?.name || '',
+      savedAt: new Date().toISOString(),
+    };
+    localStorage.setItem('edge-triage-field-draft', JSON.stringify(draft));
+    $('#draft-status').textContent = 'Draft saved locally';
+  };
+  const updateFileName = (input, target, emptyLabel) => {
+    if (!input || !target) return;
+    target.textContent = input.files?.[0]?.name || emptyLabel;
+  };
+  const renderFieldResult = (sample, report) => {
+    const title = report.split(/[.!?]/).find(Boolean)?.trim() || sample.title || 'Field report';
+    $('#app-result-title').textContent = title;
+    $('#app-result-summary').textContent = 'Edge-Triage converted the field note into a triage card that can be reviewed before coordinator handoff.';
+    $('#app-result-label').textContent = sample.label;
+    $('#app-result-priority').textContent = sample.priority;
+    $('#app-result-latency').textContent = fmtLatency(sample.latencyMs);
+    $('#app-result-action').textContent = sample.nextAction;
+    $('#app-handoff').textContent = 'Queued for coordinator sync when connectivity returns. Human review required before operational decisions.';
+    $('#phone-report-title').textContent = title;
+    $('#phone-report-note').textContent = report;
+    $('#phone-priority').textContent = sample.priority;
+    status.textContent = 'Queued for coordinator sync. Human review required before action.';
+    status.classList.add('complete');
+    status.classList.remove('error');
+  };
+
+  reportInput.addEventListener('input', saveDraft);
+  imageInput?.addEventListener('change', () => {
+    updateFileName(imageInput, $('#field-image-name'), 'No image selected');
+    saveDraft();
+  });
+  audioInput?.addEventListener('change', () => {
+    updateFileName(audioInput, $('#field-audio-name'), 'No audio selected');
+    saveDraft();
+  });
+  bridgeButton?.addEventListener('click', () => {
+    reportInput.value = 'Bridge washed out after flood. Road blocked. No injuries visible. Need routing guidance.';
+    saveDraft();
+    renderFieldResult(bridgeSample, reportInput.value);
+  });
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const report = reportInput.value.trim();
+    if (!report) {
+      status.textContent = 'Add a short field report before running Edge-Triage.';
+      status.classList.add('error');
+      status.classList.remove('complete');
+      reportInput.focus();
+      return;
+    }
+    saveDraft();
+    renderFieldResult(bridgeSample, report);
+  });
+  saveDraft();
 }
 
 loadData().catch((error) => {

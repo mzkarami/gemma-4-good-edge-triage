@@ -753,6 +753,119 @@ pre {
 .bar > span { display: block; height: 100%; background: linear-gradient(90deg, var(--accent), var(--green)); }
 .decision { color: var(--secondary); font-weight: 510; }
 
+.field-console {
+  padding-bottom: 4rem;
+}
+.field-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 0.42fr);
+  gap: clamp(1.5rem, 4vw, 3rem);
+  align-items: center;
+}
+.field-hero-copy {
+  display: grid;
+  gap: 1rem;
+}
+.field-status-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-top: 0.35rem;
+}
+.field-status-row span {
+  border: 1px solid rgba(255,255,255,0.16);
+  border-radius: 999px;
+  padding: 0.55rem 0.75rem;
+  color: var(--secondary);
+  background: rgba(255,255,255,0.045);
+  font-size: 0.86rem;
+}
+.phone-shell {
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 2rem;
+  padding: 1rem;
+  background:
+    linear-gradient(180deg, rgba(113,112,255,0.16), rgba(16,185,129,0.05)),
+    rgba(4, 7, 16, 0.86);
+  box-shadow: var(--shadow);
+}
+.phone-status {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  color: var(--muted);
+  font-size: 0.78rem;
+  padding: 0.25rem 0.35rem 0.85rem;
+}
+.phone-card, .handoff-card {
+  border: 1px solid var(--border);
+  border-radius: 1.1rem;
+  padding: 1rem;
+  margin-top: 0.75rem;
+  background: rgba(255,255,255,0.055);
+}
+.phone-card strong { display: block; margin: 0.45rem 0; }
+.result-mini {
+  border-color: rgba(16,185,129,0.28);
+}
+.field-workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(320px, 0.75fr);
+  gap: 1.4rem;
+  align-items: start;
+}
+.field-form, .app-result-card {
+  border: 1px solid var(--border);
+  border-radius: 1.25rem;
+  padding: clamp(1rem, 3vw, 1.35rem);
+  background: rgba(255,255,255,0.045);
+  box-shadow: 0 18px 48px rgba(0,0,0,0.22);
+}
+.form-heading-row {
+  display: grid;
+  gap: 0.55rem;
+  margin-bottom: 1rem;
+}
+.field-label {
+  display: block;
+  color: var(--secondary);
+  margin-bottom: 0.45rem;
+  font-weight: 560;
+}
+.field-form textarea {
+  width: 100%;
+  min-height: 9rem;
+  resize: vertical;
+  border-color: rgba(255, 255, 255, 0.72);
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.08), 0 14px 34px rgba(0,0,0,0.18);
+}
+.field-upload-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.field-file-drop {
+  min-height: 10rem;
+  border-color: rgba(255, 255, 255, 0.72);
+}
+.field-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+.app-result-card {
+  position: sticky;
+  top: 5.5rem;
+}
+.app-result-card .result-grid {
+  margin: 1rem 0;
+}
+.handoff-card {
+  border-color: rgba(16,185,129,0.24);
+}
+
 .footer {
   justify-content: space-between;
   gap: 1rem;
@@ -765,7 +878,9 @@ pre {
 @media (max-width: 860px) {
   nav { display: none; }
   .topbar .ghost-button { display: none; }
-  .hero, .two-column { grid-template-columns: 1fr; }
+  .hero, .two-column, .field-hero, .field-workspace { grid-template-columns: 1fr; }
+  .field-upload-grid { grid-template-columns: 1fr; }
+  .app-result-card { position: static; }
   .mode-switcher { flex-direction: column; align-items: flex-start; }
   .mode-buttons { width: 100%; }
   .mode-button { flex: 1; }
