@@ -41,7 +41,7 @@ Volunteer Mode is the field-facing workflow. Judges can click curated public-saf
 
 The curated offline demo is intentionally honest: it is a fixed public-safe fallback and is not presented as live inference. It exists so every judge can evaluate the product experience even if a protected model endpoint is unavailable.
 
-There is also an optional **Live Gemma preview** path for the real upload/API flow. It is token-gated, rate-limited, uses a 25 MB image cap, strips image metadata, and does not retain uploads.
+There is also an optional **Live Gemma preview** path for the real upload/API flow. It is public for judging, but guarded with rate limits, daily limits, concurrency controls, a kill switch, a 25 MB image cap, server-side image sanitization, text-note limits, and no upload retention.
 
 ### Optimization Mode
 
@@ -96,7 +96,7 @@ Known limitations are stated in the demo:
 
 - Ambiguous or low-context images still require human review.
 - Live Gemma scene summaries are model-generated and should be verified.
-- The protected live preview is rate-limited and token-gated.
+- The guarded live preview is rate-limited, concurrency-limited, timeout-bounded, and can be disabled after judging.
 - The curated offline demo remains the reliable public fallback.
 
 This is also why the project is local-first. In humanitarian settings, privacy and infrastructure resilience matter as much as raw model quality.
@@ -112,7 +112,7 @@ Key files:
 - `docs/CURRENT_FRONTIER.md` — canonical competition-facing metric source.
 - `results.tsv` — experiment ledger with F1, latency, VRAM, state hashes, and keep/discard status.
 - `triage_sandbox.py` — evaluation and optimization harness.
-- `live_api.py` — optional token-gated Live Gemma preview path.
+- `live_api.py` — optional guarded Live Gemma preview path.
 - `media/` — public-safe screenshots, cover image, scenario media, and capture manifest.
 - `tests/` — regression checks for site content, live API behavior, routing, evaluation, and safety-related UX.
 

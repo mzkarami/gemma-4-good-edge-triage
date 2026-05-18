@@ -37,7 +37,7 @@ Behind those experiences are two validated model profiles:
 - **Volunteer Speed Profile:** optimized for fast routing when many reports arrive at once.
 - **Critical Accuracy Profile:** optimized for high-stakes review, such as possible casualties, blocked evacuation routes, or other ambiguous reports where a small latency tradeoff is acceptable. It is not a third top-level UI mode; it appears in the metrics/frontier evidence so teams know when to choose the more careful profile.
 
-The curated offline demo in `site/` works without a hosted model so judges always have a reliable path. It does not call the model or show upload controls; judges click fixed public-safe scenario cards and the UI updates the related image, label, priority, next action, and analysis. The optional Live Gemma preview can call the guarded Gemma 4 API for uploaded images when the judge token is configured.
+The curated offline demo in `site/` works without a hosted model so judges always have a reliable path. It does not call the model or show upload controls; judges click fixed public-safe scenario cards and the UI updates the related image, label, priority, next action, and analysis. The optional Live Gemma preview can call the guarded Gemma 4 API for uploaded images through the public site, without requiring judges to paste a token.
 
 ## Current frontier
 
@@ -68,7 +68,7 @@ label + priority + action         keep/discard frontier decision
 Main artifacts:
 
 - `site/` — curated offline demo with Volunteer Mode, Optimization Mode, and readable metrics.
-- `live_api.py` — optional token-gated Live Gemma preview for uploaded images.
+- `live_api.py` — optional guarded Live Gemma preview for uploaded images.
 - `edge-triage-cli.py` — local field CLI for text/image/audio-style reports.
 - `triage_sandbox.py` — research and evaluation harness.
 - `results.tsv` — experiment ledger.

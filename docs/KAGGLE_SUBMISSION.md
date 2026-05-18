@@ -67,9 +67,9 @@ python3 -m http.server 4173 --directory site
 It includes:
 
 - Volunteer Mode with clickable curated disaster-report examples, related scenario imagery, triage labels, priority, next action, and latency badges.
-- Optional Live Gemma preview using a judge token from the Kaggle submission notes, 25 MB upload cap, rate limits, image metadata stripping, and no upload retention.
+- Optional Live Gemma preview using the same public site flow, guarded by rate limits, daily limits, concurrency controls, a kill switch, 25 MB upload cap, server-side image sanitization, text-note limits, and no upload retention.
 - Optimization Mode with the current frontier, EDG-479/EDG-480 ablation decision, and research-ledger framing.
-- Evidence sections linking back to `docs/CURRENT_FRONTIER.md`, `results.tsv`, and the public metrics pages.
+- Evidence sections linking back to `docs/CURRENT_FRONTIER.md`, `results.tsv`, and research logs.
 
 ## 7. Responsible AI and Safety
 
@@ -77,11 +77,11 @@ Edge-Triage avoids giving unsupported medical instructions. It classifies humani
 
 The system is intended to support human responders, not replace incident command or medical triage professionals.
 
-Known limitations are stated explicitly in the demo materials: ambiguous or low-context imagery may be misclassified, Live Gemma scene summaries are model-generated and should be verified, and the protected Live Gemma preview is rate-limited so the curated offline demo remains the reliable fallback.
+Known limitations are stated explicitly in the demo materials: ambiguous or low-context imagery may be misclassified, Live Gemma scene summaries are model-generated and should be verified, and the guarded Live Gemma preview is rate-limited, concurrency-limited, timeout-bounded, and disableable so the curated offline demo remains the reliable fallback.
 
 ## 8. Compliance and Artifacts
 
-- **Open source:** repository contains code, tests, docs, media assets, and the public metrics ledger.
+- **Open source:** repository contains code, tests, docs, research logs, and metrics ledger.
 - **Gemma 4 focus:** project is centered on Gemma 4 local multimodal inference paths.
 - **Social good:** addresses disaster response, offline resilience, and privacy-preserving humanitarian triage.
 - **Reproducibility:** key metrics are tied to run IDs and state hashes in `results.tsv`.
@@ -90,18 +90,10 @@ Known limitations are stated explicitly in the demo materials: ambiguous or low-
 
 The Gemma 4 Good submission requirements describe the Kaggle Writeup as public and require an attached public video, public code repository, and publicly accessible live demo. They also state that any private Kaggle Resource attached to the public Writeup will automatically be made public after the deadline. Therefore, do not treat the submitted Writeup or attached project links as judge-only confidential material.
 
-Operational rule: keep secrets, raw judge tokens, private host details, and unpublished implementation notes out of public Kaggle text and repository files. If a live-preview token is needed, rotate it for the judging window and rely on the static public demo as the durable no-secret fallback.
+Operational rule: keep secrets, raw judge tokens, private host details, and unpublished implementation notes out of public Kaggle text and repository files. The live-preview endpoint is currently token-free for a cleaner judge experience, so keep guardrails active and rely on the curated public-safe showcase as the durable no-secret fallback.
 
 ---
 
 Created by the Edge-Triage swarm for the Gemma 4 Good Hackathon.
 
 Gemma is a trademark of Google LLC.
-
-## Final Submission Links
-
-- Live demo: https://kaggle.nelly.work
-- Public repository: https://github.com/mzkarami/gemma-4-good-edge-triage
-- Final public video: https://youtu.be/kXVC07Od93E
-- Metrics: https://kaggle.nelly.work/metrics.html
-

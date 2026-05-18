@@ -18,32 +18,32 @@ docker compose up -d --build
 # open http://127.0.0.1:4173
 ```
 
-Private local-network preview:
+Private Tailscale preview from another device in the tailnet:
 
 ```bash
 DEMO_BIND_ADDRESS=$(tailscale ip -4) docker compose up -d --build
-# open http://127.0.0.1:4173 locally, or your configured private host URL
+# open http://experiment:4173 or http://100.76.13.15:4173 from your laptop
 ```
 
-Public deployment notes live in `docs/DEPLOYMENT.md`.
+Public deployment notes for `https://kaggle.nelly.work/` live in `docs/DEPLOYMENT.md`.
 
 ## Modes
 
 - **Volunteer Mode:** curated field reports plus two clearly labeled paths:
   - **Curated showcase:** fixed public-safe sample cases from the working product experience. Judges click scenario cards; the UI updates the image, label, priority, next action, and analysis without showing upload controls, calling the model, or sending anything to a server.
-  - **Live Gemma preview:** optional guarded API path for judges using the token from Kaggle submission notes. Upload controls appear only for this path. Images are capped at 25 MB, sanitized server-side, and sent only when this path is selected.
+  - **Live Gemma preview:** optional guarded API path for judges using the same public site flow, without a pasted token. Images are capped at 25 MB, sanitized server-side, rate-limited, concurrency-limited, timeout-bounded, and sent only when this path is selected.
 - **Optimization Mode:** current frontier and EDG-479/EDG-480 ablation decision showing why EDG-480 is the Critical Accuracy Profile candidate.
 - **Metrics Source:** `site/metrics.html` provides a readable metrics page instead of sending judges to raw markdown.
 
 ## Design choice
 
-The default judge path is intentionally curated/offline and data-backed. It does not require judges to install models or provide a GPU, and it should not be presented as live inference. The optional Live Gemma preview is separate, token-gated, rate-limited, and allowed to fail closed while the curated showcase remains usable.
+The default judge path is intentionally curated/offline and data-backed. It does not require judges to install models or provide a GPU, and it should not be presented as live inference. The optional Live Gemma preview is separate, guarded by public-demo rate/concurrency/timeout controls, and allowed to fail closed while the curated showcase remains usable.
 
 ## Known limitations and safety boundaries
 
 - Edge-Triage is decision support for disaster-response triage, not emergency authority, medical advice, or a replacement for trained incident command.
 - Ambiguous or low-context images can be misclassified; responders should verify the scene summary and priority before acting.
-- The Live Gemma preview is token-gated and rate-limited for demo stability, so the curated showcase remains the reliable review path.
+- The Live Gemma preview is rate-limited, concurrency-limited, timeout-bounded, and disableable for demo stability, so the curated showcase remains the reliable review path.
 - The "Live Gemma 4 vision" scene summary is model-generated and intentionally short; it is meant to explain the classification, not provide operational instructions.
 
 ## Data source

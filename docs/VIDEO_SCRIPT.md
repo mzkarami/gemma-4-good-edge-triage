@@ -39,7 +39,7 @@ Here in Volunteer Mode, I am using public-safe scenarios so judges can always tr
 
 The goal is to reduce confusion. If many volunteers send reports at once, Edge-Triage helps create order: what is blocked, what is dangerous, what can wait, and what needs human review now.
 
-There is also a protected Live Gemma preview for judges. It is guarded with token access, rate limits, upload caps, metadata stripping, and no upload retention. The judge token is in the submission description, so judges can test image classification directly without running the repository locally. Disaster images can be sensitive, so privacy and safety are part of the product, not an afterthought.
+There is also a guarded Live Gemma preview for judges. It uses the public site flow with rate limits, upload caps, server-side image sanitization, text-note limits, concurrency controls, a kill switch, and no upload retention. Disaster images can be sensitive, so privacy and safety are part of the product, not an afterthought.
 
 Optimization Mode is the self-improving loop behind the app. It tests configurations, compares results, and helps the system get better over time instead of staying as a one-off demo. The exact benchmark numbers are on the site and in the repository, but the important point is simple: this is designed to learn from measurement.
 
@@ -116,20 +116,20 @@ Action: route to response team
 ### 1:22-1:48 — Live Gemma preview / guarded API
 
 Visual:
-- Show the Live Gemma preview UI, but do not reveal the judge token.
-- If recording manually, paste token off-screen or use an already captured live result screenshot.
+- Show the Live Gemma preview UI; no pasted judge token is required in the current public flow.
+- If recording manually, use the live public flow or an already captured live result screenshot.
 - Show `media/screenshots/05-live-result-card.png` or one of:
   - `media/screenshots/06-live-optimization-bridge-flood.png`
   - `media/screenshots/07-live-optimization-relief-supplies.png`
   - `media/screenshots/08-live-optimization-evacuation-assistance.png`
 
 Voiceover:
-For judges, there is also a protected Live Gemma preview. It is token-gated, rate-limited, caps uploads at 25 megabytes, strips image metadata, and does not retain uploads.
+For judges, there is also a guarded Live Gemma preview. It is rate-limited, caps uploads at 25 megabytes, sanitizes images server-side, limits text notes, and does not retain uploads.
 
-The live path uses the current Gemma 4 GGUF model with the multimodal projector. The static demo remains the reliable public fallback, while the guarded API shows the real upload flow when the judge token is provided.
+The live path uses the current Gemma 4 GGUF model with the multimodal projector. The curated public-safe showcase remains the reliable public fallback, while the guarded API shows the real upload flow without requiring judges to paste a token.
 
 On-screen text:
-Live API: token-gated
+Live API: guarded public preview
 Uploads capped, sanitized, not retained
 Static demo remains available
 
@@ -204,7 +204,7 @@ Edge-Triage is a local-first disaster triage system powered by Gemma 4. During f
 
 In Volunteer Mode, a field user can review a report and image, then receive a humanitarian label, priority, explanation, latency, and conservative next action. The responder stays in control. Edge-Triage routes and explains; it does not replace incident command or medical professionals.
 
-The public demo includes curated public-safe scenarios so judges can always test the product experience. It also includes a protected Live Gemma preview using a token-gated API with upload caps, metadata stripping, rate limits, and no upload retention.
+The public demo includes curated public-safe scenarios so judges can always test the product experience. It also includes a guarded Live Gemma preview with upload caps, server-side image sanitization, text-note limits, rate/concurrency controls, and no upload retention.
 
 Optimization Mode shows the research loop behind the system. Candidate configurations are evaluated against a 50-sample gold set and logged by F1, latency, and keep/discard status. The current frontier includes a Volunteer Speed Profile at 0.9794 F1 and 158.61 milliseconds, and a Critical Accuracy Profile candidate at 0.9818 F1 and 237.97 milliseconds. Both are far below a 4-second field-response budget.
 
@@ -216,7 +216,7 @@ Before recording:
 - Open `https://kaggle.nelly.work` in a clean browser window.
 - Browser zoom: 90% or 100%, whichever fits the hero and cards cleanly.
 - Hide bookmarks, notifications, terminal windows, and secrets.
-- Do not show the judge token. If using live mode, paste it off-screen or use the checked-in live-result screenshots.
+- Do not show secrets or private admin surfaces. If using live mode, use the public no-token flow or checked-in live-result screenshots.
 - Keep mouse movement slow and deliberate.
 - Use 1080p or 1440p screen capture.
 
@@ -232,7 +232,7 @@ Suggested shots:
 
 Public-safety rules:
 - No `.env` files.
-- No raw judge token.
+- No secrets or private tokens.
 - No server IP/admin panels.
 - No terminal command history with secrets.
 - No private Kaggle notes.
