@@ -28,6 +28,17 @@ The public demo has two judge-facing layers. The curated public-safe showcase gi
 
 The project also includes an optimization cockpit and research ledger. Candidate routing/model configurations are evaluated against a 50-sample MEDIC/QCRI gold set, logged in `results.tsv`, and compared on both F1 and latency. Current public metrics are documented in `docs/CURRENT_FRONTIER.md` and shown at https://kaggle.nelly.work/metrics.html.
 
+## Models used
+
+- Unsloth Gemma 4 E4B Instruct GGUF: https://huggingface.co/unsloth/gemma-4-e4b-it-GGUF
+  - Primary live/API artifact: `gemma-4-E4B-it-Q3_K_M.gguf`
+  - Multimodal projector: `mmproj-F16.gguf`
+  - Additional Pareto-search artifact: `gemma-4-E4B-it-UD-Q2_K_XL.gguf`
+- Unsloth Gemma 4 E2B Instruct GGUF fallback/bootstrap artifact: https://huggingface.co/unsloth/gemma-4-e2b-it-GGUF
+  - `gemma-4-E2B-it-Q4_K_M.gguf`
+- LiteRT community Gemma 4 E2B Instruct artifact used for Google AI Edge / LiteRT scaffolding: https://huggingface.co/litert-community/gemma-4-E2B-it-litert-lm
+  - `gemma-4-E2B-it.litertlm`
+
 ## Responsible AI / safety note
 
 Edge-Triage is decision support, not emergency command. It does not replace trained responders, medical professionals, incident command, or local judgment. Ambiguous or low-context imagery still requires human review. The app avoids unsupported medical instructions and limits model output to bounded triage information: label, priority, explanation, and conservative next action.

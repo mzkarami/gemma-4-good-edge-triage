@@ -86,7 +86,18 @@ Edge-Triage combines a practical field UI with an autonomous research loop.
 
 Recent EDG-479 / EDG-480 ablations showed why this matters. Individual calibrations did not stand alone, but combined calibrations plus a narrow dt5 demotion produced the current Critical Accuracy Profile candidate: `0.9818 F1 / 237.97 ms` on the full 50-sample gold set.
 
-## 6. Responsible AI and Safety
+## 6. Model Artifacts Used
+
+- Unsloth Gemma 4 E4B Instruct GGUF: https://huggingface.co/unsloth/gemma-4-e4b-it-GGUF
+  - `gemma-4-E4B-it-Q3_K_M.gguf` for the primary Live Gemma / GGUF path.
+  - `mmproj-F16.gguf` as the multimodal projector.
+  - `gemma-4-E4B-it-UD-Q2_K_XL.gguf` in the Pareto/quantization research path.
+- Unsloth Gemma 4 E2B Instruct GGUF fallback/bootstrap artifact: https://huggingface.co/unsloth/gemma-4-e2b-it-GGUF
+  - `gemma-4-E2B-it-Q4_K_M.gguf`.
+- LiteRT community Gemma 4 E2B Instruct artifact for the Google AI Edge / LiteRT scaffolding: https://huggingface.co/litert-community/gemma-4-E2B-it-litert-lm
+  - `gemma-4-E2B-it.litertlm`.
+
+## 7. Responsible AI and Safety
 
 Edge-Triage is decision support, not emergency command.
 
@@ -101,7 +112,7 @@ Known limitations are stated in the demo:
 
 This is also why the project is local-first. In humanitarian settings, privacy and infrastructure resilience matter as much as raw model quality.
 
-## 7. Evidence and Reproducibility
+## 8. Evidence and Reproducibility
 
 The demo evidence connects the product story to measured runs, public-safe scenarios, and reproducible documentation.
 
@@ -116,7 +127,7 @@ Key files:
 - `media/` — public-safe screenshots, cover image, scenario media, and capture manifest.
 - `tests/` — regression checks for site content, live API behavior, routing, evaluation, and safety-related UX.
 
-## 8. Roadmap
+## 9. Roadmap
 
 The hackathon demo proves the core idea. The next four product extensions would make it more deployable for real response teams:
 
@@ -125,7 +136,7 @@ The hackathon demo proves the core idea. The next four product extensions would 
 3. **Low-bandwidth inclusion:** multilingual, voice, and SMS-friendly workflows for volunteers who may not have stable data access.
 4. **NGO deployment kit:** training playbooks, governance templates, label adaptation, tabletop drills, and anonymized improvement cases that can feed back into the self-learning evaluation loop.
 
-## 9. Motivation
+## 10. Motivation
 
 This project is shaped by lived humanitarian context. The builder has lived with displacement from a very young age, spent years close to war-area realities, and later worked through Data and AI efforts with an NGO helping other NGOs pro-bono.
 
@@ -133,7 +144,7 @@ That experience makes the problem feel concrete. In crisis situations, systems b
 
 Edge-Triage is a small prototype in that direction: conservative, auditable decision support for people already doing the hard work.
 
-## 10. Submission Links
+## 11. Submission Links
 
 - Live demo: `https://kaggle.nelly.work`
 - Code repository: `https://github.com/mzkarami/gemma-4-good-edge-triage`
