@@ -15,7 +15,8 @@ class SiteLiveUiTest(unittest.TestCase):
         self.assertIn("id=\"judge-token\"", html)
         self.assertIn("id=\"judge-token-error\"", html)
         self.assertIn("aria-describedby=\"judge-token-help judge-token-error\"", html)
-        self.assertIn("id=\"api-endpoint\"", html)
+        self.assertNotIn("Live API endpoint", html)
+        self.assertNotIn("id=\"api-endpoint\"", html)
         self.assertIn("25 MB", html)
 
     def test_app_js_calls_live_api_with_judge_token_and_friendly_errors(self):
@@ -129,6 +130,9 @@ class SiteLiveUiTest(unittest.TestCase):
 
         self.assertIn("Competition track fit", html)
         self.assertIn("Where Edge-Triage fits the Gemma 4 Good tracks", html)
+        self.assertIn("working disaster-response product", html)
+        self.assertIn("local Gemma stack", html)
+        self.assertNotIn("deployed paths are separated from scaffolds", html)
         self.assertIn("Main Track", html)
         self.assertIn("Impact Track", html)
         self.assertIn("Global Resilience + Safety &amp; Trust", html)
@@ -138,11 +142,12 @@ class SiteLiveUiTest(unittest.TestCase):
         self.assertIn("Google AI Edge / <code>.litertlm</code> download and backend scaffolding", html)
         self.assertIn("checked-in <code>Modelfile</code>", html)
         self.assertIn("GGUF model source and fallback download path", html)
-        self.assertIn("deployed paths are separated from scaffolds", html)
         self.assertLess(html.index("Choose the lens you care about"), html.index("Where Edge-Triage fits the Gemma 4 Good tracks"))
         self.assertLess(html.index("Where Edge-Triage fits the Gemma 4 Good tracks"), html.index("Switch between the two judge experiences"))
         self.assertIn(".track-grid", css)
         self.assertIn(".track-list", css)
+        self.assertIn(".live-inputs .file-drop", css)
+        self.assertIn("rgba(255, 255, 255, 0.72)", css)
 
     def test_evidence_section_tells_judge_friendly_proof_story(self):
         html = Path("site/index.html").read_text()

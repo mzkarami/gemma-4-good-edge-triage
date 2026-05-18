@@ -136,7 +136,7 @@ async function runLiveInference(input) {
   const file = input.files?.[0];
   const note = $('#demo-report').value.trim();
   const token = $('#judge-token').value.trim();
-  const endpoint = $('#api-endpoint').value.trim() || '/api/triage';
+  const endpoint = '/api/triage';
   setTokenError();
   if (!file) {
     setSimulationStatus('Live Gemma preview needs an image upload.', 'error');

@@ -475,6 +475,19 @@ body[data-capture="optimization"] main {
   color: var(--secondary);
   font-size: 0.86rem;
 }
+.live-inputs .file-drop,
+.live-inputs textarea,
+.live-settings input {
+  border-color: rgba(255, 255, 255, 0.72);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08), 0 14px 34px rgba(0,0,0,0.18);
+}
+.live-inputs .file-drop:hover,
+.live-inputs .file-drop:focus-within,
+.live-inputs textarea:focus,
+.live-settings input:focus {
+  border-color: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.14), 0 14px 34px rgba(0,0,0,0.22);
+}
 .live-settings input {
   width: 100%;
   color: var(--text);
