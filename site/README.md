@@ -30,20 +30,20 @@ Public deployment notes live in `docs/DEPLOYMENT.md`.
 ## Modes
 
 - **Volunteer Mode:** curated field reports plus two clearly labeled paths:
-  - **Curated offline demo:** fixed public-safe sample cases. Judges click scenario cards; the UI updates the image, label, priority, next action, and analysis without showing upload controls, calling the model, or sending anything to a server.
+  - **Curated showcase:** fixed public-safe sample cases from the working product experience. Judges click scenario cards; the UI updates the image, label, priority, next action, and analysis without showing upload controls, calling the model, or sending anything to a server.
   - **Live Gemma preview:** optional guarded API path for judges using the token from Kaggle submission notes. Upload controls appear only for this path. Images are capped at 25 MB, sanitized server-side, and sent only when this path is selected.
 - **Optimization Mode:** current frontier and EDG-479/EDG-480 ablation decision showing why EDG-480 is the Critical Accuracy Profile candidate.
 - **Metrics Source:** `site/metrics.html` provides a readable metrics page instead of sending judges to raw markdown.
 
 ## Design choice
 
-The default judge path is intentionally curated/offline and data-backed. It does not require judges to install models or provide a GPU, and it should not be presented as live inference. The optional Live Gemma preview is separate, token-gated, rate-limited, and allowed to fail closed while the curated offline demo remains usable.
+The default judge path is intentionally curated/offline and data-backed. It does not require judges to install models or provide a GPU, and it should not be presented as live inference. The optional Live Gemma preview is separate, token-gated, rate-limited, and allowed to fail closed while the curated showcase remains usable.
 
 ## Known limitations and safety boundaries
 
 - Edge-Triage is decision support for disaster-response triage, not emergency authority, medical advice, or a replacement for trained incident command.
 - Ambiguous or low-context images can be misclassified; responders should verify the scene summary and priority before acting.
-- The Live Gemma preview is token-gated and rate-limited for demo stability, so the curated offline demo remains the reliable fallback.
+- The Live Gemma preview is token-gated and rate-limited for demo stability, so the curated showcase remains the reliable review path.
 - The "Live Gemma 4 vision" scene summary is model-generated and intentionally short; it is meant to explain the classification, not provide operational instructions.
 
 ## Data source

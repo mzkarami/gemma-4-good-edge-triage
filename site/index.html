@@ -116,7 +116,7 @@
         <article class="guide-card track-card">
           <span class="eyebrow">Main Track</span>
           <h3>Complete judge-facing product and evidence story</h3>
-          <p>Functional static demo, guarded live API path, benchmark-backed frontier metrics, notebooks, video assets, and reproducible documentation.</p>
+          <p>Working product experience, guarded live API path, benchmark-backed frontier metrics, notebooks, video assets, and reproducible documentation.</p>
         </article>
         <article class="guide-card track-card">
           <span class="eyebrow">Impact Track</span>
@@ -158,16 +158,16 @@
         <span class="eyebrow">Volunteer Mode</span>
         <h2>Pick a field report. See what the volunteer sees.</h2>
         <p class="section-lead">
-          Curated offline demo is intentionally simple: choose one of the fixed public-safe scenarios below and the right-hand card updates with the related image and analysis.
+          Curated showcase mode is intentionally simple: choose one of the fixed public-safe scenarios below and the right-hand card updates with the related image and analysis.
           Switch to Live Gemma preview only when you want to upload a new image to the guarded API.
         </p>
         <form class="upload-panel" id="upload-form">
           <span class="callout-label">Choose demo path</span>
           <div class="inference-toggle" role="radiogroup" aria-label="Inference mode">
-            <label><input type="radio" name="inference-mode" value="static" checked /> Curated offline demo</label>
+            <label><input type="radio" name="inference-mode" value="static" checked /> Curated showcase</label>
             <label><input type="radio" name="inference-mode" value="live" /> Live Gemma preview</label>
           </div>
-          <p class="simulation-status" id="simulation-status" aria-live="polite">Curated offline demo selected: click a scenario below. No model call, upload, backend, or server request is made.</p>
+          <p class="simulation-status" id="simulation-status" aria-live="polite">Curated showcase selected: click a scenario below. No upload, backend request, or new model call is needed for these prepared product examples.</p>
           <div class="live-inputs hidden" id="live-inputs" hidden>
             <label class="file-drop" for="demo-image">
               <input id="demo-image" type="file" accept="image/png,image/jpeg,image/webp" />
@@ -280,7 +280,7 @@
         <article class="guide-card notebook-card">
           <span class="eyebrow">Full codebase</span>
           <h3>Clone and run locally</h3>
-          <p>Use the repository for the static demo, live API, CLI, tests, Docker files, metrics ledger, and media assets. This is the best path for reviewers who want the complete implementation.</p>
+          <p>Use the repository for the working product experience, guarded live API, CLI, tests, Docker files, metrics ledger, and media assets. This is the best path for reviewers who want the complete implementation.</p>
           <a href="https://github.com/mzkarami/gemma-4-good-edge-triage">Open public repo →</a>
         </article>
         <article class="guide-card notebook-card">
@@ -303,7 +303,7 @@
         <span class="eyebrow">Evidence</span>
         <h2>Why this matters in a real disaster response.</h2>
         <p class="section-lead narrow">
-          Edge-Triage is designed for the messy middle of a crisis: reports arrive fast, connectivity is uncertain, and responders need conservative routing support they can audit later. The demo evidence connects the product story to measured runs, public-safe scenarios, and reproducible documentation.
+          Edge-Triage is designed for the messy middle of a crisis: reports arrive fast, connectivity is uncertain, and responders need conservative routing support they can audit later. The product evidence connects the story to measured runs, public-safe scenarios, and reproducible documentation.
         </p>
       </div>
       <div class="evidence-grid">
@@ -325,7 +325,7 @@
         <article class="evidence-card limitation-card">
           <span class="eyebrow">Known limits</span>
           <h3>Honest fallback, human review required.</h3>
-          <p>Ambiguous reports still need responder judgment. Live Gemma preview is token-gated and rate-limited, so the curated offline demo remains the reliable public fallback; no medical or incident-command authority is delegated to the model.</p>
+          <p>Ambiguous reports still need responder judgment. Live Gemma preview is token-gated and rate-limited, so the curated showcase remains the reliable public review path; no medical or incident-command authority is delegated to the model.</p>
         </article>
       </div>
     </section>

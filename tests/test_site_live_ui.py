@@ -6,10 +6,10 @@ from pathlib import Path
 class SiteLiveUiTest(unittest.TestCase):
     def test_volunteer_form_separates_curated_scenarios_from_live_upload(self):
         html = Path("site/index.html").read_text()
-        self.assertIn("Curated offline demo", html)
+        self.assertIn("Curated showcase", html)
         self.assertIn("Live Gemma preview", html)
-        self.assertIn("click a scenario below", html)
-        self.assertIn("No model call, upload, backend, or server request", html)
+        self.assertIn("prepared product examples", html)
+        self.assertIn("No upload, backend request, or new model call", html)
         self.assertIn("id=\"curated-scenarios\"", html)
         self.assertIn("id=\"live-inputs\"", html)
         self.assertIn("id=\"judge-token\"", html)
@@ -25,7 +25,7 @@ class SiteLiveUiTest(unittest.TestCase):
         self.assertIn("FormData", js)
         self.assertIn("Image must be 25 MB or smaller", js)
         self.assertIn("Live model unavailable", js)
-        self.assertIn("curated offline demo is still usable", js)
+        self.assertIn("curated showcase is still usable", js)
         self.assertIn("setTokenError", js)
         self.assertIn("$('#judge-token')?.focus()", js)
         self.assertNotIn("runStaticSimulation", js)
@@ -75,6 +75,8 @@ class SiteLiveUiTest(unittest.TestCase):
         self.assertNotIn("Try Volunteer Mode", hero_html)
         self.assertNotIn("View Optimization Mode", hero_html)
         self.assertNotIn("hero-actions", hero_html)
+        self.assertNotIn("static demo", html.lower())
+        self.assertNotIn("curated offline demo", html.lower())
         self.assertIn(".hero-flow", css)
 
     def test_optimization_mode_explains_edg_cards_for_nontechnical_judges(self):
