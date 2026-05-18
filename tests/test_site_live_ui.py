@@ -117,6 +117,27 @@ class SiteLiveUiTest(unittest.TestCase):
         self.assertIn(".judge-grid", css)
         self.assertIn(".trust-strip", css)
 
+    def test_competition_track_fit_section_is_specific_and_honest(self):
+        html = Path("site/index.html").read_text()
+        css = Path("site/styles.css").read_text()
+
+        self.assertIn("Competition track fit", html)
+        self.assertIn("Where Edge-Triage fits the Gemma 4 Good tracks", html)
+        self.assertIn("Main Track", html)
+        self.assertIn("Impact Track", html)
+        self.assertIn("Global Resilience + Safety &amp; Trust", html)
+        self.assertIn("Special Technology Track", html)
+        self.assertIn("llama.cpp, LiteRT, Ollama, and Unsloth evidence", html)
+        self.assertIn("core GGUF multimodal inference via <code>llama-cpp-python</code>", html)
+        self.assertIn("Google AI Edge / <code>.litertlm</code> download and backend scaffolding", html)
+        self.assertIn("checked-in <code>Modelfile</code>", html)
+        self.assertIn("GGUF model source and fallback download path", html)
+        self.assertIn("deployed paths are separated from scaffolds", html)
+        self.assertLess(html.index("Choose the lens you care about"), html.index("Where Edge-Triage fits the Gemma 4 Good tracks"))
+        self.assertLess(html.index("Where Edge-Triage fits the Gemma 4 Good tracks"), html.index("Switch between the two judge experiences"))
+        self.assertIn(".track-grid", css)
+        self.assertIn(".track-list", css)
+
     def test_evidence_section_tells_judge_friendly_proof_story(self):
         html = Path("site/index.html").read_text()
         css = Path("site/styles.css").read_text()

@@ -284,6 +284,33 @@ h3 { font-size: 1.25rem; letter-spacing: -0.024em; font-weight: 590; }
   font-size: 0.9rem;
 }
 .guide-card a:hover { color: white; }
+.track-fit {
+  padding-top: 1rem;
+}
+.track-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1.35rem;
+}
+.track-card {
+  background:
+    linear-gradient(180deg, rgba(93, 229, 176, 0.08), rgba(255,255,255,0.018)),
+    rgba(0,0,0,0.16);
+}
+.track-list {
+  margin: 0;
+  padding-left: 1.05rem;
+  color: var(--muted);
+  line-height: 1.55;
+  font-size: 0.91rem;
+}
+.track-list li + li { margin-top: 0.35rem; }
+.track-list code {
+  color: var(--secondary);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.84em;
+}
 .next-pages {
   padding-top: 1.25rem;
   padding-bottom: 1.5rem;
@@ -730,7 +757,7 @@ pre {
   .mode-buttons { width: 100%; }
   .mode-button { flex: 1; }
   .triage-card { position: static; }
-  .frontier-grid, .experiment-board, .evidence-grid, .judge-grid, .research-loop, .roadmap-grid, .next-pages-grid, .notebook-grid { grid-template-columns: 1fr; }
+  .frontier-grid, .experiment-board, .evidence-grid, .judge-grid, .research-loop, .roadmap-grid, .track-grid, .next-pages-grid, .notebook-grid { grid-template-columns: 1fr; }
   .section-heading-row { display: block; }
   .footer { flex-direction: column; align-items: flex-start; }
 }
