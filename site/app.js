@@ -335,6 +335,21 @@ function initVolunteerConsole() {
     if (!input || !target) return;
     target.textContent = input.files?.[0]?.name || emptyLabel;
   };
+  const clearBridgeDefaultsForNewInput = () => {
+    reportInput.value = '';
+    $('#phone-report-title').textContent = 'New field report';
+    $('#phone-report-note').textContent = 'New media selected. Add a short note, then run Edge-Triage.';
+    $('#phone-priority').textContent = 'Awaiting analysis';
+    $('#app-result-title').textContent = 'No triage result yet';
+    $('#app-result-summary').textContent = 'New input selected. Run Edge-Triage to create a fresh triage card.';
+    $('#app-result-label').textContent = 'Awaiting analysis';
+    $('#app-result-priority').textContent = 'Awaiting analysis';
+    $('#app-result-latency').textContent = 'Awaiting run';
+    $('#app-result-action').textContent = 'No safe next action is generated until the volunteer runs Edge-Triage.';
+    $('#app-handoff').textContent = 'Ready for coordinator handoff after review. Human review required before operational decisions.';
+    status.textContent = 'New media selected. Add a short field note, then run Edge-Triage.';
+    status.classList.remove('complete', 'error');
+  };
   const updateImagePreview = () => {
     const file = imageInput?.files?.[0];
     const preview = $('#field-image-preview');
@@ -371,10 +386,12 @@ function initVolunteerConsole() {
   imageInput?.addEventListener('change', () => {
     updateFileName(imageInput, $('#field-image-name'), 'No image selected');
     updateImagePreview();
+    clearBridgeDefaultsForNewInput();
     saveDraft();
   });
   audioInput?.addEventListener('change', () => {
     updateFileName(audioInput, $('#field-audio-name'), 'No audio selected');
+    clearBridgeDefaultsForNewInput();
     saveDraft();
   });
   bridgeButton?.addEventListener('click', () => {

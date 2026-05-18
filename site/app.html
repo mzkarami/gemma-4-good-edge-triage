@@ -52,12 +52,12 @@
         <div class="phone-card">
           <span class="card-kicker">Current report</span>
           <div class="phone-image-preview empty" id="phone-image-preview">No image yet</div>
-          <strong id="phone-report-title">Bridge washed out after flood</strong>
-          <p id="phone-report-note">Road blocked. No injuries visible. Need routing guidance.</p>
+          <strong id="phone-report-title">New field report</strong>
+          <p id="phone-report-note">Add text, image, or audio. Run Edge-Triage when the report is ready.</p>
         </div>
         <div class="phone-card result-mini">
           <span>Priority</span>
-          <strong id="phone-priority">High infrastructure priority</strong>
+          <strong id="phone-priority">Awaiting analysis</strong>
         </div>
       </aside>
     </section>
@@ -71,7 +71,7 @@
         </div>
 
         <label class="field-label" for="field-report">Field report</label>
-        <textarea id="field-report" name="field-report" rows="5" placeholder="Example: bridge washed out after flood, road blocked, no injuries visible">Bridge washed out after flood. Road blocked. No injuries visible. Need routing guidance.</textarea>
+        <textarea id="field-report" name="field-report" rows="5" placeholder="Example: bridge washed out after flood, road blocked, no injuries visible"></textarea>
 
         <div class="field-upload-grid">
           <label class="file-drop field-file-drop" for="field-image">
@@ -100,16 +100,16 @@
 
       <article class="result-card app-result-card" id="app-result-card" aria-label="Volunteer triage result">
         <span class="card-kicker">2 · Triage result</span>
-        <h2 id="app-result-title">Blocked bridge report</h2>
-        <p id="app-result-summary">This report looks like infrastructure damage. Edge-Triage is ready to route it while keeping the response decision with humans.</p>
+        <h2 id="app-result-title">No triage result yet</h2>
+        <p id="app-result-summary">Add field input, then run Edge-Triage to create a triage card for human review.</p>
         <div class="result-grid">
-          <div><span>Label</span><strong id="app-result-label">infrastructure_and_utility_damage</strong></div>
-          <div><span>Priority</span><strong id="app-result-priority">High infrastructure priority</strong></div>
-          <div><span>Latency</span><strong id="app-result-latency">158.61 ms</strong></div>
+          <div><span>Label</span><strong id="app-result-label">Awaiting analysis</strong></div>
+          <div><span>Priority</span><strong id="app-result-priority">Awaiting analysis</strong></div>
+          <div><span>Latency</span><strong id="app-result-latency">Awaiting run</strong></div>
         </div>
         <div class="callout insight-callout">
           <span class="callout-label">Safe next action</span>
-          <p id="app-result-action">Keep civilians away from damaged structures, mark the route as blocked, and escalate to infrastructure response coordination.</p>
+          <p id="app-result-action">No safe next action is generated until the volunteer runs Edge-Triage.</p>
         </div>
         <div class="handoff-card">
           <span class="callout-label">Coordinator handoff</span>
