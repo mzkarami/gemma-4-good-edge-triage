@@ -73,6 +73,8 @@ class SiteLiveUiTest(unittest.TestCase):
         self.assertIn("field-image-preview", js)
         self.assertIn("send-coordinator", js)
         self.assertNotIn("URL.createObjectURL", js)
+        self.assertNotIn("innerHTML", js)
+        self.assertNotIn("insertAdjacentHTML", js)
         self.assertIn("localStorage.setItem('edge-triage-field-draft'", js)
         self.assertNotIn('field-judge-token', app)
         self.assertNotIn('judge token', app.lower())

@@ -4,6 +4,28 @@ const $ = (selector) => document.querySelector(selector);
 const fmtLatency = (ms) => `${ms.toFixed(2)} ms`;
 const fmtF1 = (value) => value.toFixed(4);
 
+function textElement(tag, text, className = '') {
+  const element = document.createElement(tag);
+  if (className) element.className = className;
+  element.textContent = text;
+  return element;
+}
+
+function appendText(parent, tag, text, className = '') {
+  const element = textElement(tag, text, className);
+  parent.appendChild(element);
+  return element;
+}
+
+function replaceWithImage(container, src, alt, className = '') {
+  if (!container) return;
+  const image = document.createElement('img');
+  if (className) image.className = className;
+  image.src = src;
+  image.alt = alt;
+  container.replaceChildren(image);
+}
+
 async function loadData() {
   const response = await fetch('data.json');
   if (!response.ok) throw new Error('Could not load demo data');
@@ -96,7 +118,7 @@ function bindUploadDemo() {
     }
     const reader = new FileReader();
     reader.onload = () => {
-      $('#image-hint').innerHTML = `<img class="preview-image" src="${reader.result}" alt="Uploaded disaster example preview" />`;
+      replaceWithImage($('#image-hint'), String(reader.result), 'Uploaded disaster example preview', 'preview-image');
     };
     reader.readAsDataURL(file);
   });
@@ -197,13 +219,14 @@ async function friendlyLiveError(response) {
 
 function renderSamples() {
   const list = $('#sample-list');
-  list.innerHTML = '';
+  list.replaceChildren();
   for (const sample of state.data.samples) {
     const button = document.createElement('button');
     button.className = 'sample-button';
     button.type = 'button';
     button.dataset.id = sample.id;
-    button.innerHTML = `<strong>${sample.title}</strong><span>${sample.label.replaceAll('_', ' ')}</span>`;
+    button.appendChild(textElement('strong', sample.title));
+    button.appendChild(textElement('span', sample.label.replaceAll('_', ' ')));
     button.addEventListener('click', () => selectSample(sample.id));
     list.appendChild(button);
   }
@@ -231,7 +254,7 @@ function selectSample(id) {
 function renderScenarioImage(sample) {
   const imageHint = $('#image-hint');
   if (sample.imageSrc) {
-    imageHint.innerHTML = `<img class="preview-image" src="${sample.imageSrc}" alt="${sample.imageAlt || sample.imageHint}" />`;
+    replaceWithImage(imageHint, sample.imageSrc, sample.imageAlt || sample.imageHint, 'preview-image');
   } else {
     imageHint.textContent = sample.imageHint;
   }
@@ -239,51 +262,66 @@ function renderScenarioImage(sample) {
 
 function renderFrontier() {
   const grid = $('#frontier-grid');
-  grid.innerHTML = '';
+  grid.replaceChildren();
   for (const profile of state.data.frontier) {
     const card = document.createElement('article');
     card.className = 'frontier-card';
     const speedWidth = Math.max(8, Math.min(100, 100 - (profile.latencyMs / 4000) * 100));
-    card.innerHTML = `
-      <span class="card-kicker">${profile.status.toUpperCase()} · ${profile.samples} samples</span>
-      <h3>${profile.profile}</h3>
-      <span class="big-number">${fmtF1(profile.f1)}</span>
-      <div class="bar" aria-label="Latency headroom under 4 second budget"><span style="width:${speedWidth}%"></span></div>
-      <p class="muted">${profile.useCase}</p>
-      <p><span class="decision">Latency:</span> ${fmtLatency(profile.latencyMs)}</p>
-      <p class="muted small">Run: ${profile.run}</p>
-    `;
+    appendText(card, 'span', `${profile.status.toUpperCase()} · ${profile.samples} samples`, 'card-kicker');
+    appendText(card, 'h3', profile.profile);
+    appendText(card, 'span', fmtF1(profile.f1), 'big-number');
+    const bar = document.createElement('div');
+    bar.className = 'bar';
+    bar.setAttribute('aria-label', 'Latency headroom under 4 second budget');
+    const fill = document.createElement('span');
+    fill.style.width = `${speedWidth}%`;
+    bar.appendChild(fill);
+    card.appendChild(bar);
+    appendText(card, 'p', profile.useCase, 'muted');
+    const latency = document.createElement('p');
+    appendText(latency, 'span', 'Latency:', 'decision');
+    latency.append(` ${fmtLatency(profile.latencyMs)}`);
+    card.appendChild(latency);
+    appendText(card, 'p', `Run: ${profile.run}`, 'muted small');
     grid.appendChild(card);
   }
 
   const context = document.createElement('article');
   context.className = 'frontier-card';
-  context.innerHTML = `
-    <span class="card-kicker">FIELD BUDGET</span>
-    <h3>4,000 ms ceiling</h3>
-    <span class="big-number">&lt; 0.3s</span>
-    <p class="muted">Both public profiles stay far below the mission-critical limit, preserving time for human decision-making.</p>
-    <p><span class="decision">Strategy:</span> choose speed for volume; choose accuracy for critical review.</p>
-  `;
+  appendText(context, 'span', 'FIELD BUDGET', 'card-kicker');
+  appendText(context, 'h3', '4,000 ms ceiling');
+  appendText(context, 'span', '< 0.3s', 'big-number');
+  appendText(context, 'p', 'Both public profiles stay far below the mission-critical limit, preserving time for human decision-making.', 'muted');
+  const strategy = document.createElement('p');
+  appendText(strategy, 'span', 'Strategy:', 'decision');
+  strategy.append(' choose speed for volume; choose accuracy for critical review.');
+  context.appendChild(strategy);
   grid.appendChild(context);
 }
 
 function renderExperiments() {
   const board = $('#experiment-board');
-  board.innerHTML = '';
+  board.replaceChildren();
   for (const experiment of state.data.experiments) {
     const card = document.createElement('article');
     card.className = 'experiment-card';
     const isWinner = experiment.id.includes('480');
-    card.innerHTML = `
-      <span class="card-kicker">${experiment.id}</span>
-      <h3>${experiment.label}</h3>
-      <p class="muted small">Technical note: ${experiment.technicalLabel || experiment.id}</p>
-      <p><span class="decision">F1:</span> ${fmtF1(experiment.f1)} · <span class="decision">Latency:</span> ${fmtLatency(experiment.latencyMs)}</p>
-      <p class="decision" style="color:${isWinner ? 'var(--green)' : 'var(--warning)'}">${experiment.decision}</p>
-      <p><span class="decision">What changed:</span> ${experiment.change || experiment.label}</p>
-      <p class="muted">${experiment.detail}</p>
-    `;
+    appendText(card, 'span', experiment.id, 'card-kicker');
+    appendText(card, 'h3', experiment.label);
+    appendText(card, 'p', `Technical note: ${experiment.technicalLabel || experiment.id}`, 'muted small');
+    const metrics = document.createElement('p');
+    appendText(metrics, 'span', 'F1:', 'decision');
+    metrics.append(` ${fmtF1(experiment.f1)} · `);
+    appendText(metrics, 'span', 'Latency:', 'decision');
+    metrics.append(` ${fmtLatency(experiment.latencyMs)}`);
+    card.appendChild(metrics);
+    const decision = appendText(card, 'p', experiment.decision, 'decision');
+    decision.style.color = isWinner ? 'var(--green)' : 'var(--warning)';
+    const changed = document.createElement('p');
+    appendText(changed, 'span', 'What changed:', 'decision');
+    changed.append(` ${experiment.change || experiment.label}`);
+    card.appendChild(changed);
+    appendText(card, 'p', experiment.detail, 'muted');
     board.appendChild(card);
   }
 }
@@ -339,7 +377,7 @@ function initVolunteerConsole() {
       preview.src = imageSrc;
       preview.classList.remove('hidden');
       phonePreview.classList.remove('empty');
-      phonePreview.innerHTML = `<img src="${imageSrc}" alt="Selected field report preview" />`;
+      replaceWithImage(phonePreview, imageSrc, 'Selected field report preview');
     };
     reader.readAsDataURL(file);
   };
@@ -447,5 +485,8 @@ function initVolunteerConsole() {
 
 loadData().catch((error) => {
   console.error(error);
-  document.body.insertAdjacentHTML('afterbegin', `<div style="padding:1rem;background:#3f1d1d;color:white">${error.message}</div>`);
+  const banner = document.createElement('div');
+  banner.className = 'app-error-banner';
+  banner.textContent = error.message || 'Could not load Edge-Triage demo.';
+  document.body.prepend(banner);
 });

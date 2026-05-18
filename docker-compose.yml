@@ -34,16 +34,18 @@ services:
       - EDGE_TRIAGE_MODEL_PATH=${EDGE_TRIAGE_MODEL_PATH:-/app/models/Edge-Triage-gemma-4-E4B-it-Q3_K_M.gguf}
       - EDGE_TRIAGE_MMPROJ_PATH=${EDGE_TRIAGE_MMPROJ_PATH:-/app/models/Edge-Triage-mmproj-F16.gguf}
       - EDGE_TRIAGE_MAX_UPLOAD_MB=25
+      - EDGE_TRIAGE_PUBLIC_API_ENABLED=${EDGE_TRIAGE_PUBLIC_API_ENABLED:-1}
+      - EDGE_TRIAGE_MAX_CONCURRENT_REQUESTS=${EDGE_TRIAGE_MAX_CONCURRENT_REQUESTS:-2}
       - EDGE_TRIAGE_RATE_LIMIT_PER_MINUTE=${EDGE_TRIAGE_RATE_LIMIT_PER_MINUTE:-6}
       - EDGE_TRIAGE_RATE_LIMIT_PER_DAY=${EDGE_TRIAGE_RATE_LIMIT_PER_DAY:-60}
       - EDGE_TRIAGE_MODEL_TIMEOUT_SECONDS=${EDGE_TRIAGE_MODEL_TIMEOUT_SECONDS:-30}
-      - EDGE_TRIAGE_ALLOWED_ORIGINS=${EDGE_TRIAGE_ALLOWED_ORIGINS:-http://localhost:4173,http://127.0.0.1:4173,https://kaggle.nelly.work}
+      - EDGE_TRIAGE_ALLOWED_ORIGINS=${EDGE_TRIAGE_ALLOWED_ORIGINS:-http://100.76.13.15:4173,http://experiment:4173,http://localhost:4173}
       - TMPDIR=/tmp/edge-triage-live
     read_only: true
     tmpfs:
       - /tmp/edge-triage-live:mode=1777,noexec,nosuid,nodev,size=64m
     volumes:
-      - ${EDGE_TRIAGE_MODEL_DIR:-/path/to/edge-triage/models}:/app/models:ro
+      - ${EDGE_TRIAGE_MODEL_DIR:-/home/dev/.cache/autoresearch/models}:/app/models:ro
     cap_drop:
       - ALL
     security_opt:
