@@ -71,7 +71,7 @@
         </div>
 
         <label class="field-label" for="field-report">Field report</label>
-        <textarea id="field-report" name="field-report" rows="5" placeholder="Example: bridge washed out after flood, road blocked, no injuries visible"></textarea>
+        <textarea id="field-report" name="field-report" rows="5" maxlength="1000" placeholder="Example: bridge washed out after flood, road blocked, no injuries visible"></textarea>
 
         <div class="field-upload-grid">
           <label class="file-drop field-file-drop" for="field-image">
@@ -85,7 +85,7 @@
           <label class="file-drop field-file-drop" for="field-audio">
             <input id="field-audio" name="field-audio" type="file" accept="audio/*" />
             <span class="file-drop-copy">Attach optional voice note</span>
-            <small>For the next product step: multilingual and low-bandwidth voice reports</small>
+            <small>Voice note is local only in this version. Future step: multilingual and low-bandwidth voice reports.</small>
             <span class="file-picker-row"><span class="file-picker-button">Choose audio</span><span class="file-name" id="field-audio-name">No audio selected</span></span>
           </label>
         </div>
@@ -96,7 +96,7 @@
           <button class="ghost-button" type="button" id="load-bridge-example">Load bridge example</button>
         </div>
         <p class="simulation-status" id="field-console-status" aria-live="polite">Draft saved locally. Run Edge-Triage to see the volunteer-facing triage card.</p>
-        <p class="muted small">Images and notes are sent to the guarded backend for analysis. Do not upload sensitive personal data in this public demo.</p>
+        <p class="muted small">Images and text notes are sent to the guarded backend for analysis. Do not upload sensitive personal data in this public demo.</p>
       </form>
 
       <article class="result-card app-result-card" id="app-result-card" aria-label="Volunteer triage result">
