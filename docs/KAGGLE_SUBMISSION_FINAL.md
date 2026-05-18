@@ -18,7 +18,7 @@ Gemma 4-powered local multimodal triage for messy disaster reports, with a volun
 - Roadmap: https://kaggle.nelly.work/roadmap.html
 - About the Builder: https://kaggle.nelly.work/about.html
 - Public code repository: https://github.com/mzkarami/gemma-4-good-edge-triage
-- Video: https://youtu.be/kXVC07Od93E
+- Video: https://youtu.be/q8sveHsZiCA
 
 ## Short project description
 
