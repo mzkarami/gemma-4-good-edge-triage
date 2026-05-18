@@ -317,6 +317,7 @@ function initVolunteerConsole() {
   const audioInput = $('#field-audio');
   const status = $('#field-console-status');
   const bridgeButton = $('#load-bridge-example');
+  const sendButton = $('#send-coordinator');
   if (!form || !reportInput) return;
 
   const bridgeSample = state.data?.samples?.find((sample) => sample.id === 'bridge-flood') || state.data?.samples?.[0];
@@ -334,19 +335,30 @@ function initVolunteerConsole() {
     if (!input || !target) return;
     target.textContent = input.files?.[0]?.name || emptyLabel;
   };
+  const updateImagePreview = () => {
+    const file = imageInput?.files?.[0];
+    const preview = $('#field-image-preview');
+    const phonePreview = $('#phone-image-preview');
+    if (!file || !preview || !phonePreview) return;
+    const objectUrl = URL.createObjectURL(file);
+    preview.src = objectUrl;
+    preview.classList.remove('hidden');
+    phonePreview.classList.remove('empty');
+    phonePreview.innerHTML = `<img src="${objectUrl}" alt="Selected field report preview" />`;
+  };
   const renderFieldResult = (sample, report) => {
     const title = report.split(/[.!?]/).find(Boolean)?.trim() || sample.title || 'Field report';
     $('#app-result-title').textContent = title;
-    $('#app-result-summary').textContent = 'Edge-Triage converted the field note into a triage card that can be reviewed before coordinator handoff.';
+    $('#app-result-summary').textContent = `This report looks like ${sample.title.toLowerCase()}. Edge-Triage converted the field note into a triage card that can be reviewed before coordinator handoff.`;
     $('#app-result-label').textContent = sample.label;
     $('#app-result-priority').textContent = sample.priority;
     $('#app-result-latency').textContent = fmtLatency(sample.latencyMs);
     $('#app-result-action').textContent = sample.nextAction;
-    $('#app-handoff').textContent = 'Queued for coordinator sync when connectivity returns. Human review required before operational decisions.';
+    $('#app-handoff').textContent = 'Ready for coordinator handoff after review. Human review required before operational decisions.';
     $('#phone-report-title').textContent = title;
     $('#phone-report-note').textContent = report;
     $('#phone-priority').textContent = sample.priority;
-    status.textContent = 'Queued for coordinator sync. Human review required before action.';
+    status.textContent = `Triage card updated: ${sample.priority}. Review the safe next action, then send to coordinator if appropriate.`;
     status.classList.add('complete');
     status.classList.remove('error');
   };
@@ -354,6 +366,7 @@ function initVolunteerConsole() {
   reportInput.addEventListener('input', saveDraft);
   imageInput?.addEventListener('change', () => {
     updateFileName(imageInput, $('#field-image-name'), 'No image selected');
+    updateImagePreview();
     saveDraft();
   });
   audioInput?.addEventListener('change', () => {
@@ -364,6 +377,12 @@ function initVolunteerConsole() {
     reportInput.value = 'Bridge washed out after flood. Road blocked. No injuries visible. Need routing guidance.';
     saveDraft();
     renderFieldResult(bridgeSample, reportInput.value);
+  });
+  sendButton?.addEventListener('click', () => {
+    status.textContent = 'Ready for coordinator handoff. This prototype keeps the handoff local for the judge demo.';
+    status.classList.add('complete');
+    status.classList.remove('error');
+    $('#handoff-status').textContent = 'Ready for coordinator handoff';
   });
   form.addEventListener('submit', (event) => {
     event.preventDefault();

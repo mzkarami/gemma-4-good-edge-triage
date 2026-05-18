@@ -42,7 +42,7 @@
         </p>
         <div class="field-status-row" aria-label="Volunteer app resilience notes">
           <span id="draft-status">Draft saved locally</span>
-          <span id="queued-sync">Queued for coordinator sync when connectivity returns</span>
+          <span id="handoff-status">Ready for coordinator handoff after review</span>
           <span>Human review required</span>
         </div>
       </div>
@@ -50,6 +50,7 @@
         <div class="phone-status"><span>Field Console</span><span>Local draft</span></div>
         <div class="phone-card">
           <span class="card-kicker">Current report</span>
+          <div class="phone-image-preview empty" id="phone-image-preview">No image yet</div>
           <strong id="phone-report-title">Bridge washed out after flood</strong>
           <p id="phone-report-note">Road blocked. No injuries visible. Need routing guidance.</p>
         </div>
@@ -77,6 +78,7 @@
             <span class="file-drop-copy">Add photo or open camera</span>
             <small>Image input for the real field workflow · 25 MB maximum for live preview</small>
             <span class="file-picker-row"><span class="file-picker-button">Choose image</span><span class="file-name" id="field-image-name">No image selected</span></span>
+            <img class="field-image-preview hidden" id="field-image-preview" alt="Selected field report preview" />
           </label>
 
           <label class="file-drop field-file-drop" for="field-audio">
@@ -89,6 +91,7 @@
 
         <div class="field-actions">
           <button class="primary-button" type="submit" id="run-field-console">Run Edge-Triage</button>
+          <button class="ghost-button" type="button" id="send-coordinator">Send to coordinator</button>
           <button class="ghost-button" type="button" id="load-bridge-example">Load bridge example</button>
         </div>
         <p class="simulation-status" id="field-console-status" aria-live="polite">Draft saved locally. Run Edge-Triage to see the volunteer-facing triage card.</p>
@@ -97,7 +100,7 @@
       <article class="result-card app-result-card" id="app-result-card" aria-label="Volunteer triage result">
         <span class="card-kicker">2 · Triage result</span>
         <h2 id="app-result-title">Blocked bridge report</h2>
-        <p id="app-result-summary">Edge-Triage is ready to route this report while keeping the response decision with humans.</p>
+        <p id="app-result-summary">This report looks like infrastructure damage. Edge-Triage is ready to route it while keeping the response decision with humans.</p>
         <div class="result-grid">
           <div><span>Label</span><strong id="app-result-label">infrastructure_and_utility_damage</strong></div>
           <div><span>Priority</span><strong id="app-result-priority">High infrastructure priority</strong></div>
@@ -109,8 +112,9 @@
         </div>
         <div class="handoff-card">
           <span class="callout-label">Coordinator handoff</span>
-          <p id="app-handoff">Queued for coordinator sync when connectivity returns. Human review required before operational decisions.</p>
+          <p id="app-handoff">Ready for coordinator handoff after review. Human review required before operational decisions.</p>
         </div>
+        <p class="muted small"><a id="live-gemma-link" href="index.html#volunteer">Use the token-gated Live Gemma preview for a real model call →</a></p>
       </article>
     </section>
   </main>
