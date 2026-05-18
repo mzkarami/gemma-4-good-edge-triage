@@ -155,6 +155,9 @@ class SiteLiveUiTest(unittest.TestCase):
 
         self.assertIn('href="roadmap.html"', index)
         self.assertIn('href="about.html"', index)
+        self.assertIn('href="about.html">Why it matters</a>', index)
+        self.assertIn("Open why it matters", index)
+        self.assertNotIn('href="about.html">About</a>', index)
         self.assertIn("native mobile apps", index)
         self.assertIn("Personal challenge, practical roadmap", index)
         self.assertIn("This challenge is also personal", index)
