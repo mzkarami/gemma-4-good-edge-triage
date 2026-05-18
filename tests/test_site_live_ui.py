@@ -104,6 +104,8 @@ class SiteLiveUiTest(unittest.TestCase):
         html = Path("site/index.html").read_text()
         css = Path("site/styles.css").read_text()
 
+        self.assertIn("font-size: clamp(2.6rem, 7vw, 4.2rem);", css)
+        self.assertNotIn("5.4rem", css)
         self.assertIn("volunteers receive messy text reports and photos", html)
         self.assertIn("triage label, priority, and conservative next action", html)
         self.assertIn("keeping humans in control", html)
