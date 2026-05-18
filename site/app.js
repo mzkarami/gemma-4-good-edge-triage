@@ -340,11 +340,15 @@ function initVolunteerConsole() {
     const preview = $('#field-image-preview');
     const phonePreview = $('#phone-image-preview');
     if (!file || !preview || !phonePreview) return;
-    const objectUrl = URL.createObjectURL(file);
-    preview.src = objectUrl;
-    preview.classList.remove('hidden');
-    phonePreview.classList.remove('empty');
-    phonePreview.innerHTML = `<img src="${objectUrl}" alt="Selected field report preview" />`;
+    const reader = new FileReader();
+    reader.onload = () => {
+      const imageSrc = reader.result;
+      preview.src = imageSrc;
+      preview.classList.remove('hidden');
+      phonePreview.classList.remove('empty');
+      phonePreview.innerHTML = `<img src="${imageSrc}" alt="Selected field report preview" />`;
+    };
+    reader.readAsDataURL(file);
   };
   const renderFieldResult = (sample, report) => {
     const title = report.split(/[.!?]/).find(Boolean)?.trim() || sample.title || 'Field report';
