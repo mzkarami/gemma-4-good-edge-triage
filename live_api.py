@@ -107,6 +107,7 @@ async def security_headers(request: Request, call_next):
 
 
 @app.get("/healthz")
+@app.get("/api/healthz")
 def healthz():
     return {"ok": True}
 

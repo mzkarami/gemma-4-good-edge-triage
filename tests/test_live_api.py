@@ -35,9 +35,11 @@ class LiveApiTest(unittest.TestCase):
         )
 
     def test_healthz_is_public(self):
-        response = self.client.get("/healthz")
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json(), {"ok": True})
+        for path in ("/healthz", "/api/healthz"):
+            with self.subTest(path=path):
+                response = self.client.get(path)
+                self.assertEqual(response.status_code, 200)
+                self.assertEqual(response.json(), {"ok": True})
 
     def test_triage_requires_token(self):
         response = self.post_image(token=None)
