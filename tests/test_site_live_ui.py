@@ -1,4 +1,5 @@
 import json
+import re
 import unittest
 from pathlib import Path
 
@@ -81,6 +82,41 @@ class SiteLiveUiTest(unittest.TestCase):
         self.assertIn("localStorage.setItem('edge-triage-field-draft'", js)
         self.assertIn("Ready for coordinator handoff", js)
         self.assertNotIn("Queued for coordinator sync. Human review required before action.", js)
+
+    def test_app_page_nav_matches_homepage_menu_order_and_labels(self):
+        app = Path("site/app.html").read_text()
+        nav_match = re.search(r'<nav aria-label="Demo sections">(.*?)</nav>', app, re.S)
+        assert nav_match is not None
+        nav = nav_match.group(1)
+        labels = re.findall(r'<a [^>]*>(.*?)</a>', nav)
+        hrefs = re.findall(r'<a href="([^"]+)"', nav)
+
+        self.assertEqual(
+            labels,
+            [
+                "Volunteer Mode",
+                "Optimization Mode",
+                "Evidence",
+                "Notebooks",
+                "Roadmap",
+                "Why it matters",
+                "Volunteer App",
+            ],
+        )
+        self.assertEqual(
+            hrefs,
+            [
+                "index.html#volunteer",
+                "index.html#optimization",
+                "index.html#evidence",
+                "index.html#notebooks",
+                "roadmap.html",
+                "about.html",
+                "app.html",
+            ],
+        )
+        self.assertNotIn("Showcase", nav)
+        self.assertNotIn("Metrics</a>", nav)
 
     def test_brand_assets_are_wired_for_site_and_submission(self):
         html = Path("site/index.html").read_text()
