@@ -71,6 +71,7 @@ class SiteLiveUiTest(unittest.TestCase):
         self.assertIn("localStorage.setItem('edge-triage-field-draft'", js)
         self.assertNotIn('field-judge-token', app)
         self.assertNotIn('judge token', app.lower())
+        self.assertNotIn('token-gated', app.lower())
         self.assertIn("runVolunteerLiveInference", js)
         self.assertIn("renderVolunteerLiveResult", js)
         self.assertNotIn("X-Judge-Token", js)
