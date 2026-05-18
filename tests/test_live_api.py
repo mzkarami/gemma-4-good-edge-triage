@@ -35,19 +35,19 @@ class LiveApiTest(unittest.TestCase):
         )
 
     def test_healthz_is_public(self):
-        for path in ("/healthz", "/api/healthz"):
-            with self.subTest(path=path):
-                response = self.client.get(path)
-                self.assertEqual(response.status_code, 200)
-                self.assertEqual(response.json(), {"ok": True})
+        response = self.client.get("/healthz")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {"ok": True})
 
-    def test_triage_requires_token(self):
+    def test_triage_accepts_same_origin_app_request_without_token(self):
         response = self.post_image(token=None)
-        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("label", response.json())
 
-    def test_triage_rejects_wrong_token(self):
+    def test_triage_keeps_token_header_optional_for_script_compatibility(self):
         response = self.post_image(token="wrong")
-        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("label", response.json())
 
     def test_triage_rejects_upload_above_25mb(self):
         oversized = b"x" * (25 * 1024 * 1024 + 1)

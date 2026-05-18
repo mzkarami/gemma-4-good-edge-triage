@@ -75,7 +75,7 @@ function bindUploadDemo() {
     if (curatedScenarios) curatedScenarios.hidden = live;
     runButton.textContent = 'Run Live Gemma preview';
     $('#simulation-status').textContent = live
-      ? 'Live Gemma preview selected: paste the judge token from the Kaggle submission notes. Images are capped at 25 MB and sanitized server-side.'
+      ? 'Live Gemma preview selected: images are capped at 25 MB, sanitized server-side, and protected by backend rate limits.'
       : 'Curated showcase selected: click a scenario below. No upload, backend request, or new model call is needed for these prepared product examples.';
     $('#simulation-status').classList.remove('complete', 'error');
   };
@@ -83,7 +83,6 @@ function bindUploadDemo() {
   modeInputs.forEach((radio) => radio.addEventListener('change', updateInferenceMode));
   updateInferenceMode();
 
-  $('#judge-token')?.addEventListener('input', () => setTokenError());
 
   input.addEventListener('change', () => {
     const file = input.files?.[0];
@@ -122,14 +121,6 @@ function setSimulationStatus(message, tone = 'complete') {
   status.classList.add(tone);
 }
 
-function setTokenError(message = '') {
-  const tokenInput = $('#judge-token');
-  const error = $('#judge-token-error');
-  if (!error) return;
-  error.textContent = message;
-  error.hidden = !message;
-  tokenInput?.setAttribute('aria-invalid', message ? 'true' : 'false');
-}
 
 function pulseTriageCard() {
   $('.triage-card').classList.add('just-updated');
@@ -139,20 +130,13 @@ function pulseTriageCard() {
 async function runLiveInference(input) {
   const file = input.files?.[0];
   const note = $('#demo-report').value.trim();
-  const token = $('#judge-token').value.trim();
   const endpoint = '/api/triage';
-  setTokenError();
   if (!file) {
     setSimulationStatus('Live Gemma preview needs an image upload.', 'error');
     return;
   }
   if (file.size > 25 * 1024 * 1024) {
     setSimulationStatus('Image must be 25 MB or smaller.', 'error');
-    return;
-  }
-  if (!token) {
-    setTokenError('Use the judge token from the Kaggle submission notes.');
-    $('#judge-token')?.focus();
     return;
   }
 
@@ -164,17 +148,11 @@ async function runLiveInference(input) {
   try {
     const response = await fetch(endpoint, {
       method: 'POST',
-      headers: { 'X-Judge-Token': token },
       body: formData
     });
     if (!response.ok) {
       const friendly = await friendlyLiveError(response);
-      if (response.status === 401 || response.status === 403) {
-        setTokenError(friendly);
-        $('#judge-token')?.focus();
-      } else {
-        setSimulationStatus(friendly, 'error');
-      }
+      setSimulationStatus(friendly, 'error');
       return;
     }
     const result = await response.json();
@@ -204,7 +182,7 @@ function renderLiveResult(result, note, fileName) {
 }
 
 async function friendlyLiveError(response) {
-  if (response.status === 401 || response.status === 403) return 'Use the judge token from the Kaggle submission notes.';
+  if (response.status === 401 || response.status === 403) return 'Live analysis is not available from this browser session; curated showcase is still usable.';
   if (response.status === 413) return 'Image must be 25 MB or smaller.';
   if (response.status === 415) return 'Use a JPEG, PNG, or WebP image.';
   if (response.status === 429) return 'Rate limit hit; try again shortly. The curated showcase is still usable.';
@@ -315,7 +293,6 @@ function initVolunteerConsole() {
   const reportInput = $('#field-report');
   const imageInput = $('#field-image');
   const audioInput = $('#field-audio');
-  const tokenInput = $('#field-judge-token');
   const status = $('#field-console-status');
   const bridgeButton = $('#load-bridge-example');
   const sendButton = $('#send-coordinator');
@@ -330,7 +307,6 @@ function initVolunteerConsole() {
       savedAt: new Date().toISOString(),
     };
     localStorage.setItem('edge-triage-field-draft', JSON.stringify(draft));
-    if (tokenInput?.value.trim()) localStorage.setItem('edge-triage-judge-token', tokenInput.value.trim());
     $('#draft-status').textContent = 'Draft saved locally';
   };
   const updateFileName = (input, target, emptyLabel) => {
@@ -406,15 +382,9 @@ function initVolunteerConsole() {
   };
   const runVolunteerLiveInference = async (report) => {
     const file = imageInput?.files?.[0];
-    const token = tokenInput?.value.trim() || localStorage.getItem('edge-triage-judge-token') || '';
     if (!file) {
       setVolunteerError('Real analysis needs an image. Add a photo, then run Edge-Triage.');
       imageInput?.focus();
-      return;
-    }
-    if (!token) {
-      setVolunteerError('Paste the judge token from the Kaggle notes to run real analysis. No static bridge result was generated.');
-      tokenInput?.focus();
       return;
     }
     if (file.size > 25 * 1024 * 1024) {
@@ -429,7 +399,6 @@ function initVolunteerConsole() {
     try {
       const response = await fetch('/api/triage', {
         method: 'POST',
-        headers: { 'X-Judge-Token': token },
         body: formData
       });
       if (!response.ok) {
@@ -437,7 +406,6 @@ function initVolunteerConsole() {
         return;
       }
       const result = await response.json();
-      localStorage.setItem('edge-triage-judge-token', token);
       renderVolunteerLiveResult(result, report, file.name);
     } catch (error) {
       console.error(error);
@@ -474,10 +442,6 @@ function initVolunteerConsole() {
     saveDraft();
     runVolunteerLiveInference(report);
   });
-  if (tokenInput && localStorage.getItem('edge-triage-judge-token')) {
-    tokenInput.value = localStorage.getItem('edge-triage-judge-token');
-  }
-  tokenInput?.addEventListener('input', saveDraft);
   saveDraft();
 }
 

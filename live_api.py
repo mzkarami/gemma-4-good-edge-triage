@@ -56,7 +56,7 @@ _allowed_origins = [
     origin.strip()
     for origin in os.getenv(
         "EDGE_TRIAGE_ALLOWED_ORIGINS",
-        "http://localhost:4173,http://127.0.0.1:4173,https://kaggle.nelly.work",
+        "http://localhost:4173,http://127.0.0.1:4173,http://100.76.13.15:4173,http://experiment:4173",
     ).split(",")
     if origin.strip()
 ]
@@ -107,7 +107,6 @@ async def security_headers(request: Request, call_next):
 
 
 @app.get("/healthz")
-@app.get("/api/healthz")
 def healthz():
     return {"ok": True}
 
@@ -137,10 +136,11 @@ def _require_token(authorization: str | None, x_judge_token: str | None) -> str:
     return supplied
 
 
-def _client_key(request: Request, token: str) -> str:
+def _client_key(request: Request, token: str | None = None) -> str:
     forwarded = request.headers.get("x-forwarded-for", "").split(",")[0].strip()
     ip = forwarded or (request.client.host if request.client else "unknown")
-    return f"{ip}:{token[:8]}"
+    suffix = token[:8] if token else "public"
+    return f"{ip}:{suffix}"
 
 
 def _check_rate_limit(key: str, now: float | None = None):
@@ -322,7 +322,7 @@ async def triage(
     authorization: str | None = Header(default=None),
     x_judge_token: str | None = Header(default=None),
 ):
-    token = _require_token(authorization, x_judge_token)
+    token = _extract_token(authorization, x_judge_token)
     _check_rate_limit(_client_key(request, token))
     started = time.perf_counter()
     safe_note = sanitize_note(note)

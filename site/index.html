@@ -122,7 +122,7 @@
         <article class="guide-card track-card">
           <span class="eyebrow">Impact Track</span>
           <h3>Global Resilience + Safety &amp; Trust</h3>
-          <p>Disaster triage is directly Global Resilience. The constrained labels, conservative next actions, token-gated live preview, auditability, and human-control boundary support Safety &amp; Trust.</p>
+          <p>Disaster triage is directly Global Resilience. The constrained labels, conservative next actions, guarded live preview, auditability, and human-control boundary support Safety &amp; Trust.</p>
         </article>
         <article class="guide-card track-card">
           <span class="eyebrow">Special Technology Track</span>
@@ -144,7 +144,7 @@
         <p class="section-lead narrow">Volunteer Mode shows field-facing triage. Optimization Mode shows the frontier evidence behind the submitted profile.</p>
         <div class="trust-strip" aria-label="Demo trust notes">
           <span>Curated demo: fixed public-safe scenarios</span>
-          <span>Live preview: real token-gated Gemma API</span>
+          <span>Live preview: guarded real Gemma API</span>
           <span>Metrics: full-50 run-backed frontier</span>
         </div>
       </div>
@@ -180,15 +180,8 @@
               </span>
             </label>
             <textarea id="demo-report" rows="4" maxlength="1000" placeholder="Optional field note, e.g. 'bridge washed out after flood, no injuries visible'"></textarea>
-            <div class="live-settings" id="live-settings">
-              <label>Judge token from Kaggle submission notes
-                <input id="judge-token" type="password" autocomplete="off" placeholder="Paste judge token" aria-describedby="judge-token-help judge-token-error" />
-                <small id="judge-token-help">The token is provided separately in the private submission notes, never embedded in this public page.</small>
-                <small id="judge-token-error" class="field-error" role="alert" aria-live="polite" hidden></small>
-              </label>
-            </div>
             <button class="primary-button" id="run-upload-demo" type="submit">Run Live Gemma preview</button>
-            <p class="muted small">Live Gemma preview sends one sanitized image and note to the protected endpoint only when selected.</p>
+            <p class="muted small">Live Gemma preview sends one sanitized image and note to the guarded backend only when selected.</p>
           </div>
         </form>
         <div id="curated-scenarios">
@@ -323,7 +316,7 @@
         <article class="evidence-card limitation-card">
           <span class="eyebrow">Known limits</span>
           <h3>Honest fallback, human review required.</h3>
-          <p>Ambiguous reports still need responder judgment. Live Gemma preview is token-gated and rate-limited, so the curated showcase remains the reliable public review path; no medical or incident-command authority is delegated to the model.</p>
+          <p>Ambiguous reports still need responder judgment. Live Gemma preview is guarded and rate-limited, so the curated showcase remains the reliable public review path; no medical or incident-command authority is delegated to the model.</p>
         </article>
       </div>
     </section>
