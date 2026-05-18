@@ -315,6 +315,7 @@ function initVolunteerConsole() {
   const reportInput = $('#field-report');
   const imageInput = $('#field-image');
   const audioInput = $('#field-audio');
+  const tokenInput = $('#field-judge-token');
   const status = $('#field-console-status');
   const bridgeButton = $('#load-bridge-example');
   const sendButton = $('#send-coordinator');
@@ -329,6 +330,7 @@ function initVolunteerConsole() {
       savedAt: new Date().toISOString(),
     };
     localStorage.setItem('edge-triage-field-draft', JSON.stringify(draft));
+    if (tokenInput?.value.trim()) localStorage.setItem('edge-triage-judge-token', tokenInput.value.trim());
     $('#draft-status').textContent = 'Draft saved locally';
   };
   const updateFileName = (input, target, emptyLabel) => {
@@ -381,6 +383,67 @@ function initVolunteerConsole() {
     status.classList.add('complete');
     status.classList.remove('error');
   };
+  const renderVolunteerLiveResult = (result, report, fileName) => {
+    const title = report.split(/[.!?]/).find(Boolean)?.trim() || `Live upload: ${fileName}`;
+    $('#app-result-title').textContent = title;
+    $('#app-result-summary').textContent = `${result.scene_summary || 'Live Gemma returned a triage result for the selected image.'} ${result.disclaimer || 'Decision support only.'}`;
+    $('#app-result-label').textContent = result.label;
+    $('#app-result-priority').textContent = result.priority;
+    $('#app-result-latency').textContent = fmtLatency(Number(result.latency_ms || 0));
+    $('#app-result-action').textContent = result.next_action;
+    $('#app-handoff').textContent = 'Ready for coordinator handoff after review. Human review required before operational decisions.';
+    $('#phone-report-title').textContent = title;
+    $('#phone-report-note').textContent = report || `Image selected: ${fileName}`;
+    $('#phone-priority').textContent = result.priority;
+    status.textContent = `${result.live_model ? 'Live Gemma analysis complete' : 'Guarded API analysis complete'}: ${result.priority}. Review before coordinator handoff.`;
+    status.classList.add('complete');
+    status.classList.remove('error');
+  };
+  const setVolunteerError = (message) => {
+    status.textContent = message;
+    status.classList.add('error');
+    status.classList.remove('complete');
+  };
+  const runVolunteerLiveInference = async (report) => {
+    const file = imageInput?.files?.[0];
+    const token = tokenInput?.value.trim() || localStorage.getItem('edge-triage-judge-token') || '';
+    if (!file) {
+      setVolunteerError('Real analysis needs an image. Add a photo, then run Edge-Triage.');
+      imageInput?.focus();
+      return;
+    }
+    if (!token) {
+      setVolunteerError('Paste the judge token from the Kaggle notes to run real analysis. No static bridge result was generated.');
+      tokenInput?.focus();
+      return;
+    }
+    if (file.size > 25 * 1024 * 1024) {
+      setVolunteerError('Image must be 25 MB or smaller.');
+      return;
+    }
+    const formData = new FormData();
+    formData.append('image', file);
+    formData.append('note', report);
+    status.textContent = 'Running real Live Gemma analysis…';
+    status.classList.remove('complete', 'error');
+    try {
+      const response = await fetch('/api/triage', {
+        method: 'POST',
+        headers: { 'X-Judge-Token': token },
+        body: formData
+      });
+      if (!response.ok) {
+        setVolunteerError(await friendlyLiveError(response));
+        return;
+      }
+      const result = await response.json();
+      localStorage.setItem('edge-triage-judge-token', token);
+      renderVolunteerLiveResult(result, report, file.name);
+    } catch (error) {
+      console.error(error);
+      setVolunteerError('Live Gemma analysis is unavailable right now. No static bridge result was generated.');
+    }
+  };
 
   reportInput.addEventListener('input', saveDraft);
   imageInput?.addEventListener('change', () => {
@@ -408,16 +471,13 @@ function initVolunteerConsole() {
   form.addEventListener('submit', (event) => {
     event.preventDefault();
     const report = reportInput.value.trim();
-    if (!report) {
-      status.textContent = 'Add a short field report before running Edge-Triage.';
-      status.classList.add('error');
-      status.classList.remove('complete');
-      reportInput.focus();
-      return;
-    }
     saveDraft();
-    renderFieldResult(bridgeSample, report);
+    runVolunteerLiveInference(report);
   });
+  if (tokenInput && localStorage.getItem('edge-triage-judge-token')) {
+    tokenInput.value = localStorage.getItem('edge-triage-judge-token');
+  }
+  tokenInput?.addEventListener('input', saveDraft);
   saveDraft();
 }
 
