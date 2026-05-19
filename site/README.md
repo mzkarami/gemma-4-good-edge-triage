@@ -18,14 +18,7 @@ docker compose up -d --build
 # open http://127.0.0.1:4173
 ```
 
-Private Tailscale preview from another device in the tailnet:
-
-```bash
-DEMO_BIND_ADDRESS=$(tailscale ip -4) docker compose up -d --build
-# open http://experiment:4173 or http://100.76.13.15:4173 from your laptop
-```
-
-Public deployment notes for `https://kaggle.nelly.work/` live in `docs/DEPLOYMENT.md`.
+For public-style deployment guidance, see `docs/DEPLOYMENT.md`.
 
 ## Modes
 

@@ -60,7 +60,7 @@ _allowed_origins = [
     origin.strip()
     for origin in os.getenv(
         "EDGE_TRIAGE_ALLOWED_ORIGINS",
-        "http://localhost:4173,http://127.0.0.1:4173,http://100.76.13.15:4173,http://experiment:4173",
+        "http://localhost:4173,http://127.0.0.1:4173",
     ).split(",")
     if origin.strip()
 ]

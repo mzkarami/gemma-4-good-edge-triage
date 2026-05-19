@@ -2,47 +2,27 @@
 
 Target public URL: `https://kaggle.nelly.work/`
 
-Before exposing anything publicly, read [`PUBLIC_DEMO_SECURITY_PLAN.md`](PUBLIC_DEMO_SECURITY_PLAN.md). The current target is a static judge demo plus a guarded same-origin Live Gemma preview: no full repo, `.env`, model directories, notebooks, raw Python dev servers, Docker socket, or internal services exposed. If deploying from `dev@100.97.113.99`, follow the handoff section in that plan before making changes.
+This public repository should be deployable without private infrastructure knowledge. The recommended public deployment is a static judge demo plus an optional guarded same-origin Live Gemma preview. Do not expose a full development checkout, `.env` file, model directory, notebook server, raw Python dev server, Docker socket, SSH material, or internal services.
 
-The judge-facing demo is static and data-backed, so the safest public deployment is a small read-only container behind an HTTPS reverse proxy. This avoids exposing the development checkout, Python process, model files, or any local credentials to the public internet.
-
-An optional live inference preview now exists for judges who want to upload an image and exercise the Gemma path. It is a separate guarded API service, disabled by default, and should be exposed only with rate limits, daily limits, concurrency controls, a kill switch, a 25 MB upload cap, and reverse-proxy controls.
-
-## Recommended architecture for Kaggle judges
+## Recommended architecture
 
 ```text
 Internet
-  -> HTTPS reverse proxy on kaggle.nelly.work
-  -> 127.0.0.1:4173 on the host
+  -> HTTPS reverse proxy for your demo domain
+  -> localhost-bound static demo container
   -> Docker container serving site/ with unprivileged nginx on port 8080
 ```
 
-The static site is the only required public surface. If the optional Live Gemma preview is enabled, expose it only through the same HTTPS reverse proxy path (`/api/`) with upload limits, rate limits, daily limits, concurrency controls, timeout controls, and the kill switch available. Do not expose the Python demo server, raw Uvicorn port, notebooks, databases, SSH keys, `.env` files, model files, or the full repository. The compose file defaults to localhost-only binding:
+The static site is the only required public surface. If the optional Live Gemma preview is enabled, expose it only through the same HTTPS reverse-proxy path (`/api/`) with upload limits, rate limits, daily limits, concurrency controls, timeout controls, and the kill switch available.
+
+The compose file defaults to localhost-only binding:
 
 ```yaml
 ports:
   - "${DEMO_BIND_ADDRESS:-127.0.0.1}:4173:8080"
 ```
 
-For private tailnet testing, start it with the host's Tailscale IP:
-
-```bash
-DEMO_BIND_ADDRESS=$(tailscale ip -4) docker compose up -d --build
-```
-
-Then open `http://experiment:4173/` or `http://100.76.13.15:4173/` from a laptop on the same tailnet.
-
-For public judging, keep the app itself localhost-only and put the public HTTPS reverse proxy in front of it.
-
-## Tailscale-only preview vs public Kaggle URL
-
-Tailscale does not automatically make `https://kaggle.nelly.work/` private. Access depends on how DNS and the reverse proxy are configured:
-
-- **Tailnet-only preview:** expose the site with Tailscale Serve or bind the reverse proxy only to the Tailscale IP, for example `100.76.13.15`. Only devices/users in the tailnet can reach it.
-- **Public Kaggle submission:** point public DNS for `kaggle.nelly.work` at the host and let Caddy/Nginx listen publicly on 80/443. Anyone with the URL can reach the static site, including judges.
-- **Do not use Tailscale Funnel unless intended:** Funnel is public internet exposure through Tailscale, not tailnet-only access.
-
-For final judging, use the public Kaggle URL but serve only the static Dockerized site. For private review before submission, use a Tailscale-only URL.
+For public judging, keep the app itself localhost-only and put a public HTTPS reverse proxy in front of it.
 
 ## Why Docker is safer than `python3 -m http.server`
 
@@ -78,15 +58,15 @@ docker compose down
 
 The Live Gemma preview is intentionally separate from the static site. Judges do not need an account or pasted token for the current public judging flow. The curated offline demo remains available even if this service is stopped.
 
-Private tailnet smoke test:
+Local smoke test:
 
 ```bash
-export DEMO_BIND_ADDRESS=$(tailscale ip -4)
-export LIVE_API_BIND_ADDRESS=$(tailscale ip -4)
+export DEMO_BIND_ADDRESS=127.0.0.1
+export LIVE_API_BIND_ADDRESS=127.0.0.1
 export EDGE_TRIAGE_LIVE_MODEL=0   # fallback/smoke mode; set 1 only after model check
 
 docker compose --profile live up -d --build
-curl -fsS http://100.76.13.15:4180/healthz
+curl -fsS http://127.0.0.1:4180/healthz
 ```
 
 Live model mode:
@@ -130,10 +110,12 @@ OWASP / OWASP AI-aligned controls without making judging painful:
 
 ## Caddy reverse proxy
 
-If Caddy is already installed on the host, adapt `deploy/Caddyfile.example`:
+If Caddy is already installed on the host, adapt `deploy/Caddyfile.example` for your domain.
+
+Example:
 
 ```caddyfile
-kaggle.nelly.work {
+your-demo-domain.example {
     encode zstd gzip
     reverse_proxy 127.0.0.1:4173
 }
@@ -148,15 +130,15 @@ If the host uses system nginx instead of Caddy:
 ```nginx
 server {
     listen 80;
-    server_name kaggle.nelly.work;
+    server_name your-demo-domain.example;
     return 301 https://$host$request_uri;
 }
 
 server {
     listen 443 ssl http2;
-    server_name kaggle.nelly.work;
+    server_name your-demo-domain.example;
 
-    # Configure certificates with certbot or the existing host TLS automation.
+    # Configure certificates with certbot or existing TLS automation.
 
     location / {
         proxy_pass http://127.0.0.1:4173;
@@ -169,13 +151,13 @@ server {
 
 ## Pre-public checklist
 
-Before sharing the Kaggle URL:
+Before sharing the public URL:
 
-1. DNS for `kaggle.nelly.work` points to the intended host.
+1. DNS for your demo domain points to the intended host.
 2. `docker compose ps` shows the demo container as healthy or running.
-3. `curl -I https://kaggle.nelly.work/` returns `200` and HTTPS headers.
-4. `curl -fsS https://kaggle.nelly.work/data.json >/dev/null` succeeds.
-5. `ss -tulpn` shows only the reverse proxy public on 80/443; the demo app remains localhost-only on 127.0.0.1:4173.
+3. `curl -I https://your-demo-domain.example/` returns `200` and HTTPS headers.
+4. `curl -fsS https://your-demo-domain.example/data.json >/dev/null` succeeds.
+5. `ss -tulpn` shows only the reverse proxy public on 80/443; the demo app remains localhost-only on `127.0.0.1:4173`.
 6. No live model API, notebook server, SSH key material, `.env`, or full repo directory is served publicly unless the guarded live API was intentionally enabled behind HTTPS and public-demo controls.
 7. If Live Gemma preview is enabled, verify over-25 MB uploads fail, malformed/corrupt images fail, rate/concurrency controls work, and the token-free public path succeeds.
 
@@ -186,4 +168,4 @@ The static app supports both judge modes:
 - Volunteer Mode: curated field reports, triage label, priority, latency, explanation, and conservative next action. Its curated offline path uses fixed public-safe samples; its Live Gemma preview path calls the guarded API only when selected.
 - Optimization Mode: current frontier cards plus EDG-478/EDG-479/EDG-480 ablation evidence. Critical Accuracy is presented here as a validated profile, not as a third top-level UI mode.
 
-The page now includes an explicit mode switcher so judges can toggle between both experiences without relying only on scrolling/navigation links.
+The page includes an explicit mode switcher so judges can toggle between both experiences without relying only on scrolling/navigation links.

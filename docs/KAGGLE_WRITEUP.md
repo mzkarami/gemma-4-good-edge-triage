@@ -63,7 +63,7 @@ Instead of presenting a single magic prompt, the project exposes the speed/accur
 
 ## 4. Current Validated Frontier
 
-The canonical source of truth is [`docs/CURRENT_FRONTIER.md`](docs/CURRENT_FRONTIER.md). Public claims in the README, site, video, and writeup should stay aligned with that file.
+The canonical source of truth is [`CURRENT_FRONTIER.md`](CURRENT_FRONTIER.md). Public claims in the README, site, video, and writeup should stay aligned with that file.
 
 | Profile | Use case | F1 | Accuracy | Latency | Samples | Run |
 | --- | --- | ---: | ---: | ---: | ---: | --- |
