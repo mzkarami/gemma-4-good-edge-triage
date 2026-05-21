@@ -76,8 +76,11 @@ Main artifacts:
 - `results.tsv` — experiment ledger.
 - `docs/CURRENT_FRONTIER.md` — canonical public metric summary.
 - `media/` — public-safe screenshots and source media for Kaggle/video.
+- `data/` and `logs/` — placeholder workspaces for local shards, extracted images, and generated benchmark logs; generated contents stay ignored.
 - `submission_notebook.ipynb`, `analysis.ipynb`, and `kaggle_dataset_upload/` — Kaggle packaging and research-ledger notebook assets.
 - `agents/` — optional templates for Paperclip-style NGO/research workspaces that want an agentic AutoResearch loop around `triage_sandbox.py`.
+- `plugin/` — optional Paperclip dashboard skeleton for viewing `results.tsv` and triggering trusted local benchmark pulses.
+- `infra/` — optional local Paperclip stack example. The public judge demo does not require it.
 - `Modelfile` and `litert_backend.py` — Ollama and LiteRT/Google AI Edge deployment scaffolds.
 
 ## Quick start
@@ -116,6 +119,9 @@ Start here if you are new:
 - [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) — system design and research loop.
 - [`docs/DEVELOPER_GUIDE.md`](docs/DEVELOPER_GUIDE.md) — setup, data/model prep, and experiment workflow.
 - [`agents/README.md`](agents/README.md) — optional Paperclip-style agent templates for self-improving NGO/research workflows.
+- [`plugin/README.md`](plugin/README.md) — optional local Paperclip dashboard skeleton.
+- [`infra/README.md`](infra/README.md) — optional local Paperclip stack example.
+- [`data/README.md`](data/README.md) and [`logs/README.md`](logs/README.md) — local workspace placeholders and ignore policy.
 - [`docs/OPERATIONS_GUIDE.md`](docs/OPERATIONS_GUIDE.md) — field-operator CLI usage.
 - [`site/README.md`](site/README.md) — judge demo site notes.
 - [`media/README.md`](media/README.md) — screenshot and video media library.

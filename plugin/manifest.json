@@ -1,0 +1,21 @@
+{
+  "name": "edge-triage-gemma-4",
+  "version": "1.0.0",
+  "description": "Optional Paperclip Plugin for Edge-Triage Research Dashboard",
+  "author": "mzkarami",
+  "capabilities": ["filesystem", "shell"],
+  "slots": [
+    {
+      "type": "page",
+      "path": "edge-triage",
+      "title": "Edge-Triage Dashboard",
+      "icon": "chart-line"
+    }
+  ],
+  "worker": {
+    "src": "src/worker.ts"
+  },
+  "ui": {
+    "src": "src/ui/Dashboard.tsx"
+  }
+}

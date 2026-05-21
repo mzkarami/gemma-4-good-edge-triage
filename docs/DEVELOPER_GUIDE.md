@@ -104,6 +104,9 @@ Start here:
 * [`agents/SOUL.md`](../agents/SOUL.md) gives the Researcher Agent its operating loop.
 * [`agents/TOOLS.md`](../agents/TOOLS.md) lists the allowed benchmark/setup commands.
 * [`agents/HEARTBEAT.md`](../agents/HEARTBEAT.md) shows an hourly automation schedule you can adapt.
+* [`plugin/README.md`](../plugin/README.md) explains the optional local dashboard skeleton.
+* [`infra/README.md`](../infra/README.md) explains the optional local Paperclip stack.
+* [`data/README.md`](../data/README.md) and [`logs/README.md`](../logs/README.md) describe public-safe local workspaces.
 
 In this repository, the self-improving loop is intentionally benchmark-gated:
 

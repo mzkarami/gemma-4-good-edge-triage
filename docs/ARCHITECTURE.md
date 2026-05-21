@@ -23,6 +23,10 @@ Research / response lead
 - `triage_sandbox.py`: repeatable evaluation harness for label quality, latency, routing mix, and keep/discard decisions.
 - `results.tsv`: experiment ledger.
 - `docs/CURRENT_FRONTIER.md`: public source of truth for current benchmark claims.
+- `agents/`: optional templates for Paperclip-style NGO/research workspaces that want an agentic loop around the benchmark.
+- `plugin/`: optional local Paperclip dashboard skeleton that reads `results.tsv`.
+- `infra/`: optional public-safe local Paperclip compose example.
+- `data/` and `logs/`: local workspace placeholders; generated shards, images, and logs stay out of git.
 - `litert_backend.py` and `Modelfile`: deployment scaffolds for LiteRT/Google AI Edge and local model runners.
 
 ## Agentic research loop

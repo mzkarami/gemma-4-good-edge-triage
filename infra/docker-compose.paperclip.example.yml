@@ -1,0 +1,45 @@
+# Optional Paperclip Field Hub example for local research observability.
+# This is not required for the public judge demo.
+#
+# Before use:
+#   export PAPERCLIP_DB_PASSWORD="$(openssl rand -base64 32)"
+#   export PAPERCLIP_DOMAIN="localhost"
+#   docker compose -f infra/docker-compose.paperclip.example.yml up -d
+#
+# Public safety notes:
+# - Services bind to localhost by default.
+# - Do not commit .env files or generated Postgres volumes.
+# - Use a real reverse proxy/TLS setup before exposing Paperclip beyond localhost.
+
+services:
+  paperclip-db:
+    image: postgres:15-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: paperclip
+      POSTGRES_PASSWORD: ${PAPERCLIP_DB_PASSWORD:?Set PAPERCLIP_DB_PASSWORD before starting}
+      POSTGRES_DB: paperclip
+    ports:
+      - "127.0.0.1:54329:5432"
+    volumes:
+      - paperclip_db_data:/var/lib/postgresql/data
+
+  paperclip-core:
+    image: ghcr.io/paperclip-ai/paperclip:latest
+    restart: unless-stopped
+    depends_on:
+      - paperclip-db
+    environment:
+      DATABASE_URL: postgres://paperclip:${PAPERCLIP_DB_PASSWORD:?Set PAPERCLIP_DB_PASSWORD before starting}@paperclip-db:5432/paperclip
+      PORT: 3100
+      API_PORT: 3101
+    ports:
+      - "127.0.0.1:3100:3100"
+      - "127.0.0.1:3101:3101"
+    volumes:
+      - ../data:/workspace/data:ro
+      - ../logs:/workspace/logs
+      - ../results.tsv:/workspace/results.tsv:ro
+
+volumes:
+  paperclip_db_data:
