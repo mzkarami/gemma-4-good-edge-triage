@@ -106,11 +106,17 @@ python3 -m http.server 4173 --directory site
 # then open http://127.0.0.1:4173
 ```
 
-To run real local model inference or a full research benchmark, prepare the model/data artifacts first:
+To run real local model inference or a full research benchmark, prepare the model/data artifacts first. `prepare.py` checks sources in this order: attached Kaggle notebook inputs under `/kaggle/input`, local cache, optional Kaggle dataset slugs, then Hugging Face.
 
 ```bash
-# Hugging Face auth may be required for gated model/data access.
+# Option A: Hugging Face source. Auth may be required for gated model/data access.
 uv run huggingface-cli login
+
+# Option B: Kaggle source. Use this when a judge/user has Kaggle access but no Hugging Face account.
+# In a Kaggle notebook, attach the model/data datasets as Inputs and prepare.py will auto-detect them.
+# Locally, install/configure the Kaggle CLI, then set dataset slugs before running prepare.py:
+# export EDGE_TRIAGE_KAGGLE_MODEL_DATASET=<kaggle-user>/<edge-triage-model-dataset-slug>
+# export EDGE_TRIAGE_KAGGLE_DATASET=<kaggle-user>/<edge-triage-parquet-dataset-slug>
 
 # Download/prepare GGUF model artifacts and local benchmark assets.
 uv run prepare.py

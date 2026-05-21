@@ -1,6 +1,12 @@
 """
 One-time data preparation for autoresearch experiments.
-Downloads data shards and trains a BPE tokenizer.
+Downloads data shards, trains a BPE tokenizer, and prepares model artifacts.
+
+Sources are checked in this order where applicable:
+1. attached Kaggle notebook inputs under /kaggle/input,
+2. existing local cache under ~/.cache/autoresearch/,
+3. optional Kaggle dataset slugs from EDGE_TRIAGE_KAGGLE_MODEL_DATASET / EDGE_TRIAGE_KAGGLE_DATASET,
+4. Hugging Face fallback.
 
 Usage:
     python prepare.py                  # full prep (download + tokenizer)
@@ -16,6 +22,7 @@ import math
 import argparse
 import pickle
 import json
+import subprocess
 from multiprocessing import Pool
 
 import requests
@@ -54,6 +61,32 @@ SPLIT_PATTERN = r"""'(?i:[sdmt]|ll|ve|re)|[^\r\n\p{L}\p{N}]?+\p{L}+|\p{N}{1,2}| 
 
 SPECIAL_TOKENS = [f"<|reserved_{i}|>" for i in range(4)]
 BOS_TOKEN = "<|reserved_0|>"
+
+
+def download_kaggle_dataset(dataset_slug, destination_dir):
+    """Download and unzip a Kaggle dataset into destination_dir with the Kaggle CLI."""
+    if not dataset_slug:
+        return False
+    os.makedirs(destination_dir, exist_ok=True)
+    print(f"Kaggle: downloading {dataset_slug} into {destination_dir}...")
+    try:
+        subprocess.run(
+            [
+                "kaggle",
+                "datasets",
+                "download",
+                "-d",
+                dataset_slug,
+                "-p",
+                destination_dir,
+                "--unzip",
+            ],
+            check=True,
+        )
+        return True
+    except (FileNotFoundError, subprocess.CalledProcessError) as exc:
+        print(f"Kaggle: dataset download failed for {dataset_slug}: {exc}")
+        return False
 
 # ---------------------------------------------------------------------------
 # Data download
@@ -109,6 +142,15 @@ def download_data(num_shards, download_workers=8):
 
     needed = len(ids) - existing
     print(f"Data: downloading {needed} shards ({existing} already exist)...")
+
+    kaggle_dataset = os.getenv("EDGE_TRIAGE_KAGGLE_DATASET")
+    if kaggle_dataset:
+        download_kaggle_dataset(kaggle_dataset, DATA_DIR)
+        existing = sum(1 for i in ids if os.path.exists(os.path.join(DATA_DIR, f"shard_{i:05d}.parquet")))
+        if existing == len(ids):
+            print(f"Data: all {len(ids)} shards ready from Kaggle at {DATA_DIR}")
+            return
+        print(f"Data: Kaggle source provided {existing}/{len(ids)} shards; falling back to Hugging Face for missing shards...")
 
     workers = max(1, min(download_workers, needed))
     with Pool(processes=workers) as pool:
@@ -401,7 +443,23 @@ def download_model(repo_id="unsloth/gemma-4-e2b-it-GGUF", filename="gemma-4-E2B-
         print(f"Model: {local_filename} already exists at {MODEL_DIR}")
         return model_path
 
-    # Path 3: Hugging Face Download
+    # Path 3: Optional Kaggle API fallback for judges/users without Hugging Face access.
+    # Set EDGE_TRIAGE_KAGGLE_MODEL_DATASET=user/dataset-slug before running prepare.py.
+    kaggle_dataset = os.getenv("EDGE_TRIAGE_KAGGLE_MODEL_DATASET")
+    if kaggle_dataset:
+        download_kaggle_dataset(kaggle_dataset, MODEL_DIR)
+        kaggle_prefixed_path = os.path.join(MODEL_DIR, local_filename)
+        kaggle_raw_path = os.path.join(MODEL_DIR, filename)
+        if os.path.exists(kaggle_prefixed_path):
+            print(f"Model: found {local_filename} from Kaggle dataset at {MODEL_DIR}")
+            return kaggle_prefixed_path
+        if os.path.exists(kaggle_raw_path):
+            os.rename(kaggle_raw_path, model_path)
+            print(f"Model: renamed Kaggle artifact to {local_filename}")
+            return model_path
+        print(f"Model: Kaggle dataset did not contain {local_filename} or {filename}; falling back to Hugging Face...")
+
+    # Path 4: Hugging Face Download
     print(f"Model: downloading {filename} from {repo_id}...")
     temp_path = hf_hub_download(repo_id=repo_id, filename=filename, local_dir=MODEL_DIR)
     os.rename(temp_path, model_path)

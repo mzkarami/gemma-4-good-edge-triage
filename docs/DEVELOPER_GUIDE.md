@@ -24,8 +24,24 @@ uv run huggingface-cli login
 ## 3. Preparing Data & Models
 The project uses **QCRI/MEDIC** for multimodal triage and **Gemma 4 GGUF/LiteRT** for local inference.
 
+`prepare.py` is source-flexible for judges and developers:
+
+1. Kaggle notebook Inputs under `/kaggle/input` are scanned first.
+2. Existing local cache files under `~/.cache/autoresearch/` are reused.
+3. If `EDGE_TRIAGE_KAGGLE_MODEL_DATASET` or `EDGE_TRIAGE_KAGGLE_DATASET` are set, the Kaggle CLI is used as a fallback source.
+4. Hugging Face is used last.
+
 ```bash
-# Manual download (GGUF, Multimodal Projector, and .litertlm)
+# Optional Hugging Face source.
+uv run huggingface-cli login
+
+# Optional Kaggle source for users without a Hugging Face account.
+# In a Kaggle notebook, attach the datasets as Inputs instead of setting these.
+# Locally, install/configure the Kaggle CLI, then set your published dataset slugs:
+# export EDGE_TRIAGE_KAGGLE_MODEL_DATASET=<kaggle-user>/<edge-triage-model-dataset-slug>
+# export EDGE_TRIAGE_KAGGLE_DATASET=<kaggle-user>/<edge-triage-parquet-dataset-slug>
+
+# Download/prepare GGUF model artifacts and benchmark data.
 uv run prepare.py
 uv run download_litert.py
 

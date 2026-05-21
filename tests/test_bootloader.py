@@ -49,6 +49,54 @@ class TestBootloader(unittest.TestCase):
         expected_target = os.path.join(prepare.MODEL_DIR, "Edge-Triage-model.gguf")
         mock_rename.assert_called_once_with("/tmp/downloaded_file", expected_target)
 
+    @patch.dict(os.environ, {"EDGE_TRIAGE_KAGGLE_MODEL_DATASET": "user/edge-triage-models"}, clear=False)
+    @patch("prepare.hf_hub_download")
+    @patch("prepare.download_kaggle_dataset")
+    @patch("os.path.exists")
+    @patch("os.rename")
+    def test_download_model_uses_kaggle_dataset_before_hf(self, mock_rename, mock_exists, mock_kaggle, mock_hf):
+        def fake_exists(path):
+            return path in {
+                self.test_dir.name,
+                os.path.join(self.test_dir.name, "model.gguf"),
+            }
+
+        mock_exists.side_effect = fake_exists
+
+        path = prepare.download_model(repo_id="test/repo", filename="model.gguf")
+
+        expected_target = os.path.join(prepare.MODEL_DIR, "Edge-Triage-model.gguf")
+        self.assertEqual(path, expected_target)
+        mock_kaggle.assert_called_once_with("user/edge-triage-models", prepare.MODEL_DIR)
+        mock_rename.assert_called_once_with(os.path.join(self.test_dir.name, "model.gguf"), expected_target)
+        mock_hf.assert_not_called()
+
+    @patch.dict(os.environ, {"EDGE_TRIAGE_KAGGLE_DATASET": "user/edge-triage-shards"}, clear=False)
+    @patch("prepare.download_kaggle_dataset")
+    @patch("prepare.Pool")
+    @patch("os.path.exists")
+    def test_download_data_uses_kaggle_dataset_before_hf_workers(self, mock_exists, mock_pool, mock_kaggle):
+        kaggle_downloaded = {"ready": False}
+
+        def fake_kaggle(*_args):
+            kaggle_downloaded["ready"] = True
+            return True
+
+        def fake_exists(path):
+            if path == prepare.DATA_DIR:
+                return True
+            return kaggle_downloaded["ready"] and (
+                path.endswith("shard_00000.parquet") or path.endswith("shard_06542.parquet")
+            )
+
+        mock_kaggle.side_effect = fake_kaggle
+        mock_exists.side_effect = fake_exists
+
+        prepare.download_data(num_shards=1, download_workers=8)
+
+        mock_kaggle.assert_called_once_with("user/edge-triage-shards", prepare.DATA_DIR)
+        mock_pool.assert_not_called()
+
     @patch("prepare.download_model")
     def test_download_multimodal_projector_fetches_f16_projector_with_edge_triage_name(self, mock_download_model):
         expected_path = os.path.join(prepare.MODEL_DIR, "Edge-Triage-mmproj-F16.gguf")

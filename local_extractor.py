@@ -20,6 +20,27 @@ LABEL_NAMES = [
     'rescue_volunteering_or_donation_effort'
 ]
 
+
+def collect_parquet_search_dirs():
+    """Return local/cache/Kaggle directories that contain candidate parquet files."""
+    search_dirs = [DATA_DIR]
+    try:
+        from prepare import DATA_DIR as GLOBAL_DATA_DIR
+        if os.path.exists(GLOBAL_DATA_DIR) and GLOBAL_DATA_DIR not in search_dirs:
+            search_dirs.append(GLOBAL_DATA_DIR)
+    except ImportError:
+        cache_fallback = os.path.join(os.path.expanduser("~"), ".cache", "autoresearch", "data")
+        if os.path.exists(cache_fallback):
+            search_dirs.append(cache_fallback)
+
+    kaggle_input_dir = os.getenv("KAGGLE_INPUT_DIR", "/kaggle/input")
+    if os.path.isdir(kaggle_input_dir):
+        for root, _dirs, files in os.walk(kaggle_input_dir):
+            if any(name.endswith(".parquet") for name in files) and root not in search_dirs:
+                search_dirs.append(root)
+
+    return search_dirs
+
 def extract_from_local_parquet():
     """
     Reads MEDIC parquet files and extracts images/labels.
@@ -27,18 +48,9 @@ def extract_from_local_parquet():
     Uses md5 hash of image path as a unique identifier.
     """
     os.makedirs(IMAGE_DIR, exist_ok=True)
-    
+
     # 1. Determine search paths
-    search_dirs = [DATA_DIR]
-    try:
-        from prepare import DATA_DIR as GLOBAL_DATA_DIR
-        if os.path.exists(GLOBAL_DATA_DIR) and GLOBAL_DATA_DIR not in search_dirs:
-            search_dirs.append(GLOBAL_DATA_DIR)
-    except ImportError:
-        # Fallback if prepare.py is not available
-        cache_fallback = os.path.join(os.path.expanduser("~"), ".cache", "edge-triage", "data")
-        if os.path.exists(cache_fallback):
-            search_dirs.append(cache_fallback)
+    search_dirs = collect_parquet_search_dirs()
 
     # 2. Collect all parquet files from all search directories
     parquet_files = []
@@ -47,7 +59,7 @@ def extract_from_local_parquet():
             continue
         files = [os.path.join(d, f) for f in os.listdir(d) if f.endswith(".parquet")]
         parquet_files.extend(files)
-    
+
     if not parquet_files:
         print(f"Error: No .parquet files found in searched directories: {search_dirs}")
         return
