@@ -144,6 +144,15 @@ curl -I http://127.0.0.1:4173/
 curl -fsS http://127.0.0.1:4173/data.json >/dev/null
 ```
 
+Optional full-stack smoke for reviewers and maintainers:
+
+```bash
+# Runs the static site plus guarded live API in credential-free fallback mode.
+# This is opt-in so normal tests stay fast and do not require Docker services,
+# Hugging Face credentials, Kaggle credentials, GPU, or model artifacts.
+EDGE_TRIAGE_RUN_E2E=1 scripts/e2e_smoke.sh
+```
+
 ## Documentation map
 
 Start here if you are new:
