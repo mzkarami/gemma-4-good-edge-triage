@@ -4,7 +4,7 @@
 **Category:** Global Resilience / Disaster Response
 **Core idea:** Gemma 4-powered local multimodal triage for disaster reports, with a human-led volunteer workflow and a reproducible self-learning optimization loop.
 
-> Link placeholders to fill at submission time:
+> Public artifact links:
 > - Live demo: `https://kaggle.nelly.work`
 > - Code repository: `https://github.com/mzkarami/gemma-4-good-edge-triage`
 > - Video: `https://youtu.be/q8sveHsZiCA`

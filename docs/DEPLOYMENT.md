@@ -72,7 +72,8 @@ curl -fsS http://127.0.0.1:4180/healthz
 Live model mode:
 
 ```bash
-uv run prepare.py  # ensures the GGUF model and Edge-Triage-mmproj-F16.gguf are in ~/.cache/autoresearch/models
+uv run prepare.py  # ensures the GGUF model and Edge-Triage-mmproj-F16.gguf exist locally
+export EDGE_TRIAGE_MODEL_DIR="$HOME/.cache/autoresearch/models"  # or copy/link those files into ./models
 export EDGE_TRIAGE_LIVE_MODEL=1
 docker compose --profile live up -d --build edge-triage-live-api
 ```

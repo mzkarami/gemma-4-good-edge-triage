@@ -1,0 +1,17 @@
+{
+  "name": "edge-triage-paperclip-plugin",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Optional Paperclip dashboard skeleton for Edge-Triage research metrics.",
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.7",
+    "typescript": "^5.9.3"
+  },
+  "peerDependencies": {
+    "react": ">=18"
+  }
+}

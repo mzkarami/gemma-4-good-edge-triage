@@ -18,7 +18,7 @@ docker compose up -d --build
 # open http://127.0.0.1:4173
 ```
 
-For public-style deployment guidance, see `docs/DEPLOYMENT.md`.
+For public-style deployment guidance, see `../docs/DEPLOYMENT.md` from this directory, or `docs/DEPLOYMENT.md` from the repository root.
 
 ## Modes
 
@@ -26,7 +26,7 @@ For public-style deployment guidance, see `docs/DEPLOYMENT.md`.
   - **Curated showcase:** fixed public-safe sample cases from the working product experience. Judges click scenario cards; the UI updates the image, label, priority, next action, and analysis without showing upload controls, calling the model, or sending anything to a server.
   - **Live Gemma preview:** optional guarded API path for judges using the same public site flow, without a pasted token. Images are capped at 25 MB, sanitized server-side, rate-limited, concurrency-limited, timeout-bounded, and sent only when this path is selected.
 - **Optimization Mode:** current frontier and EDG-479/EDG-480 ablation decision showing why EDG-480 is the Critical Accuracy Profile candidate.
-- **Metrics Source:** `site/metrics.html` provides a readable metrics page instead of sending judges to raw markdown.
+- **Metrics Source:** `metrics.html` provides a readable metrics page instead of sending judges to raw markdown.
 
 ## Design choice
 
@@ -41,4 +41,4 @@ The default judge path is intentionally curated/offline and data-backed. It does
 
 ## Data source
 
-Public demo data is in `site/data.json` and mirrors the competition-facing metrics from `docs/CURRENT_FRONTIER.md`.
+Public demo data is in `data.json` and mirrors the competition-facing metrics from `../docs/CURRENT_FRONTIER.md`.

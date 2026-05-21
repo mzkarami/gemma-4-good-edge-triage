@@ -10,6 +10,14 @@ What it does:
 - shows recent F1/latency/status rows;
 - provides a local manual pulse button that runs `uv run triage_sandbox.py --description "paperclip manual pulse"` when the host platform grants shell capability.
 
+Local type check:
+
+```bash
+cd plugin
+npm install
+npm run typecheck
+```
+
 Safety notes:
 
 - The plugin is local/opt-in. Do not expose shell-capable automation to untrusted users.

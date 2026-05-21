@@ -18,7 +18,7 @@ Research / response lead
 ## Components
 
 - `site/`: static public demo with volunteer and optimization views. The static mode uses curated public-safe scenarios so it works without a hosted model.
-- `live_api.py`: optional FastAPI service for a guarded Live Gemma preview. It requires a judge token, upload limits, rate limits, MIME validation, and same-origin/reverse-proxy deployment.
+- `live_api.py`: optional FastAPI service for a guarded Live Gemma preview. The public judge flow is token-free and protected by localhost binding, same-origin reverse proxying, upload limits, rate limits, MIME validation, concurrency limits, timeout bounds, and a kill switch.
 - `edge-triage-cli.py`: local field CLI for text/image-style disaster reports.
 - `triage_sandbox.py`: repeatable evaluation harness for label quality, latency, routing mix, and keep/discard decisions.
 - `results.tsv`: experiment ledger.
@@ -46,4 +46,4 @@ Edge-Triage is a triage assistant, not an incident commander or medical authorit
 
 ## Deployment model
 
-For public judging, serve the static site over HTTPS and keep raw app/API ports private. If the optional live API is enabled, expose it only through the HTTPS origin under `/api/*`, require the judge token, and keep the model directory mounted read-only.
+For public judging, serve the static site over HTTPS and keep raw app/API ports private. If the optional live API is enabled, expose it only through the HTTPS origin under `/api/*`, keep the model directory mounted read-only, and keep upload/rate/concurrency/timeout controls enabled.

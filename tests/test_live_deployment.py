@@ -29,7 +29,7 @@ class LiveDeploymentConfigTest(unittest.TestCase):
         self.assertIn("EDGE_TRIAGE_MMPROJ_PATH=${EDGE_TRIAGE_MMPROJ_PATH:-/app/models/Edge-Triage-mmproj-F16.gguf}", compose)
         self.assertIn("/tmp/edge-triage-live:mode=1777,noexec,nosuid,nodev,size=64m", compose)
         self.assertIn("TMPDIR=/tmp/edge-triage-live", compose)
-        self.assertIn("${EDGE_TRIAGE_MODEL_DIR:-/home/dev/.cache/autoresearch/models}:/app/models:ro", compose)
+        self.assertIn("${EDGE_TRIAGE_MODEL_DIR:-./models}:/app/models:ro", compose)
         self.assertIn("no-new-privileges:true", compose)
         self.assertIn("cap_drop:", compose)
         self.assertIn("read_only: true", compose)

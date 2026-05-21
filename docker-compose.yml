@@ -27,8 +27,8 @@ services:
     ports:
       - "${LIVE_API_BIND_ADDRESS:-127.0.0.1}:4180:8080"
     environment:
-      # Leave empty by default so static-only compose commands do not require a secret.
-      # live_api.py fails closed with 503 until a real token is configured.
+      # Optional legacy/script token. The public judge flow is token-free and guarded by
+      # localhost binding, same-origin proxying, rate limits, upload caps, and a kill switch.
       - EDGE_TRIAGE_JUDGE_TOKEN=${EDGE_TRIAGE_JUDGE_TOKEN:-}
       - EDGE_TRIAGE_LIVE_MODEL=${EDGE_TRIAGE_LIVE_MODEL:-0}
       - EDGE_TRIAGE_MODEL_PATH=${EDGE_TRIAGE_MODEL_PATH:-/app/models/Edge-Triage-gemma-4-E4B-it-Q3_K_M.gguf}
@@ -45,7 +45,7 @@ services:
     tmpfs:
       - /tmp/edge-triage-live:mode=1777,noexec,nosuid,nodev,size=64m
     volumes:
-      - ${EDGE_TRIAGE_MODEL_DIR:-/home/dev/.cache/autoresearch/models}:/app/models:ro
+      - ${EDGE_TRIAGE_MODEL_DIR:-./models}:/app/models:ro
     cap_drop:
       - ALL
     security_opt:
