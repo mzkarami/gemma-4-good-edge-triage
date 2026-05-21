@@ -25,6 +25,8 @@ The project also gives a data science team a repeatable way to improve the syste
 
 That split is the whole product: simple for volunteers, measurable for researchers.
 
+The self-improving research loop is inspired by Andrej Karpathy's AutoResearch-style pattern: a fixed benchmark harness, an agent-editable sandbox, and a measured keep/discard rule. In Edge-Triage, that idea is adapted for NGO/humanitarian use through the templates in [`agents/`](agents/), with human review before deployment defaults change.
+
 ## Judge-facing experiences and model profiles
 
 Edge-Triage has two public Web UI experiences:
@@ -75,6 +77,7 @@ Main artifacts:
 - `docs/CURRENT_FRONTIER.md` — canonical public metric summary.
 - `media/` — public-safe screenshots and source media for Kaggle/video.
 - `submission_notebook.ipynb`, `analysis.ipynb`, and `kaggle_dataset_upload/` — Kaggle packaging and research-ledger notebook assets.
+- `agents/` — optional templates for Paperclip-style NGO/research workspaces that want an agentic AutoResearch loop around `triage_sandbox.py`.
 - `Modelfile` and `litert_backend.py` — Ollama and LiteRT/Google AI Edge deployment scaffolds.
 
 ## Quick start
@@ -112,6 +115,7 @@ Start here if you are new:
 - [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md) — public demo hosting, Docker, HTTPS, and live-preview safety controls.
 - [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) — system design and research loop.
 - [`docs/DEVELOPER_GUIDE.md`](docs/DEVELOPER_GUIDE.md) — setup, data/model prep, and experiment workflow.
+- [`agents/README.md`](agents/README.md) — optional Paperclip-style agent templates for self-improving NGO/research workflows.
 - [`docs/OPERATIONS_GUIDE.md`](docs/OPERATIONS_GUIDE.md) — field-operator CLI usage.
 - [`site/README.md`](site/README.md) — judge demo site notes.
 - [`media/README.md`](media/README.md) — screenshot and video media library.

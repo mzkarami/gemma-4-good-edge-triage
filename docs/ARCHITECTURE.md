@@ -25,6 +25,16 @@ Research / response lead
 - `docs/CURRENT_FRONTIER.md`: public source of truth for current benchmark claims.
 - `litert_backend.py` and `Modelfile`: deployment scaffolds for LiteRT/Google AI Edge and local model runners.
 
+## Agentic research loop
+
+The optimization side is inspired by Andrej Karpathy's AutoResearch-style pattern: define a fixed harness, give an agent a narrow sandbox to edit, and apply a measured keep/discard rule. Edge-Triage adapts that idea for humanitarian triage:
+
+- the editable sandbox is `triage_sandbox.py`;
+- the fixed benchmark and data preparation live in `prepare.py` and the gold-set path;
+- the experiment ledger is `results.tsv`;
+- the optional agent templates live in `agents/`;
+- human review is required before agent-discovered changes become deployment defaults.
+
 ## Safety model
 
 Edge-Triage is a triage assistant, not an incident commander or medical authority. It uses constrained categories, conservative next actions, human-readable evidence, and local-first deployment assumptions so responders keep control.

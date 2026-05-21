@@ -12,7 +12,7 @@ Welcome to the **Edge-Triage Hybrid Searcher** development guide. This document 
 ```bash
 # 1. Clone the repository
 git clone https://github.com/mzkarami/gemma-4-good-edge-triage.git
-cd Gemma-4-Edge-Triage
+cd gemma-4-good-edge-triage
 
 # 2. Sync dependencies
 uv sync
@@ -92,12 +92,24 @@ litert-lm run ~/.cache/autoresearch/models/Edge-Triage-gemma-4-E2B-it.litertlm -
 ### C. llama.cpp (Research & Vision)
 Native high-fidelity support provided via `llama-cpp-python` in `triage_sandbox.py` and the `edge-triage-cli.py`.
 
-## 8. The Self-Improving Nature of Edge-Triage
-Edge-Triage is built on the **AutoResearch** framework. It is designed to be a "living" system that self-heals and self-optimizes:
+## 8. Self-Improving Agent Templates
+Edge-Triage includes optional agent templates under [`agents/`](../agents/). They are meant for teams that want to connect a Paperclip-style NGO or research workspace to the benchmark loop.
 
-*   **Continuous Optimization:** The `triage_sandbox.py` is meant to be edited by an AI agent (Researcher Swarm). It can autonomously test 100+ prompt variations overnight to "heal" accuracy drops caused by new dataset noise.
-*   **Self-Benchmarking:** Every change is automatically validated against the `data/gold_set.json` using `prepare.py`.
-*   **Codebase Evolution:** The project instructions in `docs/superpowers/specs/agent_instruction.md` allow the agent to refactor its own inference logic to support newer versions of Gemma (e.g., Gemma 5) without human intervention.
+The pattern is inspired by Andrej Karpathy's AutoResearch-style idea: give an agent a sandbox, a fixed evaluation harness, and a keep/discard rule, then let measured experiments improve the system over time. Edge-Triage adapts that idea for humanitarian triage, with stricter latency, safety, and human-review constraints.
+
+Start here:
+
+* [`agents/README.md`](../agents/README.md) explains how the templates fit together.
+* [`agents/AGENTS.md`](../agents/AGENTS.md) defines the Researcher and Librarian roles.
+* [`agents/SOUL.md`](../agents/SOUL.md) gives the Researcher Agent its operating loop.
+* [`agents/TOOLS.md`](../agents/TOOLS.md) lists the allowed benchmark/setup commands.
+* [`agents/HEARTBEAT.md`](../agents/HEARTBEAT.md) shows an hourly automation schedule you can adapt.
+
+In this repository, the self-improving loop is intentionally benchmark-gated:
+
+* **Continuous Optimization:** The `triage_sandbox.py` can be edited by a Researcher Agent to test prompt variations, routing rules, and reasoning changes.
+* **Self-Benchmarking:** Every proposed change is validated against the fixed gold-set evaluation path from `prepare.py` and recorded in `results.tsv`.
+* **Human-Controlled Promotion:** Agent-discovered improvements should be reviewed through a branch or pull request before they become deployment defaults.
 
 ## 9. Submitting Changes
 1.  Always run a full 50-sample benchmark to verify your changes.
