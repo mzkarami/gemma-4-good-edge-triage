@@ -16,6 +16,7 @@ For a compact summary, start with:
 - [`AUTORESEARCH_METHODOLOGY.md`](AUTORESEARCH_METHODOLOGY.md)
 - [`RESEARCH_REPORT_FINAL.md`](RESEARCH_REPORT_FINAL.md)
 - [`LATENCY_OPTIMIZATION.md`](LATENCY_OPTIMIZATION.md)
-- [`gemma4good_autoresearch_strategy.md`](gemma4good_autoresearch_strategy.md)
 
 The numeric EDG files preserve the experiment-by-experiment audit trail that supports `results.tsv` and `docs/CURRENT_FRONTIER.md`.
+
+Note: the early brainstorming note `gemma4good_autoresearch_strategy.md` is intentionally not included in the public repo. The clearer public framing now lives in `README.md`, `docs/ARCHITECTURE.md`, and `docs/DEVELOPER_GUIDE.md`.
