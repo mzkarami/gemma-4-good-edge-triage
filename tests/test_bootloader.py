@@ -54,6 +54,39 @@ class TestBootloader(unittest.TestCase):
     @patch("prepare.download_kaggle_dataset")
     @patch("os.path.exists")
     @patch("os.rename")
+    def test_download_model_huggingface_source_skips_kaggle_env(self, mock_rename, mock_exists, mock_kaggle, mock_hf):
+        def fake_exists(path):
+            return path == self.test_dir.name
+
+        mock_exists.side_effect = fake_exists
+        mock_hf.return_value = "/tmp/downloaded_file"
+
+        path = prepare.download_model(repo_id="test/repo", filename="model.gguf", source="huggingface")
+
+        expected_target = os.path.join(prepare.MODEL_DIR, "Edge-Triage-model.gguf")
+        self.assertEqual(path, expected_target)
+        mock_kaggle.assert_not_called()
+        mock_hf.assert_called_once_with(repo_id="test/repo", filename="model.gguf", local_dir=prepare.MODEL_DIR)
+        mock_rename.assert_called_once_with("/tmp/downloaded_file", expected_target)
+
+    @patch.dict(os.environ, {}, clear=True)
+    @patch("prepare.hf_hub_download")
+    @patch("prepare.download_kaggle_dataset")
+    @patch("os.path.exists")
+    def test_download_model_kaggle_source_requires_dataset_slug(self, mock_exists, mock_kaggle, mock_hf):
+        mock_exists.side_effect = lambda path: path == self.test_dir.name
+
+        with self.assertRaisesRegex(RuntimeError, "EDGE_TRIAGE_KAGGLE_MODEL_DATASET"):
+            prepare.download_model(repo_id="test/repo", filename="model.gguf", source="kaggle")
+
+        mock_kaggle.assert_not_called()
+        mock_hf.assert_not_called()
+
+    @patch.dict(os.environ, {"EDGE_TRIAGE_KAGGLE_MODEL_DATASET": "user/edge-triage-models"}, clear=False)
+    @patch("prepare.hf_hub_download")
+    @patch("prepare.download_kaggle_dataset")
+    @patch("os.path.exists")
+    @patch("os.rename")
     def test_download_model_uses_kaggle_dataset_before_hf(self, mock_rename, mock_exists, mock_kaggle, mock_hf):
         def fake_exists(path):
             return path in {
@@ -70,6 +103,33 @@ class TestBootloader(unittest.TestCase):
         mock_kaggle.assert_called_once_with("user/edge-triage-models", prepare.MODEL_DIR)
         mock_rename.assert_called_once_with(os.path.join(self.test_dir.name, "model.gguf"), expected_target)
         mock_hf.assert_not_called()
+
+    @patch.dict(os.environ, {"EDGE_TRIAGE_KAGGLE_DATASET": "user/edge-triage-shards"}, clear=False)
+    @patch("prepare.download_kaggle_dataset")
+    @patch("prepare.Pool")
+    @patch("os.path.exists")
+    def test_download_data_huggingface_source_skips_kaggle_env(self, mock_exists, mock_pool, mock_kaggle):
+        mock_exists.side_effect = lambda path: path == prepare.DATA_DIR
+        pool_instance = mock_pool.return_value.__enter__.return_value
+        pool_instance.map.return_value = [True, True]
+
+        prepare.download_data(2, source="huggingface")
+
+        mock_kaggle.assert_not_called()
+        pool_instance.map.assert_called_once()
+
+    @patch.dict(os.environ, {}, clear=True)
+    @patch("prepare.download_kaggle_dataset")
+    @patch("prepare.Pool")
+    @patch("os.path.exists")
+    def test_download_data_kaggle_source_requires_dataset_slug(self, mock_exists, mock_pool, mock_kaggle):
+        mock_exists.side_effect = lambda path: path == prepare.DATA_DIR
+
+        with self.assertRaisesRegex(RuntimeError, "EDGE_TRIAGE_KAGGLE_DATASET"):
+            prepare.download_data(2, source="kaggle")
+
+        mock_kaggle.assert_not_called()
+        mock_pool.assert_not_called()
 
     @patch.dict(os.environ, {"EDGE_TRIAGE_KAGGLE_DATASET": "user/edge-triage-shards"}, clear=False)
     @patch("prepare.download_kaggle_dataset")
@@ -108,6 +168,7 @@ class TestBootloader(unittest.TestCase):
         mock_download_model.assert_called_once_with(
             repo_id="unsloth/gemma-4-e4b-it-GGUF",
             filename="mmproj-F16.gguf",
+            source="auto",
         )
 
 if __name__ == "__main__":

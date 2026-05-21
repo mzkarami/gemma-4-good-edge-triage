@@ -26,6 +26,7 @@ dependencies = [
     "fastapi>=0.115",
     "uvicorn[standard]>=0.34",
     "python-multipart>=0.0.20",
+    "kaggle>=2.1.2",
 ]
 
 [tool.uv.sources]

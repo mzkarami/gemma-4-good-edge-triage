@@ -111,15 +111,24 @@ To run real local model inference or a full research benchmark, prepare the mode
 ```bash
 # Option A: Hugging Face source. Auth may be required for gated model/data access.
 uv run huggingface-cli login
+uv run prepare.py --source huggingface
 
-# Option B: Kaggle source. Use this when a judge/user has Kaggle access but no Hugging Face account.
+# Option B: Kaggle source. Kaggle uses an API token rather than an interactive login.
+# 1. Create/download kaggle.json from https://www.kaggle.com/settings/account
+# 2. Put it at ~/.kaggle/kaggle.json and run: chmod 600 ~/.kaggle/kaggle.json
+#    Alternative: export KAGGLE_USERNAME=<username> and KAGGLE_KEY=<api-key>
+# 3. Verify the CLI is available:
+uv run kaggle --version
 # In a Kaggle notebook, attach the model/data datasets as Inputs and prepare.py will auto-detect them.
-# Locally, install/configure the Kaggle CLI, then set dataset slugs before running prepare.py:
+# Locally, set dataset slugs before running prepare.py:
 # export EDGE_TRIAGE_KAGGLE_MODEL_DATASET=<kaggle-user>/<edge-triage-model-dataset-slug>
 # export EDGE_TRIAGE_KAGGLE_DATASET=<kaggle-user>/<edge-triage-parquet-dataset-slug>
+uv run prepare.py --source kaggle
 
-# Download/prepare GGUF model artifacts and local benchmark assets.
-uv run prepare.py
+# Option C: Auto source. This tries Kaggle inputs/cache/env first, then Hugging Face.
+uv run prepare.py --source auto
+
+# Extract local benchmark images/labels after artifacts are prepared.
 uv run local_extractor.py
 
 # Then run the field CLI or benchmark with real artifacts.

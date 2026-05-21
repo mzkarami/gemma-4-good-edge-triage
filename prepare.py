@@ -23,6 +23,7 @@ import argparse
 import pickle
 import json
 import subprocess
+import shutil
 from multiprocessing import Pool
 
 import requests
@@ -61,6 +62,38 @@ SPLIT_PATTERN = r"""'(?i:[sdmt]|ll|ve|re)|[^\r\n\p{L}\p{N}]?+\p{L}+|\p{N}{1,2}| 
 
 SPECIAL_TOKENS = [f"<|reserved_{i}|>" for i in range(4)]
 BOS_TOKEN = "<|reserved_0|>"
+
+
+def normalize_source(source):
+    """Return a validated artifact source mode."""
+    source = (source or "auto").strip().lower()
+    if source not in {"auto", "huggingface", "kaggle"}:
+        raise ValueError("source must be one of: auto, huggingface, kaggle")
+    return source
+
+
+def maybe_stage_kaggle_data_shards(ids):
+    """Copy requested shard_*.parquet files from attached Kaggle inputs into DATA_DIR."""
+    kaggle_input_dir = os.getenv("KAGGLE_INPUT_DIR", "/kaggle/input")
+    if not os.path.isdir(kaggle_input_dir):
+        return 0
+
+    os.makedirs(DATA_DIR, exist_ok=True)
+    wanted = {f"shard_{i:05d}.parquet" for i in ids}
+    staged = 0
+    for root, _dirs, files in os.walk(kaggle_input_dir):
+        for name in files:
+            if name not in wanted:
+                continue
+            src = os.path.join(root, name)
+            dst = os.path.join(DATA_DIR, name)
+            if os.path.exists(dst):
+                continue
+            shutil.copy2(src, dst)
+            staged += 1
+    if staged:
+        print(f"Data: staged {staged} shard(s) from Kaggle inputs at {kaggle_input_dir}")
+    return staged
 
 
 def download_kaggle_dataset(dataset_slug, destination_dir):
@@ -126,8 +159,9 @@ def download_single_shard(index):
     return False
 
 
-def download_data(num_shards, download_workers=8):
+def download_data(num_shards, download_workers=8, source="auto"):
     """Download training shards + pinned validation shard."""
+    source = normalize_source(source)
     os.makedirs(DATA_DIR, exist_ok=True)
     num_train = min(num_shards, MAX_SHARD)
     ids = list(range(num_train))
@@ -143,14 +177,22 @@ def download_data(num_shards, download_workers=8):
     needed = len(ids) - existing
     print(f"Data: downloading {needed} shards ({existing} already exist)...")
 
-    kaggle_dataset = os.getenv("EDGE_TRIAGE_KAGGLE_DATASET")
-    if kaggle_dataset:
-        download_kaggle_dataset(kaggle_dataset, DATA_DIR)
+    if source in {"auto", "kaggle"}:
+        maybe_stage_kaggle_data_shards(ids)
+        kaggle_dataset = os.getenv("EDGE_TRIAGE_KAGGLE_DATASET")
+        if kaggle_dataset:
+            download_kaggle_dataset(kaggle_dataset, DATA_DIR)
         existing = sum(1 for i in ids if os.path.exists(os.path.join(DATA_DIR, f"shard_{i:05d}.parquet")))
         if existing == len(ids):
             print(f"Data: all {len(ids)} shards ready from Kaggle at {DATA_DIR}")
             return
-        print(f"Data: Kaggle source provided {existing}/{len(ids)} shards; falling back to Hugging Face for missing shards...")
+        if source == "kaggle":
+            raise RuntimeError(
+                "Kaggle source selected but required shards are incomplete. "
+                "Attach parquet shards as Kaggle Inputs or set EDGE_TRIAGE_KAGGLE_DATASET=<user/dataset-slug>."
+            )
+        if kaggle_dataset:
+            print(f"Data: Kaggle source provided {existing}/{len(ids)} shards; falling back to Hugging Face for missing shards...")
 
     workers = max(1, min(download_workers, needed))
     with Pool(processes=workers) as pool:
@@ -415,13 +457,15 @@ def evaluate_bpb(model, tokenizer, batch_size):
 # Triage & Model Setup
 # ---------------------------------------------------------------------------
 
-def download_model(repo_id="unsloth/gemma-4-e2b-it-GGUF", filename="gemma-4-E2B-it-Q4_K_M.gguf"):
+def download_model(repo_id="unsloth/gemma-4-e2b-it-GGUF", filename="gemma-4-E2B-it-Q4_K_M.gguf", source="auto"):
     """
     Ensure a model artifact exists locally.
-    1. Checks Kaggle /input/ first (for notebook deployment).
+    1. Checks Kaggle /input/ first (for notebook deployment, unless source=huggingface).
     2. Checks ~/.cache/autoresearch/models/ (for local dev).
-    3. Downloads from Hugging Face if not found.
+    3. Optionally downloads from Kaggle CLI if source is auto/kaggle and a dataset slug is set.
+    4. Downloads from Hugging Face if source is auto/huggingface.
     """
+    source = normalize_source(source)
     os.makedirs(MODEL_DIR, exist_ok=True)
     local_filename = f"Edge-Triage-{filename}"
     model_path = os.path.join(MODEL_DIR, local_filename)
@@ -429,8 +473,8 @@ def download_model(repo_id="unsloth/gemma-4-e2b-it-GGUF", filename="gemma-4-E2B-
     # Path 1: Kaggle Input (Fastest for submission)
     # Note: Kaggle datasets are usually at /kaggle/input/<dataset-slug>/<filename>
     # We scan all subdirectories in /kaggle/input just in case.
-    kaggle_base = "/kaggle/input"
-    if os.path.exists(kaggle_base):
+    kaggle_base = os.getenv("KAGGLE_INPUT_DIR", "/kaggle/input")
+    if source in {"auto", "kaggle"} and os.path.exists(kaggle_base):
         for root, dirs, files in os.walk(kaggle_base):
             if local_filename in files:
                 kaggle_path = os.path.join(root, local_filename)
@@ -445,19 +489,31 @@ def download_model(repo_id="unsloth/gemma-4-e2b-it-GGUF", filename="gemma-4-E2B-
 
     # Path 3: Optional Kaggle API fallback for judges/users without Hugging Face access.
     # Set EDGE_TRIAGE_KAGGLE_MODEL_DATASET=user/dataset-slug before running prepare.py.
-    kaggle_dataset = os.getenv("EDGE_TRIAGE_KAGGLE_MODEL_DATASET")
-    if kaggle_dataset:
-        download_kaggle_dataset(kaggle_dataset, MODEL_DIR)
-        kaggle_prefixed_path = os.path.join(MODEL_DIR, local_filename)
-        kaggle_raw_path = os.path.join(MODEL_DIR, filename)
-        if os.path.exists(kaggle_prefixed_path):
-            print(f"Model: found {local_filename} from Kaggle dataset at {MODEL_DIR}")
-            return kaggle_prefixed_path
-        if os.path.exists(kaggle_raw_path):
-            os.rename(kaggle_raw_path, model_path)
-            print(f"Model: renamed Kaggle artifact to {local_filename}")
-            return model_path
-        print(f"Model: Kaggle dataset did not contain {local_filename} or {filename}; falling back to Hugging Face...")
+    if source in {"auto", "kaggle"}:
+        kaggle_dataset = os.getenv("EDGE_TRIAGE_KAGGLE_MODEL_DATASET")
+        if kaggle_dataset:
+            download_kaggle_dataset(kaggle_dataset, MODEL_DIR)
+            kaggle_prefixed_path = os.path.join(MODEL_DIR, local_filename)
+            kaggle_raw_path = os.path.join(MODEL_DIR, filename)
+            if os.path.exists(kaggle_prefixed_path):
+                print(f"Model: found {local_filename} from Kaggle dataset at {MODEL_DIR}")
+                return kaggle_prefixed_path
+            if os.path.exists(kaggle_raw_path):
+                os.rename(kaggle_raw_path, model_path)
+                print(f"Model: renamed Kaggle artifact to {local_filename}")
+                return model_path
+            if source == "auto":
+                print(f"Model: Kaggle dataset did not contain {local_filename} or {filename}; falling back to Hugging Face...")
+        elif source == "kaggle":
+            raise RuntimeError(
+                "Kaggle source selected but model artifact was not found. "
+                "Attach model files as Kaggle Inputs or set EDGE_TRIAGE_KAGGLE_MODEL_DATASET=<user/dataset-slug>."
+            )
+
+        if source == "kaggle":
+            raise RuntimeError(
+                f"Kaggle source selected but {local_filename} was not found in attached Inputs or EDGE_TRIAGE_KAGGLE_MODEL_DATASET."
+            )
 
     # Path 4: Hugging Face Download
     print(f"Model: downloading {filename} from {repo_id}...")
@@ -471,9 +527,10 @@ def download_model(repo_id="unsloth/gemma-4-e2b-it-GGUF", filename="gemma-4-E2B-
 def download_multimodal_projector(
     repo_id="unsloth/gemma-4-e4b-it-GGUF",
     filename="mmproj-F16.gguf",
+    source="auto",
 ):
     """Ensure the mandatory Gemma vision multimodal projector exists locally."""
-    return download_model(repo_id=repo_id, filename=filename)
+    return download_model(repo_id=repo_id, filename=filename, source=source)
 
 
 def evaluate_triage(triage_fn, gold_set_path="data/gold_set.json", max_samples=None):
@@ -534,6 +591,12 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Prepare data and tokenizer for autoresearch")
     parser.add_argument("--num-shards", type=int, default=10, help="Number of training shards to download (-1 = all). Val shard is always pinned.")
     parser.add_argument("--download-workers", type=int, default=8, help="Number of parallel download workers")
+    parser.add_argument(
+        "--source",
+        choices=["auto", "huggingface", "kaggle"],
+        default="auto",
+        help="Artifact source preference: auto tries Kaggle inputs/cache/env first, then Hugging Face; huggingface skips Kaggle; kaggle refuses Hugging Face fallback.",
+    )
     args = parser.parse_args()
 
     num_shards = MAX_SHARD if args.num_shards == -1 else args.num_shards
@@ -542,7 +605,7 @@ if __name__ == "__main__":
     print()
 
     # Step 1: Download data
-    download_data(num_shards, download_workers=args.download_workers)
+    download_data(num_shards, download_workers=args.download_workers, source=args.source)
     print()
 
     # Step 2: Train tokenizer
@@ -550,7 +613,7 @@ if __name__ == "__main__":
     print()
 
     # Step 3: Download model artifacts for triage
-    download_model()
-    download_multimodal_projector()
+    download_model(source=args.source)
+    download_multimodal_projector(source=args.source)
     print()
     print("Done! Ready for experiments.")

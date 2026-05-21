@@ -34,15 +34,23 @@ The project uses **QCRI/MEDIC** for multimodal triage and **Gemma 4 GGUF/LiteRT*
 ```bash
 # Optional Hugging Face source.
 uv run huggingface-cli login
+uv run prepare.py --source huggingface
 
 # Optional Kaggle source for users without a Hugging Face account.
+# Kaggle uses an API token rather than interactive login:
+# - download kaggle.json from https://www.kaggle.com/settings/account to ~/.kaggle/kaggle.json
+# - chmod 600 ~/.kaggle/kaggle.json
+# - verify with: uv run kaggle --version
 # In a Kaggle notebook, attach the datasets as Inputs instead of setting these.
-# Locally, install/configure the Kaggle CLI, then set your published dataset slugs:
+# Locally, set your published dataset slugs:
 # export EDGE_TRIAGE_KAGGLE_MODEL_DATASET=<kaggle-user>/<edge-triage-model-dataset-slug>
 # export EDGE_TRIAGE_KAGGLE_DATASET=<kaggle-user>/<edge-triage-parquet-dataset-slug>
+uv run prepare.py --source kaggle
 
-# Download/prepare GGUF model artifacts and benchmark data.
-uv run prepare.py
+# Auto source tries Kaggle inputs/cache/env first, then Hugging Face.
+uv run prepare.py --source auto
+
+# Continue with local extraction.
 uv run download_litert.py
 
 # Extract the local Gold Set (Images + Labels)
