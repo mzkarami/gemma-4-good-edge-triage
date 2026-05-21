@@ -75,6 +75,7 @@ Main artifacts:
 - `triage_sandbox.py` — research and evaluation harness.
 - `results.tsv` — experiment ledger.
 - `docs/CURRENT_FRONTIER.md` — canonical public metric summary.
+- `docs/superpowers/research_logs/` — public research trail for the AutoResearch/EDG experiment loop.
 - `media/` — public-safe screenshots and source media for Kaggle/video.
 - `data/` and `logs/` — placeholder workspaces for local shards, extracted images, and generated benchmark logs; generated contents stay ignored.
 - `submission_notebook.ipynb`, `analysis.ipynb`, and `kaggle_dataset_upload/` — Kaggle packaging and research-ledger notebook assets.
@@ -115,6 +116,7 @@ Start here if you are new:
 - [`docs/CURRENT_FRONTIER.md`](docs/CURRENT_FRONTIER.md) — current trusted metrics and how to talk about them.
 - [`docs/KAGGLE_SUBMISSION.md`](docs/KAGGLE_SUBMISSION.md) — submission narrative and artifact checklist.
 - [`docs/KAGGLE_WRITEUP.md`](docs/KAGGLE_WRITEUP.md) — paste-ready Kaggle writeup draft.
+- [`docs/superpowers/research_logs/README.md`](docs/superpowers/research_logs/README.md) — public EDG research logs and AutoResearch audit trail.
 - [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md) — public demo hosting, Docker, HTTPS, and live-preview safety controls.
 - [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) — system design and research loop.
 - [`docs/DEVELOPER_GUIDE.md`](docs/DEVELOPER_GUIDE.md) — setup, data/model prep, and experiment workflow.

@@ -107,6 +107,7 @@ Start here:
 * [`plugin/README.md`](../plugin/README.md) explains the optional local dashboard skeleton.
 * [`infra/README.md`](../infra/README.md) explains the optional local Paperclip stack.
 * [`data/README.md`](../data/README.md) and [`logs/README.md`](../logs/README.md) describe public-safe local workspaces.
+* [`docs/superpowers/research_logs/README.md`](superpowers/research_logs/README.md) is the public audit trail for the EDG experiment loop.
 
 In this repository, the self-improving loop is intentionally benchmark-gated:
 

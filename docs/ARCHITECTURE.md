@@ -23,6 +23,7 @@ Research / response lead
 - `triage_sandbox.py`: repeatable evaluation harness for label quality, latency, routing mix, and keep/discard decisions.
 - `results.tsv`: experiment ledger.
 - `docs/CURRENT_FRONTIER.md`: public source of truth for current benchmark claims.
+- `docs/superpowers/research_logs/`: public EDG experiment logs and research reports that explain how the frontier evolved.
 - `agents/`: optional templates for Paperclip-style NGO/research workspaces that want an agentic loop around the benchmark.
 - `plugin/`: optional local Paperclip dashboard skeleton that reads `results.tsv`.
 - `infra/`: optional public-safe local Paperclip compose example.
