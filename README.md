@@ -86,11 +86,16 @@ Main artifacts:
 
 ## Quick start
 
+These commands are first-clone smoke checks. They do **not** need the multi-GB model/data downloads because they run tests, help screens, and the static judge site.
+
 ```bash
+# Install dependencies
+uv sync
+
 # Run unit tests
 uv run python -m unittest discover tests/
 
-# Try the field CLI
+# Try the field CLI help
 uv run python edge-triage-cli.py --help
 
 # Run the research sandbox help
@@ -99,6 +104,21 @@ uv run python triage_sandbox.py --help
 # Serve the static judge site locally
 python3 -m http.server 4173 --directory site
 # then open http://127.0.0.1:4173
+```
+
+To run real local model inference or a full research benchmark, prepare the model/data artifacts first:
+
+```bash
+# Hugging Face auth may be required for gated model/data access.
+uv run huggingface-cli login
+
+# Download/prepare GGUF model artifacts and local benchmark assets.
+uv run prepare.py
+uv run local_extractor.py
+
+# Then run the field CLI or benchmark with real artifacts.
+uv run python edge-triage-cli.py --report "Bridge damaged after flood; two families waiting near school."
+uv run python triage_sandbox.py
 ```
 
 For a safer public-style static site container:
