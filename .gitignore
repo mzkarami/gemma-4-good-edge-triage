@@ -34,3 +34,5 @@ logs/*
 *.pem
 *.key
 *.crt
+
+.idea/

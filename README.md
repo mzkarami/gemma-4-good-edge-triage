@@ -158,21 +158,21 @@ EDGE_TRIAGE_RUN_E2E=1 scripts/e2e_smoke.sh
 
 Start here if you are new:
 
+- [`docs/README.md`](docs/README.md) — canonical documentation map and current/target/reference rules.
+- [`instructions/README.md`](instructions/README.md) — team/agent operating layer, principles, testing expectations, and acceptance gate.
+- [`docs/product/README.md`](docs/product/README.md) — product brief, roadmap, public-claims guidance, and user stories.
+- [`docs/product/user-stories/README.md`](docs/product/user-stories/README.md) — numbered field, judge, live-demo, research, and maintainer user stories.
+- [`docs/architecture/README.md`](docs/architecture/README.md) — current architecture, runtime boundaries, data flow, diagrams, and ADRs.
+- [`docs/testing/README.md`](docs/testing/README.md) — test strategy, validation reports, performance evidence, and CI checks.
+- [`docs/operations/README.md`](docs/operations/README.md) — deployment/runbook indexes and public/private boundary guidance.
+- [`docs/research/README.md`](docs/research/README.md) — current frontier, experiment ledger, and EDG research-log entrypoint.
+- [`docs/submission/README.md`](docs/submission/README.md) — Kaggle writeups, video script, and public submission materials.
 - [`docs/CURRENT_FRONTIER.md`](docs/CURRENT_FRONTIER.md) — current trusted metrics and how to talk about them.
-- [`docs/KAGGLE_SUBMISSION.md`](docs/KAGGLE_SUBMISSION.md) — submission narrative and artifact checklist.
-- [`docs/KAGGLE_WRITEUP.md`](docs/KAGGLE_WRITEUP.md) — paste-ready Kaggle writeup draft.
-- [`docs/superpowers/research_logs/README.md`](docs/superpowers/research_logs/README.md) — public EDG research logs and AutoResearch audit trail.
 - [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md) — public demo hosting, Docker, HTTPS, and live-preview safety controls.
-- [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) — system design and research loop.
-- [`docs/DEVELOPER_GUIDE.md`](docs/DEVELOPER_GUIDE.md) — setup, data/model prep, shared-core boundaries, and experiment workflow.
-- [`docs/USER_STORIES.md`](docs/USER_STORIES.md) — field, judge, live-demo, research, and maintainer stories for the shared-core architecture.
 - [`agents/README.md`](agents/README.md) — optional Paperclip-style agent templates for self-improving NGO/research workflows.
-- [`plugin/README.md`](plugin/README.md) — optional local Paperclip dashboard skeleton.
-- [`infra/README.md`](infra/README.md) — optional local Paperclip stack example.
+- [`plugin/README.md`](plugin/README.md) and [`infra/README.md`](infra/README.md) — optional local Paperclip dashboard/stack examples.
 - [`data/README.md`](data/README.md) and [`logs/README.md`](logs/README.md) — local workspace placeholders and ignore policy.
-- [`docs/OPERATIONS_GUIDE.md`](docs/OPERATIONS_GUIDE.md) — field-operator CLI usage.
-- [`site/README.md`](site/README.md) — judge demo site notes.
-- [`media/README.md`](media/README.md) — screenshot and video media library.
+- [`site/README.md`](site/README.md) and [`media/README.md`](media/README.md) — judge demo site and media library notes.
 
 ## Why it matters
 

@@ -26,6 +26,9 @@ jobs:
       - name: Sync dependencies
         run: uv sync --locked
 
+      - name: Check docs links
+        run: python3 scripts/check_docs_links.py
+
       - name: Run unit tests
         run: uv run python -m unittest discover tests/
 

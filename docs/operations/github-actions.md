@@ -1,0 +1,29 @@
+# GitHub Actions
+
+Status: current CI overview.
+
+## Public repo
+
+Workflow: `Edge-Triage CI`
+
+Runs:
+
+- dependency sync with `uv`;
+- unit tests;
+- CLI help smoke;
+- sandbox help smoke;
+- docs-link check.
+
+## Private repo
+
+Workflow: `Edge-Triage CI/CD (Field Hub)`
+
+Runs validation first. Manual deploy is optional and gated on deployment secrets. If secrets are absent, validation can still succeed and SSH deploy is skipped.
+
+## Verification after push
+
+```bash
+gh run list --limit 5
+gh run watch <run-id> --exit-status
+gh run view <run-id> --json status,conclusion,jobs,url
+```

@@ -1,6 +1,16 @@
 # Edge-Triage User Stories
 
-These stories describe the product behavior after the shared-core refactor. They are not new benchmark claims; metrics still come from `docs/CURRENT_FRONTIER.md`.
+Status: compatibility overview. Canonical numbered stories now live under [`docs/product/user-stories/`](product/user-stories/README.md).
+
+These stories describe product behavior after the shared-core refactor. They are not new benchmark claims; metrics still come from `docs/CURRENT_FRONTIER.md`.
+
+## Canonical story index
+
+- [UC-001: Field Volunteer Triage](product/user-stories/uc-001-field-volunteer-triage.md)
+- [UC-002: Public Judge Curated Demo](product/user-stories/uc-002-public-judge-curated-demo.md)
+- [UC-003: Optional Live Gemma Preview](product/user-stories/uc-003-live-gemma-preview.md)
+- [UC-004: Research Response Lead Optimization](product/user-stories/uc-004-research-response-lead-optimization.md)
+- [UC-005: Maintainer Import Boundary](product/user-stories/uc-005-maintainer-import-boundary.md)
 
 ## Field Volunteer
 
