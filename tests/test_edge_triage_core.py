@@ -62,6 +62,9 @@ class EdgeTriageCoreTest(unittest.TestCase):
         self.assertIn("decision support", body["disclaimer"].lower())
         self.assertIn("action_pack", body)
         self.assertIn("radio_script", body)
+        self.assertIn("guidance_basis", body)
+        self.assertTrue(body["guidance_basis"])
+        self.assertTrue(any("review" in item.lower() or "route" in item.lower() or "keep" in item.lower() for item in body["guidance_basis"]))
 
     def test_red_flag_override_forces_human_safety_escalation(self):
         from edge_triage_core.results import build_triage_response
@@ -77,6 +80,7 @@ class EdgeTriageCoreTest(unittest.TestCase):
         self.assertTrue(body["red_flag_escalation"])
         self.assertGreaterEqual(len(body["red_flags"]), 1)
         self.assertIn("trained medical/rescue", body["next_action"])
+        self.assertTrue(any("red-flag" in item.lower() for item in body["guidance_basis"]))
 
     def test_spanish_radio_script_is_available(self):
         from edge_triage_core.results import build_triage_response

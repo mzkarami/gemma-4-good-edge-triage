@@ -24,7 +24,8 @@ Owns shared product contracts:
 - response shaping helpers;
 - responder action packs;
 - deterministic red-flag escalation;
-- scoped radio-script formatting.
+- scoped radio-script formatting;
+- deterministic guidance-basis snippets.
 
 Must not:
 

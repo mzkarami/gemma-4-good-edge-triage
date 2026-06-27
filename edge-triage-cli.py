@@ -112,6 +112,7 @@ def main():
             f"Do not do: {response['action_pack']['do_not_do']}\n"
             f"Collect next: {', '.join(response['action_pack']['collect_next'])}\n"
             f"Escalate if: {', '.join(response['action_pack']['escalate_if'])}\n"
+            f"Guidance basis: {'; '.join(response['guidance_basis'])}\n"
             f"Radio script: {response['radio_script']}"
         )
     console.print(Panel(result_text, title="[bold cyan]Triage Report & Advice[/bold cyan]"))

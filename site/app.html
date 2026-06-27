@@ -29,6 +29,7 @@
       <a href="roadmap.html">Roadmap</a>
       <a href="about.html">Why it matters</a>
       <a href="app.html" aria-current="page">Volunteer App</a>
+      <a href="judge.html">Judge Walkthrough</a>
     </nav>
     <a class="ghost-button" href="index.html">Judge overview</a>
   </header>
@@ -115,7 +116,18 @@
         </div>
         <div class="callout insight-callout">
           <span class="callout-label">Responder Action Pack</span>
-          <p id="app-action-pack">Run triage to see do-not-do guidance, collection checklist, and escalation triggers.</p>
+          <ul class="result-list" id="app-action-pack-list">
+            <li>Run triage to see do-not-do guidance, collection checklist, and escalation triggers.</li>
+          </ul>
+          <p id="app-action-pack" class="visually-hidden">Run triage to see do-not-do guidance, collection checklist, and escalation triggers.</p>
+        </div>
+        <div class="callout insight-callout danger-callout" id="app-red-flag-card" hidden>
+          <span class="callout-label">Red-flag escalation</span>
+          <ul class="result-list" id="app-red-flags"><li>No red flags detected.</li></ul>
+        </div>
+        <div class="callout insight-callout">
+          <span class="callout-label">Guidance basis</span>
+          <ul class="result-list" id="app-guidance-basis"><li>Run triage to see conservative guidance basis.</li></ul>
         </div>
         <div class="callout insight-callout">
           <span class="callout-label">Radio script</span>

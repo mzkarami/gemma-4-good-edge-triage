@@ -12,7 +12,7 @@ Edge-Triage gives a field team a practical local tool:
 
 1. A volunteer enters a short report, optionally with a photo.
 2. Gemma 4 classifies the scene into a humanitarian triage category.
-3. The app shows priority, confidence context, latency, and a conservative next action.
+3. The app shows priority, confidence context, latency, a responder action pack, red-flag escalation when needed, guidance basis, and a conservative radio handoff script.
 4. The responder keeps human control. Edge-Triage routes and explains; it does not replace incident command or medical professionals.
 
 The project also gives a data science team a repeatable way to improve the system after new disaster data arrives:
@@ -93,8 +93,8 @@ These commands are first-clone smoke checks. They do **not** need the multi-GB m
 # Install dependencies
 uv sync
 
-# Run unit tests
-uv run python -m unittest discover tests/
+# Run CI-safe validation
+uv run python scripts/run_ci_tests.py
 
 # Try the field CLI help
 uv run python edge-triage-cli.py --help

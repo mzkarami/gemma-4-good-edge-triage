@@ -2,7 +2,7 @@
 
 Status: current product backlog.
 
-## Implemented in current slice
+## Implemented
 
 ### FB-001 Responder Action Pack
 
@@ -20,9 +20,16 @@ Volunteer console saves triage cards to a local browser queue and can export JSO
 
 Shared core emits short English/Spanish radio scripts. CLI supports `--language` and `--format radio`.
 
+### FB-005 Guidance basis
+
+Shared core attaches deterministic conservative guidance snippets by label and red-flag state.
+
+### FB-006 Judge walkthrough
+
+Public site includes a walkthrough that compares curated demo, guarded live preview, CLI, local queue/export, and metrics evidence.
+
 ## Next candidates
 
-- Trusted reference pack with deterministic snippets by label/safety trigger.
-- Dedicated judge comparison page for static vs live vs CLI outputs.
 - Private operator runbook for actual incident-queue handling.
+- Copyable radio script and exported queue review affordances.
 - Optional TTS only after text scripts are stable and reviewed.

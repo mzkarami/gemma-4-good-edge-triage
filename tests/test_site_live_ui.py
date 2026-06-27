@@ -99,6 +99,17 @@ class SiteLiveUiTest(unittest.TestCase):
         self.assertIn("Ready for coordinator handoff", js)
         self.assertNotIn("Queued for coordinator sync. Human review required before action.", js)
 
+
+    def test_judge_walkthrough_compares_surfaces(self):
+        html = Path("site/judge.html").read_text()
+        css = Path("site/styles.css").read_text()
+        self.assertIn("One scenario, every product surface", html)
+        self.assertIn("curated demo, guarded live preview, local CLI, queue export", html)
+        self.assertIn("same human-led triage contract", html)
+        self.assertIn("uv run python edge-triage-cli.py", html)
+        self.assertIn("No automatic sync, dispatch, diagnosis", html)
+        self.assertIn(".comparison-grid", css)
+
     def test_secondary_page_navs_match_homepage_menu_order_and_labels(self):
         expected_labels = [
             "Volunteer Mode",
@@ -108,6 +119,7 @@ class SiteLiveUiTest(unittest.TestCase):
             "Roadmap",
             "Why it matters",
             "Volunteer App",
+            "Judge Walkthrough",
         ]
         expected_hrefs = [
             "index.html#volunteer",
@@ -117,9 +129,10 @@ class SiteLiveUiTest(unittest.TestCase):
             "roadmap.html",
             "about.html",
             "app.html",
+            "judge.html",
         ]
 
-        for page in ["site/app.html", "site/roadmap.html", "site/about.html", "site/metrics.html"]:
+        for page in ["site/app.html", "site/roadmap.html", "site/about.html", "site/metrics.html", "site/judge.html"]:
             with self.subTest(page=page):
                 html = Path(page).read_text()
                 nav_match = re.search(r'<nav aria-label="Demo sections">(.*?)</nav>', html, re.S)
@@ -158,7 +171,7 @@ class SiteLiveUiTest(unittest.TestCase):
         self.assertIn("font-size: clamp(2.6rem, 7vw, 4.2rem);", css)
         self.assertNotIn("5.4rem", css)
         self.assertIn("volunteers receive messy text reports and photos", html)
-        self.assertIn("triage label, priority, and conservative next action", html)
+        self.assertIn("triage label, priority, action pack, red-flag check", html)
         self.assertIn("keeping humans in control", html)
         self.assertIn("Messy field report", html)
         self.assertIn("Gemma 4 local triage", html)

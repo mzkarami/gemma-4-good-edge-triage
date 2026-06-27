@@ -23,5 +23,6 @@ Edge-Triage helps disaster-response volunteers and research leads classify field
 
 - Local-first privacy pressure for sensitive disaster data.
 - Fast constrained triage categories.
-- Human-readable priority and next action.
+- Human-readable priority, action pack, red-flag escalation, guidance basis, and radio handoff text.
+- Local incident queue/export without automatic sync.
 - Benchmark-driven research loop for speed/accuracy improvements.

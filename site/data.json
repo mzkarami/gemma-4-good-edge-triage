@@ -94,7 +94,13 @@
         ],
         "radioScript": "Possible infrastructure damage. Keep civilians away, report coordinates, and route to infrastructure or utility response. Human review required."
       },
-      "radioScript": "Possible infrastructure damage. Keep civilians away, report coordinates, and route to infrastructure or utility response. Human review required."
+      "radioScript": "Possible infrastructure damage. Keep civilians away, report coordinates, and route to infrastructure or utility response. Human review required.",
+      "guidanceBasis": [
+        "Keep civilians away from unstable infrastructure and utilities.",
+        "Route coordinates and access constraints to infrastructure/utility response.",
+        "Escalate if damage blocks evacuation or involves trapped people."
+      ],
+      "redFlags": []
     },
     {
       "id": "injured-person",
@@ -126,7 +132,13 @@
         ],
         "radioScript": "Possible casualty report. Escalate to trained medical or rescue responders. Collect exact location, affected people, visible hazards, and access route. Human review required."
       },
-      "radioScript": "Possible casualty report. Escalate to trained medical or rescue responders. Collect exact location, affected people, visible hazards, and access route. Human review required."
+      "radioScript": "Possible casualty report. Escalate to trained medical or rescue responders. Collect exact location, affected people, visible hazards, and access route. Human review required.",
+      "guidanceBasis": [
+        "Route possible casualty reports to trained medical/rescue responders.",
+        "Keep bystanders away from secondary hazards.",
+        "Collect exact location, affected-person count, visible hazards, and access route."
+      ],
+      "redFlags": []
     },
     {
       "id": "supply-drive",
@@ -158,7 +170,13 @@
         ],
         "radioScript": "Possible active response or logistics report. Coordinate before sending volunteers or supplies. Confirm needs, drop-off point, and access conditions. Human review required."
       },
-      "radioScript": "Possible active response or logistics report. Coordinate before sending volunteers or supplies. Confirm needs, drop-off point, and access conditions. Human review required."
+      "radioScript": "Possible active response or logistics report. Coordinate before sending volunteers or supplies. Confirm needs, drop-off point, and access conditions. Human review required.",
+      "guidanceBasis": [
+        "Coordinate volunteers and supplies through incident logistics.",
+        "Confirm requested supplies, drop-off point, coordinator contact, and access conditions.",
+        "Avoid self-deployment into active hazard zones."
+      ],
+      "redFlags": []
     },
     {
       "id": "unrelated-crowd",
@@ -190,7 +208,13 @@
         ],
         "radioScript": "Possible active response or logistics report. Coordinate before sending volunteers or supplies. Confirm needs, drop-off point, and access conditions. Human review required."
       },
-      "radioScript": "Possible active response or logistics report. Coordinate before sending volunteers or supplies. Confirm needs, drop-off point, and access conditions. Human review required."
+      "radioScript": "Possible active response or logistics report. Coordinate before sending volunteers or supplies. Confirm needs, drop-off point, and access conditions. Human review required.",
+      "guidanceBasis": [
+        "Coordinate volunteers and supplies through incident logistics.",
+        "Confirm requested supplies, drop-off point, coordinator contact, and access conditions.",
+        "Avoid self-deployment into active hazard zones."
+      ],
+      "redFlags": []
     }
   ]
 }

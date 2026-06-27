@@ -15,6 +15,8 @@ Stories are product specs and acceptance criteria. They are not benchmark claims
 - [UC-007: Red-Flag Escalation](uc-007-red-flag-escalation.md)
 - [UC-008: Local Incident Queue and Export](uc-008-local-incident-queue.md)
 - [UC-009: Radio Script Mode](uc-009-radio-script-mode.md)
+- [UC-010: Deterministic Guidance Basis](uc-010-guidance-basis.md)
+- [UC-011: Judge Walkthrough](uc-011-judge-walkthrough.md)
 
 ## How to use
 

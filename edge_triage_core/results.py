@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from .actions import build_action_pack
+from .guidance import build_guidance_basis
 from .labels import LABEL_METADATA, sanitize_model_text
 from .language import build_radio_script, normalize_language, normalize_output_format
 from .safety import apply_red_flag_override, red_flag_summary
@@ -41,6 +42,7 @@ def build_triage_response(
         "language": language_code,
         "output_format": format_code,
         "radio_script": build_radio_script(final_label, action_pack, language_code),
+        "guidance_basis": build_guidance_basis(final_label, red_flags),
     }
     if red_flags:
         response["scene_summary"] = f"{clean_summary} {red_flag_summary(red_flags)}".strip()

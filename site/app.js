@@ -363,7 +363,9 @@ function initVolunteerConsole() {
     $('#app-result-priority').textContent = 'Awaiting analysis';
     $('#app-result-latency').textContent = 'Awaiting run';
     $('#app-result-action').textContent = 'No safe next action is generated until the volunteer runs Edge-Triage.';
-    $('#app-action-pack').textContent = 'Run triage to see do-not-do guidance, collection checklist, and escalation triggers.';
+    renderActionPack(null);
+    renderRedFlags([]);
+    renderGuidanceBasis([]);
     $('#app-radio-script').textContent = 'Run triage to generate a short handoff script.';
     $('#app-handoff').textContent = 'Ready for coordinator handoff after review. Human review required before operational decisions.';
     status.textContent = 'New media selected. Add a short field note, then run Edge-Triage.';
@@ -391,6 +393,35 @@ function initVolunteerConsole() {
     const doNot = pack.doNotDo || pack.do_not_do || 'Do not self-deploy into active hazards.';
     return `Do not do: ${doNot} Collect next: ${collect}. Escalate if: ${escalate}.`;
   };
+  const renderList = (target, items, fallback) => {
+    const list = $(target);
+    if (!list) return;
+    const values = (items || []).filter(Boolean);
+    list.replaceChildren(...(values.length ? values : [fallback]).map((item) => textElement('li', item)));
+  };
+  const renderActionPack = (pack) => {
+    const collect = (pack?.collectNext || pack?.collect_next || []).join(', ');
+    const escalate = (pack?.escalateIf || pack?.escalate_if || []).join(', ');
+    const doNot = pack?.doNotDo || pack?.do_not_do || 'Do not self-deploy into active hazards.';
+    const routeTo = pack?.routeTo || pack?.route_to || 'human coordinator review';
+    const items = [
+      `Do not do: ${doNot}`,
+      collect ? `Collect next: ${collect}` : '',
+      escalate ? `Escalate if: ${escalate}` : '',
+      `Route to: ${routeTo}`
+    ];
+    renderList('#app-action-pack-list', items, 'Responder checklist unavailable for this result.');
+    $('#app-action-pack').textContent = formatActionPack(pack);
+  };
+  const renderRedFlags = (redFlags) => {
+    const card = $('#app-red-flag-card');
+    const flags = (redFlags || []).map((flag) => flag.description || flag.pattern || String(flag));
+    if (card) card.hidden = flags.length === 0;
+    renderList('#app-red-flags', flags, 'No red flags detected.');
+  };
+  const renderGuidanceBasis = (guidance) => {
+    renderList('#app-guidance-basis', guidance, 'Conservative guidance basis unavailable for this result.');
+  };
   const saveIncident = (record) => {
     const key = 'edge-triage-incident-queue';
     const queue = JSON.parse(localStorage.getItem(key) || '[]');
@@ -417,9 +448,11 @@ function initVolunteerConsole() {
     $('#app-result-priority').textContent = sample.priority;
     $('#app-result-latency').textContent = fmtLatency(sample.latencyMs);
     $('#app-result-action').textContent = sample.nextAction;
-    $('#app-action-pack').textContent = formatActionPack(sample.actionPack);
+    renderActionPack(sample.actionPack);
+    renderRedFlags(sample.redFlags || []);
+    renderGuidanceBasis(sample.guidanceBasis || []);
     $('#app-radio-script').textContent = sample.radioScript || 'Radio script unavailable for this curated scenario.';
-    const queued = saveIncident({ report, label: sample.label, priority: sample.priority, source: 'curated-demo', actionPack: sample.actionPack, radioScript: sample.radioScript });
+    const queued = saveIncident({ report, label: sample.label, priority: sample.priority, source: 'curated-demo', actionPack: sample.actionPack, radioScript: sample.radioScript, guidanceBasis: sample.guidanceBasis });
     $('#app-handoff').textContent = `Saved locally as incident ${queued}. Ready for coordinator handoff after review. Human review required before operational decisions.`;
     $('#phone-report-title').textContent = title;
     $('#phone-report-note').textContent = report;
@@ -436,9 +469,11 @@ function initVolunteerConsole() {
     $('#app-result-priority').textContent = result.priority;
     $('#app-result-latency').textContent = fmtLatency(Number(result.latency_ms || 0));
     $('#app-result-action').textContent = result.next_action;
-    $('#app-action-pack').textContent = formatActionPack(result.action_pack);
+    renderActionPack(result.action_pack);
+    renderRedFlags(result.red_flags || []);
+    renderGuidanceBasis(result.guidance_basis || []);
     $('#app-radio-script').textContent = result.radio_script || 'Radio script unavailable for this result.';
-    const queued = saveIncident({ report, label: result.label, priority: result.priority, source: result.live_model ? 'live-gemma' : 'guarded-fallback', actionPack: result.action_pack, radioScript: result.radio_script, redFlags: result.red_flags || [] });
+    const queued = saveIncident({ report, label: result.label, priority: result.priority, source: result.live_model ? 'live-gemma' : 'guarded-fallback', actionPack: result.action_pack, radioScript: result.radio_script, redFlags: result.red_flags || [], guidanceBasis: result.guidance_basis || [] });
     $('#app-handoff').textContent = `Saved locally as incident ${queued}. Ready for coordinator handoff after review. Human review required before operational decisions.`;
     $('#phone-report-title').textContent = title;
     $('#phone-report-note').textContent = report || `Image selected: ${fileName}`;

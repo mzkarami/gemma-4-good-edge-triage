@@ -13,11 +13,12 @@ Status: product direction, not automatic public claim.
 - Deterministic red-flag escalation layer.
 - Local incident queue/export in the volunteer console and CLI JSONL save.
 - Scoped English/Spanish radio-script text mode.
+- Deterministic guidance-basis snippets attached to responses.
+- Judge walkthrough comparing curated demo, live preview, CLI, queue, and metrics surfaces.
 
 ## Near-term
 
-- Trusted disaster-response reference pack with deterministic snippets by label and red-flag trigger.
-- Judge comparison view for static demo vs Live API vs CLI command.
+- Keep guidance snippets aligned with action-pack/red-flag behavior as new labels or field workflows are added.
 - Private operator runbook for actual incident queue handling.
 - Public-claim checker for stale benchmark numbers.
 

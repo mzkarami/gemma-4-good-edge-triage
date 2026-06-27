@@ -8,3 +8,7 @@ Current reference areas:
 
 - `../superpowers/research_logs/` for historical EDG logs.
 - older Kaggle/submission drafts when superseded by current submission docs.
+
+## Guidance packs
+
+- [Disaster response guidance pack](disaster-response-guidance/README.md)

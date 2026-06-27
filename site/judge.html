@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Judge Walkthrough | Edge-Triage</title>
+  <meta name="description" content="A step-by-step Edge-Triage judge walkthrough comparing curated demo, guarded live preview, CLI output, local queue export, and metrics evidence." />
+  <link rel="icon" type="image/png" href="assets/brand/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="index.html" aria-label="Edge-Triage home">
+      <img class="brand-mark" src="assets/brand/edge-triage-logo-icon.png" alt="" />
+      <span>Edge-Triage</span>
+    </a>
+    <nav aria-label="Demo sections">
+      <a href="index.html#volunteer">Volunteer Mode</a>
+      <a href="index.html#optimization">Optimization Mode</a>
+      <a href="index.html#evidence">Evidence</a>
+      <a href="index.html#notebooks">Notebooks</a>
+      <a href="roadmap.html">Roadmap</a>
+      <a href="about.html">Why it matters</a>
+      <a href="app.html">Volunteer App</a>
+      <a href="judge.html" aria-current="page">Judge Walkthrough</a>
+    </nav>
+    <a class="ghost-button" href="metrics.html">Metrics source</a>
+  </header>
+
+  <main id="top">
+    <section class="hero section-shell">
+      <div class="hero-copy">
+        <span class="eyebrow">Judge Walkthrough</span>
+        <h1>One scenario, every product surface.</h1>
+        <p>Use this page to verify that Edge-Triage is a coherent product rather than a one-off webpage: curated demo, guarded live preview, local CLI, queue export, and benchmark evidence all share the same human-led triage contract.</p>
+        <div class="hero-flow">
+          <span>Curated scenario</span>
+          <span>Live preview</span>
+          <span>CLI + queue</span>
+          <span>Run-backed evidence</span>
+        </div>
+      </div>
+      <aside class="hero-panel">
+        <div class="panel-header"><span class="status-dot"></span><span>Recommended review path</span></div>
+        <p class="muted">Start with the volunteer app. Then compare the same bridge-style scenario with the CLI command and metrics source below.</p>
+        <a class="primary-button" href="app.html">Open Volunteer App</a>
+      </aside>
+    </section>
+
+    <section class="section-shell judge-comparison" aria-label="Surface comparison">
+      <div class="evidence-heading-copy">
+        <span class="eyebrow">Comparison</span>
+        <h2>The same field report has the same safety shape everywhere.</h2>
+        <p class="section-lead narrow">Each surface keeps the same boundary: triage support for a human coordinator, not autonomous response or medical authority.</p>
+      </div>
+      <div class="judge-grid comparison-grid">
+        <article class="guide-card">
+          <span class="eyebrow">1 · Curated demo</span>
+          <h3>Reliable public-safe path</h3>
+          <p>Choose a fixed scenario in Volunteer Mode. The app shows label, priority, safe next action, action pack, guidance basis, and radio script without a model call.</p>
+          <a href="index.html#volunteer">Open Volunteer Mode →</a>
+        </article>
+        <article class="guide-card">
+          <span class="eyebrow">2 · Guarded live preview</span>
+          <h3>Optional real upload path</h3>
+          <p>When enabled, one sanitized image and note go to the guarded backend. The public path still rate-limits, bounds uploads, and returns safe JSON.</p>
+          <a href="index.html#volunteer">Try Live Gemma preview →</a>
+        </article>
+        <article class="guide-card">
+          <span class="eyebrow">3 · Local CLI</span>
+          <h3>Field/operator equivalent</h3>
+          <p>Maintainers can run the same shared-core contract locally and append a JSONL queue entry for later coordinator review.</p>
+          <code>uv run python edge-triage-cli.py --report "bridge washed out after flood" --format radio --save-case cases.jsonl</code>
+        </article>
+        <article class="guide-card">
+          <span class="eyebrow">4 · Evidence</span>
+          <h3>Metrics stay traceable</h3>
+          <p>The Speed and Accuracy profiles trace to full-50 run IDs in the current frontier, not stale numbers or unsupported claims.</p>
+          <a href="metrics.html">Open metrics source →</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="section-shell">
+      <div class="callout insight-callout">
+        <span class="callout-label">Safety boundary</span>
+        <p>Edge-Triage routes, summarizes, and highlights conservative next steps. Humans decide what to do. No automatic sync, dispatch, diagnosis, or incident-command authority is delegated to the model.</p>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
