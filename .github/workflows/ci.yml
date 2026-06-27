@@ -29,8 +29,20 @@ jobs:
       - name: Check docs links
         run: python3 scripts/check_docs_links.py
 
-      - name: Run unit tests
-        run: uv run python -m unittest discover tests/
+      - name: Run CI-safe unit tests
+        run: >-
+          uv run python -m unittest
+          tests.test_bootloader
+          tests.test_cli_import_boundary
+          tests.test_edge_triage_core
+          tests.test_field_tool
+          tests.test_live_api
+          tests.test_live_api_security_controls
+          tests.test_live_deployment
+          tests.test_local_extractor_sources
+          tests.test_optional_e2e_smoke
+          tests.test_site_live_ui
+          -v
 
       - name: CLI help smoke
         run: uv run python edge-triage-cli.py --help

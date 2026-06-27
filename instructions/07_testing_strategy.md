@@ -35,4 +35,4 @@ Run a comparable benchmark before updating public claims. Update `results.tsv`, 
 
 ## CI expectation
 
-GitHub Actions should run unit tests, CLI help, sandbox help, and docs-link checks for every push/PR.
+GitHub Actions should run docs-link checks, CI-safe unit tests, CLI help, and sandbox help for every push/PR. Full sandbox-heavy test discovery remains a local/pre-merge maintainer check because some hosted runners can terminate native model/runtime paths with CPU-instruction errors unrelated to the docs/code change.

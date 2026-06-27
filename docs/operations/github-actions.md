@@ -9,10 +9,10 @@ Workflow: `Edge-Triage CI`
 Runs:
 
 - dependency sync with `uv`;
-- unit tests;
+- docs-link check;
+- CI-safe unit tests;
 - CLI help smoke;
 - sandbox help smoke;
-- docs-link check.
 
 ## Private repo
 
