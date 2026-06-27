@@ -35,4 +35,8 @@ logs/*
 *.key
 *.crt
 
+# Keep only the current approved 3-minute demo video in git.
+media/video/demo/edge-triage-gemma-4-good-final-demo.mp4
+media/video/demo/edge-triage-gemma-4-good-final-demo-contact-sheet.jpg
+
 .idea/
