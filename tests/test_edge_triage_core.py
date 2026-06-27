@@ -60,6 +60,31 @@ class EdgeTriageCoreTest(unittest.TestCase):
         self.assertFalse(body["live_model"])
         self.assertNotIn("abc123", body["scene_summary"])
         self.assertIn("decision support", body["disclaimer"].lower())
+        self.assertIn("action_pack", body)
+        self.assertIn("radio_script", body)
+
+    def test_red_flag_override_forces_human_safety_escalation(self):
+        from edge_triage_core.results import build_triage_response
+
+        body = build_triage_response(
+            "infrastructure_and_utility_damage",
+            10,
+            False,
+            "bridge report",
+            note="collapsed bridge with trapped person and live wires",
+        )
+        self.assertEqual(body["label"], "affected_injured_or_dead_people")
+        self.assertTrue(body["red_flag_escalation"])
+        self.assertGreaterEqual(len(body["red_flags"]), 1)
+        self.assertIn("trained medical/rescue", body["next_action"])
+
+    def test_spanish_radio_script_is_available(self):
+        from edge_triage_core.results import build_triage_response
+
+        body = build_triage_response("infrastructure_and_utility_damage", 10, False, "bridge", language="es", output_format="radio")
+        self.assertEqual(body["language"], "es")
+        self.assertEqual(body["output_format"], "radio")
+        self.assertIn("Reporte de campo", body["radio_script"])
 
 
 if __name__ == "__main__":

@@ -11,6 +11,10 @@ Stories are product specs and acceptance criteria. They are not benchmark claims
 - [UC-003: Optional Live Gemma Preview](uc-003-live-gemma-preview.md)
 - [UC-004: Research Response Lead Optimization](uc-004-research-response-lead-optimization.md)
 - [UC-005: Maintainer Import Boundary](uc-005-maintainer-import-boundary.md)
+- [UC-006: Responder Action Pack](uc-006-responder-action-pack.md)
+- [UC-007: Red-Flag Escalation](uc-007-red-flag-escalation.md)
+- [UC-008: Local Incident Queue and Export](uc-008-local-incident-queue.md)
+- [UC-009: Radio Script Mode](uc-009-radio-script-mode.md)
 
 ## How to use
 

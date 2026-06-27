@@ -93,6 +93,7 @@
         <div class="field-actions">
           <button class="primary-button" type="submit" id="run-field-console">Run Edge-Triage</button>
           <button class="ghost-button" type="button" id="send-coordinator">Send to coordinator</button>
+          <button class="ghost-button" type="button" id="export-incident-queue">Export local queue</button>
           <button class="ghost-button" type="button" id="load-bridge-example">Load bridge example</button>
         </div>
         <p class="simulation-status" id="field-console-status" aria-live="polite">Draft saved locally. Run Edge-Triage to see the volunteer-facing triage card.</p>
@@ -111,6 +112,14 @@
         <div class="callout insight-callout">
           <span class="callout-label">Safe next action</span>
           <p id="app-result-action">No safe next action is generated until the volunteer runs Edge-Triage.</p>
+        </div>
+        <div class="callout insight-callout">
+          <span class="callout-label">Responder Action Pack</span>
+          <p id="app-action-pack">Run triage to see do-not-do guidance, collection checklist, and escalation triggers.</p>
+        </div>
+        <div class="callout insight-callout">
+          <span class="callout-label">Radio script</span>
+          <p id="app-radio-script">Run triage to generate a short handoff script.</p>
         </div>
         <div class="handoff-card">
           <span class="callout-label">Coordinator handoff</span>

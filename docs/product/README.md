@@ -7,6 +7,7 @@ Status: product documentation index.
 - [Product brief](product-brief.md)
 - [Public claims guidance](public-claims-guidance.md)
 - [Roadmap](roadmap.md)
+- [Feature backlog](feature-backlog.md)
 - [User stories](user-stories/README.md)
 
 ## Product truth rules

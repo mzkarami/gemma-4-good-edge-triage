@@ -9,13 +9,17 @@ Status: product direction, not automatic public claim.
 - Local field CLI.
 - Research sandbox and benchmark ledger.
 - Shared core contracts across CLI, API, and sandbox.
+- Responder Action Pack attached to triage responses.
+- Deterministic red-flag escalation layer.
+- Local incident queue/export in the volunteer console and CLI JSONL save.
+- Scoped English/Spanish radio-script text mode.
 
 ## Near-term
 
-- Stronger documentation spine and agent instructions.
-- Link and public-claim checks in CI.
-- Validation reports for substantial architecture/research changes.
-- Clearer user-story and ADR indexes.
+- Trusted disaster-response reference pack with deterministic snippets by label and red-flag trigger.
+- Judge comparison view for static demo vs Live API vs CLI command.
+- Private operator runbook for actual incident queue handling.
+- Public-claim checker for stale benchmark numbers.
 
 ## Target/future
 

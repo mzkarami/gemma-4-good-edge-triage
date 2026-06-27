@@ -5,7 +5,6 @@ Status: research documentation index.
 ## Current sources
 
 - [Current frontier](../CURRENT_FRONTIER.md) - canonical public benchmark claims.
-- [EDG research logs](../superpowers/research_logs/README.md) - historical experiment audit trail.
 - `results.tsv` - local experiment ledger.
 
 ## Migration note

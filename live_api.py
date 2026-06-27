@@ -284,6 +284,6 @@ async def triage(
             await image.close()
 
         latency_ms = (time.perf_counter() - started) * 1000
-        return build_triage_response(label, latency_ms, live, scene_summary)
+        return build_triage_response(label, latency_ms, live, scene_summary, note=safe_note, filename=image.filename)
     finally:
         await _leave_public_request()

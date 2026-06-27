@@ -21,7 +21,10 @@ Owns shared product contracts:
 - canonical labels;
 - label metadata and fallback classification;
 - runtime config defaults;
-- response shaping helpers.
+- response shaping helpers;
+- responder action packs;
+- deterministic red-flag escalation;
+- scoped radio-script formatting.
 
 Must not:
 

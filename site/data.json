@@ -77,7 +77,24 @@
       "nextAction": "Route to infrastructure response; keep civilians away from the bridge and report coordinates to incident command.",
       "reason": "Image evidence shows a damaged bridge/access route. The curated analysis routes this to infrastructure response; Live Gemma scenario captures produced the same family label.",
       "imageSrc": "assets/scenarios/bridge-flood-damage.jpg",
-      "imageAlt": "Flood-damaged bridge and road crossing over a swollen creek"
+      "imageAlt": "Flood-damaged bridge and road crossing over a swollen creek",
+      "actionPack": {
+        "doNotDo": "Do not ask volunteers to inspect unstable structures, roads, utilities, or power lines directly.",
+        "collectNext": [
+          "coordinates or landmark",
+          "blocked route",
+          "utility hazard",
+          "people nearby"
+        ],
+        "escalateIf": [
+          "people trapped",
+          "live wires",
+          "gas smell",
+          "route blocks evacuation"
+        ],
+        "radioScript": "Possible infrastructure damage. Keep civilians away, report coordinates, and route to infrastructure or utility response. Human review required."
+      },
+      "radioScript": "Possible infrastructure damage. Keep civilians away, report coordinates, and route to infrastructure or utility response. Human review required."
     },
     {
       "id": "injured-person",
@@ -92,7 +109,24 @@
       "nextAction": "Escalate to trained medical/rescue team; avoid moving the person unless there is immediate danger.",
       "reason": "The report contains direct casualty cues and the image context shows responders working in rubble near a damaged structure. This demonstrates when the Critical Accuracy Profile is useful without showing graphic casualty imagery.",
       "imageSrc": "assets/scenarios/possible-casualty-damaged-building.jpg",
-      "imageAlt": "Rescue workers searching rubble near a damaged building after a disaster"
+      "imageAlt": "Rescue workers searching rubble near a damaged building after a disaster",
+      "actionPack": {
+        "doNotDo": "Do not move injured people unless immediate danger is present.",
+        "collectNext": [
+          "exact location",
+          "number of people affected",
+          "visible hazards",
+          "access route"
+        ],
+        "escalateIf": [
+          "unconscious or not breathing",
+          "trapped person",
+          "heavy bleeding",
+          "fire or collapse nearby"
+        ],
+        "radioScript": "Possible casualty report. Escalate to trained medical or rescue responders. Collect exact location, affected people, visible hazards, and access route. Human review required."
+      },
+      "radioScript": "Possible casualty report. Escalate to trained medical or rescue responders. Collect exact location, affected people, visible hazards, and access route. Human review required."
     },
     {
       "id": "supply-drive",
@@ -107,7 +141,24 @@
       "nextAction": "Route to incident-response coordination; verify supply needs before sending additional donations.",
       "reason": "Image evidence shows organized relief logistics rather than casualty or infrastructure damage. Live Gemma scenario capture labeled this as rescue/volunteering/donation effort.",
       "imageSrc": "assets/scenarios/relief-cleaning-supplies.jpg",
-      "imageAlt": "Volunteer moving cleaning supply buckets from a truck"
+      "imageAlt": "Volunteer moving cleaning supply buckets from a truck",
+      "actionPack": {
+        "doNotDo": "Do not self-deploy unrequested volunteers or supplies into an active hazard zone.",
+        "collectNext": [
+          "requested supply type",
+          "drop-off point",
+          "coordinator contact",
+          "access conditions"
+        ],
+        "escalateIf": [
+          "responders overwhelmed",
+          "active evacuation",
+          "shelter or supply shortage",
+          "unsafe volunteer convergence"
+        ],
+        "radioScript": "Possible active response or logistics report. Coordinate before sending volunteers or supplies. Confirm needs, drop-off point, and access conditions. Human review required."
+      },
+      "radioScript": "Possible active response or logistics report. Coordinate before sending volunteers or supplies. Confirm needs, drop-off point, and access conditions. Human review required."
     },
     {
       "id": "unrelated-crowd",
@@ -122,7 +173,24 @@
       "nextAction": "Route to incident-response coordination; monitor responder safety, evacuation status, and nearby support needs.",
       "reason": "Image evidence shows responders assisting people near an aircraft. Live Gemma scenario capture labeled this as rescue/volunteering/donation effort.",
       "imageSrc": "assets/scenarios/helicopter-evacuation-assistance.jpg",
-      "imageAlt": "Responders assisting evacuees near a helicopter"
+      "imageAlt": "Responders assisting evacuees near a helicopter",
+      "actionPack": {
+        "doNotDo": "Do not self-deploy unrequested volunteers or supplies into an active hazard zone.",
+        "collectNext": [
+          "requested supply type",
+          "drop-off point",
+          "coordinator contact",
+          "access conditions"
+        ],
+        "escalateIf": [
+          "responders overwhelmed",
+          "active evacuation",
+          "shelter or supply shortage",
+          "unsafe volunteer convergence"
+        ],
+        "radioScript": "Possible active response or logistics report. Coordinate before sending volunteers or supplies. Confirm needs, drop-off point, and access conditions. Human review required."
+      },
+      "radioScript": "Possible active response or logistics report. Coordinate before sending volunteers or supplies. Confirm needs, drop-off point, and access conditions. Human review required."
     }
   ]
 }

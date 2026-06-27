@@ -1,10 +1,14 @@
 import argparse
+import json
 import os
+from datetime import datetime, timezone
 
 from rich.console import Console
 from rich.panel import Panel
 
 from edge_triage_core.config import TriageRuntimeConfig
+from edge_triage_core.labels import parse_label
+from edge_triage_core.results import build_triage_response
 from edge_triage_core.prompts import TRIAGE_SYSTEM_PROMPT, resolve_main_prompt_template
 from litert_backend import NativeAudioProcessor
 
@@ -28,6 +32,9 @@ def main():
     parser.add_argument("--image", help="Path to disaster photo")
     parser.add_argument("--report", help="Text description of the scene")
     parser.add_argument("--audio", help="Path to audio file (hands-free triage)")
+    parser.add_argument("--save-case", help="Append triage result to a local JSONL incident queue")
+    parser.add_argument("--language", default="en", choices=["en", "es"], help="Output language for radio script")
+    parser.add_argument("--format", default="standard", choices=["standard", "radio"], help="Output format hint")
     args = parser.parse_args()
 
     if not args.image and not args.report and not args.audio:
@@ -83,8 +90,43 @@ def main():
         temperature=0.1,
     )
 
-    result = output["choices"][0]["message"]["content"]
-    console.print(Panel(result, title="[bold cyan]Triage Report & Advice[/bold cyan]"))
+    result = str(output["choices"][0]["message"].get("content") or "")
+    label = parse_label(result)
+    response = build_triage_response(
+        label,
+        0.0,
+        True,
+        result,
+        note=scenario,
+        filename=args.image or args.audio,
+        language=args.language,
+        output_format=args.format,
+    )
+    if args.format == "radio":
+        result_text = response["radio_script"]
+    else:
+        result_text = (
+            f"Label: {response['label']}\n"
+            f"Priority: {response['priority']}\n"
+            f"Safe next action: {response['next_action']}\n"
+            f"Do not do: {response['action_pack']['do_not_do']}\n"
+            f"Collect next: {', '.join(response['action_pack']['collect_next'])}\n"
+            f"Escalate if: {', '.join(response['action_pack']['escalate_if'])}\n"
+            f"Radio script: {response['radio_script']}"
+        )
+    console.print(Panel(result_text, title="[bold cyan]Triage Report & Advice[/bold cyan]"))
+    if args.save_case:
+        record = {
+            "created_at": datetime.now(timezone.utc).isoformat(),
+            "report": scenario,
+            "image": args.image,
+            "audio": args.audio,
+            "triage": response,
+            "synced": False,
+        }
+        with open(args.save_case, "a", encoding="utf-8") as f:
+            f.write(json.dumps(record, ensure_ascii=False) + "\n")
+        console.print(f"Saved local incident queue entry to {args.save_case}")
 
 
 if __name__ == "__main__":
