@@ -12,7 +12,7 @@ uv sync
 ```
 
 ## 2. Running a Triage
-Edge-Triage works with both text reports and photos taken in the field.
+Edge-Triage works with both text reports and photos taken in the field. The field CLI reads shared prompts, labels, and model defaults from `edge_triage_core/`; it does not import the research sandbox just to start or show help. That keeps field startup separate from benchmark bootstrapping, artifact download checks, and CUDA guard logic.
 
 ### A. Triage a Text Report
 If you only have a verbal or written report:

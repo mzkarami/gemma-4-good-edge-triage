@@ -32,6 +32,8 @@ For public-style deployment guidance, see `../docs/DEPLOYMENT.md` from this dire
 
 The default judge path is intentionally curated/offline and data-backed. It does not require judges to install models or provide a GPU, and it should not be presented as live inference. The optional Live Gemma preview is separate, guarded by public-demo rate/concurrency/timeout controls, and allowed to fail closed while the curated showcase remains usable.
 
+The public product surfaces share prompt/label/runtime contracts through `edge_triage_core/`. The static site still uses `data.json`, while the optional Live API and local CLI import the same core contract without importing the research sandbox.
+
 ## Known limitations and safety boundaries
 
 - Edge-Triage is decision support for disaster-response triage, not emergency authority, medical advice, or a replacement for trained incident command.

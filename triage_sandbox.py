@@ -104,6 +104,16 @@ import llama_cpp
 from llama_cpp import Llama
 from prepare import evaluate_triage, download_model, download_multimodal_projector, MODEL_DIR, CACHE_DIR
 from local_extractor import extract_from_local_parquet
+from edge_triage_core.prompts import (
+    BASELINE_TRIAGE_PROMPT_TEMPLATE,
+    CANONICAL_CATEGORIES,
+    LABEL_INDEX_TO_NAME,
+    SEVERE_DT0_RESCUE_GUARD_STRICT_TRIAGE_PROMPT_TEMPLATE,
+    SEVERE_DT0_RESCUE_GUARD_TRIAGE_PROMPT_TEMPLATE,
+    TRIAGE_SYSTEM_PROMPT,
+    main_prompt_variant,
+    resolve_main_prompt_template as _resolve_main_prompt_template,
+)
 
 # ---------------------------------------------------------------------------
 # Researcher Configuration (Mutable)
@@ -289,19 +299,6 @@ RESULTS_COLUMNS = [
 DEDUP_STATUSES = {"keep", "discard", "legacy", "skip"}
 _RESULTS_ROWS_CACHE = {}
 IMAGE_EXTENSIONS = (".jpg", ".jpeg", ".png", ".webp")
-CANONICAL_CATEGORIES = [
-    "affected_injured_or_dead_people",
-    "infrastructure_and_utility_damage",
-    "not_humanitarian",
-    "rescue_volunteering_or_donation_effort",
-]
-LABEL_INDEX_TO_NAME = {index: name for index, name in enumerate(CANONICAL_CATEGORIES)}
-TRIAGE_SYSTEM_PROMPT = (
-    "You are a disaster triage vision classifier. "
-    "Inspect the image first, decide the best category, and output the label first. "
-    "Format: [category] then optionally one short reason sentence. "
-    "Do not output any text before the bracketed label."
-)
 TARGETED_AFFECTED_SYSTEM_PROMPT = (
     "You are a strict visual verifier for human bodily harm in disasters. "
     "Output exactly one token: [yes] or [no]."
@@ -375,80 +372,11 @@ ACTIVE_TARGETED_AFFECTED_USER_PROMPT, ACTIVE_STRICT_TARGETED_AFFECTED_USER_PROMP
     resolve_targeted_probe_prompts()
 )
 
-TRIAGE_MAIN_PROMPT_VARIANT = os.getenv(
-    "TRIAGE_MAIN_PROMPT_VARIANT", "baseline"
-).strip().lower()
-
-BASELINE_TRIAGE_PROMPT_TEMPLATE = """
-Task: choose exactly one label:
-[affected_injured_or_dead_people]
-[infrastructure_and_utility_damage]
-[not_humanitarian]
-[rescue_volunteering_or_donation_effort]
-
-Rules:
-- Injured/dead/trapped people or clear casualties -> affected_injured_or_dead_people.
-- Rescue/evacuation/aid action is central -> rescue_volunteering_or_donation_effort.
-- Disaster damage is central (collapsed, flooded, burning, rubble, broken utilities) -> infrastructure_and_utility_damage.
-- Otherwise -> not_humanitarian.
-- Tie-break: human harm beats damage; rescue action beats damage.
-- Do not infer disaster without explicit visual or text evidence.
-
-Report: {scenario}
-Output the bracketed label first.
-"""
-
-SEVERE_DT0_RESCUE_GUARD_TRIAGE_PROMPT_TEMPLATE = """
-Task: choose exactly one label:
-[affected_injured_or_dead_people]
-[infrastructure_and_utility_damage]
-[not_humanitarian]
-[rescue_volunteering_or_donation_effort]
-
-Rules:
-- Injured/dead/trapped people or clear casualties -> affected_injured_or_dead_people.
-- Rescue/evacuation/aid action is central -> rescue_volunteering_or_donation_effort.
-- Disaster damage is central (collapsed, flooded, burning, rubble, broken utilities) -> infrastructure_and_utility_damage.
-- Otherwise -> not_humanitarian.
-- Tie-break: human harm beats damage; rescue action beats damage.
-- Do not infer disaster without explicit visual or text evidence.
-- In severe damage scenes, do not choose rescue unless active aid/evacuation actions are clearly central.
-- If responders/crowds appear near rubble/flood/fire without visible casualties or explicit aid action, choose infrastructure_and_utility_damage.
-
-Report: {scenario}
-Output the bracketed label first.
-"""
-
-SEVERE_DT0_RESCUE_GUARD_STRICT_TRIAGE_PROMPT_TEMPLATE = """
-Task: choose exactly one label:
-[affected_injured_or_dead_people]
-[infrastructure_and_utility_damage]
-[not_humanitarian]
-[rescue_volunteering_or_donation_effort]
-
-Rules:
-- Injured/dead/trapped people or clear casualties -> affected_injured_or_dead_people.
-- Rescue/evacuation/aid action is central -> rescue_volunteering_or_donation_effort.
-- Disaster damage is central (collapsed, flooded, burning, rubble, broken utilities) -> infrastructure_and_utility_damage.
-- Otherwise -> not_humanitarian.
-- Tie-break: human harm beats damage; rescue action beats damage.
-- Do not infer disaster without explicit visual or text evidence.
-- In severe damage scenes, default to infrastructure_and_utility_damage unless explicit rescue delivery is visible.
-- Do not choose rescue for responder presence, crowds, bystanders, or vehicles alone.
-- Rescue requires at least one direct aid cue: active evacuation/carrying victims, stretcher transport, medical treatment, or extraction from danger.
-- If no direct aid cue is visible, choose infrastructure_and_utility_damage even when responders are present.
-
-Report: {scenario}
-Output the bracketed label first.
-"""
+TRIAGE_MAIN_PROMPT_VARIANT = main_prompt_variant()
 
 
 def resolve_main_prompt_template():
-    if TRIAGE_MAIN_PROMPT_VARIANT == "severe_dt0_rescue_guard":
-        return SEVERE_DT0_RESCUE_GUARD_TRIAGE_PROMPT_TEMPLATE
-    if TRIAGE_MAIN_PROMPT_VARIANT == "severe_dt0_rescue_guard_strict":
-        return SEVERE_DT0_RESCUE_GUARD_STRICT_TRIAGE_PROMPT_TEMPLATE
-    return BASELINE_TRIAGE_PROMPT_TEMPLATE
+    return _resolve_main_prompt_template(TRIAGE_MAIN_PROMPT_VARIANT)
 
 
 # The Researcher Agent will primarily modify this template

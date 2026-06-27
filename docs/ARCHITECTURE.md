@@ -5,11 +5,13 @@ Edge-Triage has two user-facing paths and one measurement loop.
 ```text
 Volunteer / responder
   -> static web UI or CLI
+  -> edge_triage_core shared prompt/label/runtime contract
   -> Gemma 4 triage profile
   -> label, priority, confidence context, conservative next action
 
 Research / response lead
   -> triage_sandbox.py
+  -> edge_triage_core shared prompt contract
   -> gold-set evaluation
   -> results.tsv
   -> docs/CURRENT_FRONTIER.md
@@ -17,10 +19,11 @@ Research / response lead
 
 ## Components
 
+- `edge_triage_core/`: shared product contract for prompt variants, canonical labels, runtime defaults, fallback classification helpers, and API response shaping. It is deliberately side-effect free so product surfaces can import it without loading models or benchmark code.
 - `site/`: static public demo with volunteer and optimization views. The static mode uses curated public-safe scenarios so it works without a hosted model.
-- `live_api.py`: optional FastAPI service for a guarded Live Gemma preview. The public judge flow is token-free and protected by localhost binding, same-origin reverse proxying, upload limits, rate limits, MIME validation, concurrency limits, timeout bounds, and a kill switch.
-- `edge-triage-cli.py`: local field CLI for text/image-style disaster reports.
-- `triage_sandbox.py`: repeatable evaluation harness for label quality, latency, routing mix, and keep/discard decisions.
+- `live_api.py`: optional FastAPI service for a guarded Live Gemma preview. The public judge flow is token-free and protected by localhost binding, same-origin reverse proxying, upload limits, rate limits, MIME validation, concurrency limits, timeout bounds, and a kill switch. It imports shared labels/prompts from `edge_triage_core/` but keeps HTTP security controls local.
+- `edge-triage-cli.py`: local field CLI for text/image-style disaster reports. It imports `edge_triage_core/` directly and does not import `triage_sandbox.py` for help/startup.
+- `triage_sandbox.py`: repeatable evaluation harness for label quality, latency, routing mix, and keep/discard decisions. It consumes shared prompt contracts from `edge_triage_core/` while keeping artifact bootstrap, CUDA/VRAM guards, and benchmark execution inside the research harness.
 - `results.tsv`: experiment ledger.
 - `docs/CURRENT_FRONTIER.md`: public source of truth for current benchmark claims.
 - `docs/superpowers/research_logs/`: public EDG experiment logs and research reports that explain how the frontier evolved.

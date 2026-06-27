@@ -69,10 +69,11 @@ label + priority + action         keep/discard frontier decision
 
 Main artifacts:
 
+- `edge_triage_core/` — shared product contract for prompts, labels, runtime defaults, and response shaping. This is intentionally lightweight: importing it must not load models, probe CUDA, download artifacts, or start the benchmark harness.
 - `site/` — curated offline demo with Volunteer Mode, Optimization Mode, and readable metrics.
-- `live_api.py` — optional guarded Live Gemma preview for uploaded images.
-- `edge-triage-cli.py` — local field CLI for text/image/audio-style reports.
-- `triage_sandbox.py` — research and evaluation harness.
+- `live_api.py` — optional guarded Live Gemma preview for uploaded images; consumes `edge_triage_core/` for shared labels/prompts while keeping HTTP guardrails local.
+- `edge-triage-cli.py` — local field CLI for text/image/audio-style reports; consumes `edge_triage_core/` directly and no longer imports the research sandbox for basic startup/help.
+- `triage_sandbox.py` — research and evaluation harness; consumes `edge_triage_core/` prompts while keeping benchmark/download/GPU lifecycle logic separate.
 - `results.tsv` — experiment ledger.
 - `docs/CURRENT_FRONTIER.md` — canonical public metric summary.
 - `docs/superpowers/research_logs/` — public research trail for the AutoResearch/EDG experiment loop.
@@ -163,7 +164,8 @@ Start here if you are new:
 - [`docs/superpowers/research_logs/README.md`](docs/superpowers/research_logs/README.md) — public EDG research logs and AutoResearch audit trail.
 - [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md) — public demo hosting, Docker, HTTPS, and live-preview safety controls.
 - [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) — system design and research loop.
-- [`docs/DEVELOPER_GUIDE.md`](docs/DEVELOPER_GUIDE.md) — setup, data/model prep, and experiment workflow.
+- [`docs/DEVELOPER_GUIDE.md`](docs/DEVELOPER_GUIDE.md) — setup, data/model prep, shared-core boundaries, and experiment workflow.
+- [`docs/USER_STORIES.md`](docs/USER_STORIES.md) — field, judge, live-demo, research, and maintainer stories for the shared-core architecture.
 - [`agents/README.md`](agents/README.md) — optional Paperclip-style agent templates for self-improving NGO/research workflows.
 - [`plugin/README.md`](plugin/README.md) — optional local Paperclip dashboard skeleton.
 - [`infra/README.md`](infra/README.md) — optional local Paperclip stack example.

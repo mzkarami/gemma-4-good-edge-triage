@@ -85,18 +85,29 @@ uv run triage_sandbox.py > logs/run.log 2>&1
 
 Keep generated logs under `logs/`, not in the project root. Named experiment logs should follow the same pattern, for example `logs/run_edg479_r1.log`. The repository keeps `logs/.gitkeep` for fresh checkouts, while generated `*.log` files stay ignored.
 
-## 6. Dual-Path Architecture
+## 6. Runtime Boundary Architecture
+The product surfaces share one lightweight core package:
+
+- `edge_triage_core/prompts.py` owns the canonical prompt variants and system prompt used by the CLI and research harness. The Live API uses a JSON-bounded prompt from the same package.
+- `edge_triage_core/labels.py` owns canonical labels, priority/next-action metadata, safe text sanitization, and guarded fallback classification.
+- `edge_triage_core/config.py` owns model path and runtime defaults without loading models or downloading artifacts.
+- `edge_triage_core/results.py` owns the common response shape.
+
+This package must remain side-effect free. Importing it should not import `triage_sandbox.py`, `llama_cpp`, `torch`, `prepare.py`, or `local_extractor.py`. The field CLI and live API consume this shared contract directly; the research sandbox consumes it while keeping benchmark, artifact, and CUDA lifecycle code local to `triage_sandbox.py`.
+
+## 7. Dual-Path Architecture
 The project is split into two primary workflows:
 
 1. **The Research Sandbox (`triage_sandbox.py`)**: 
    - Used by the **Researcher Agent** to autonomously optimize prompt templates and reasoning steps.
+   - Imports shared prompt constants from `edge_triage_core/` so product and benchmark surfaces stay aligned.
    - Logs results to `results.tsv`.
    
 2. **The Field CLI (`edge-triage-cli.py`)**:
    - A simplified tool for volunteers on the ground.
-   - Imports the latest `TRIAGE_PROMPT_TEMPLATE` from the sandbox to ensure field-readiness.
+   - Imports prompt/runtime contracts from `edge_triage_core/`, not from `triage_sandbox.py`, so help/startup stays lightweight and does not trigger benchmark bootstrapping.
 
-## 7. Deployment Backends
+## 8. Deployment Backends
 We support three high-performance edge backends:
 
 ### A. Ollama (One-Click)
@@ -116,7 +127,7 @@ litert-lm run ~/.cache/autoresearch/models/Edge-Triage-gemma-4-E2B-it.litertlm -
 ### C. llama.cpp (Research & Vision)
 Native high-fidelity support provided via `llama-cpp-python` in `triage_sandbox.py` and the `edge-triage-cli.py`.
 
-## 8. Self-Improving Agent Templates
+## 9. Self-Improving Agent Templates
 Edge-Triage includes optional agent templates under [`agents/`](../agents/). They are meant for teams that want to connect a Paperclip-style NGO or research workspace to the benchmark loop.
 
 The pattern is inspired by Andrej Karpathy's AutoResearch-style idea: give an agent a sandbox, a fixed evaluation harness, and a keep/discard rule, then let measured experiments improve the system over time. Edge-Triage adapts that idea for humanitarian triage, with stricter latency, safety, and human-review constraints.
@@ -139,7 +150,7 @@ In this repository, the self-improving loop is intentionally benchmark-gated:
 * **Self-Benchmarking:** Every proposed change is validated against the fixed gold-set evaluation path from `prepare.py` and recorded in `results.tsv`.
 * **Human-Controlled Promotion:** Agent-discovered improvements should be reviewed through a branch or pull request before they become deployment defaults.
 
-## 9. Submitting Changes
+## 10. Submitting Changes
 1.  Always run a full 50-sample benchmark to verify your changes.
 2.  Log your results in `results.tsv` using this schema:
 
