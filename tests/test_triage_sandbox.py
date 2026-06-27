@@ -12,6 +12,11 @@ import os
 # Ensure we can import from the parent directory
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+if os.getenv("EDGE_TRIAGE_RUN_NATIVE_TESTS") != "1":
+    raise unittest.SkipTest(
+        "triage_sandbox imports native llama.cpp/torch runtime; set EDGE_TRIAGE_RUN_NATIVE_TESTS=1 to run"
+    )
+
 import triage_sandbox
 
 

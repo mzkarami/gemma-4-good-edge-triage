@@ -19,12 +19,28 @@ python3 scripts/check_docs_links.py
 git diff --check
 ```
 
+### CI-safe local check
+
+```bash
+uv run python scripts/run_ci_tests.py
+uv run python edge-triage-cli.py --help
+uv run python triage_sandbox.py --help
+```
+
+This matches the GitHub Actions validation path and avoids importing native model runtimes during unit-test discovery.
+
+### Full local maintainer check
+
+```bash
+uv run python scripts/run_full_local_tests.py
+```
+
+`run_full_local_tests.py` sets `EDGE_TRIAGE_RUN_NATIVE_TESTS=1` for the subprocess so sandbox tests that import `llama_cpp`/`torch` run only on a maintainer machine. If the native runtime is unavailable or unsupported, use the CI-safe check and document the limitation.
+
 ### Shared core / CLI / sandbox
 
 ```bash
-uv run python -m unittest discover tests/
-uv run python edge-triage-cli.py --help
-uv run python triage_sandbox.py --help
+uv run python scripts/run_full_local_tests.py
 ```
 
 ### Live API

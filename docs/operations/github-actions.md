@@ -9,8 +9,7 @@ Workflow: `Edge-Triage CI`
 Runs:
 
 - dependency sync with `uv`;
-- docs-link check;
-- CI-safe unit tests;
+- `uv run python scripts/run_ci_tests.py`;
 - CLI help smoke;
 - sandbox help smoke;
 

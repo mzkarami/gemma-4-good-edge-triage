@@ -12,13 +12,21 @@ Also run `git diff --check` before committing.
 
 ## Code/runtime changes
 
-Run:
+Run the CI-safe local suite first:
 
 ```bash
-uv run python -m unittest discover tests/
+uv run python scripts/run_ci_tests.py
 uv run python edge-triage-cli.py --help
 uv run python triage_sandbox.py --help
 ```
+
+For prompt routing, sandbox, benchmark, or native-runtime changes, run the full maintainer suite:
+
+```bash
+uv run python scripts/run_full_local_tests.py
+```
+
+That script enables `EDGE_TRIAGE_RUN_NATIVE_TESTS=1` for sandbox tests that import native llama.cpp/torch runtime modules.
 
 ## Live API changes
 
@@ -35,4 +43,4 @@ Run a comparable benchmark before updating public claims. Update `results.tsv`, 
 
 ## CI expectation
 
-GitHub Actions should run docs-link checks, CI-safe unit tests, CLI help, and sandbox help for every push/PR. Full sandbox-heavy test discovery remains a local/pre-merge maintainer check because some hosted runners can terminate native model/runtime paths with CPU-instruction errors unrelated to the docs/code change.
+GitHub Actions should run `uv run python scripts/run_ci_tests.py`, CLI help, and sandbox help for every push/PR. Full sandbox-heavy test discovery remains a local/pre-merge maintainer check because some hosted runners can terminate native model/runtime paths with CPU-instruction errors unrelated to the docs/code change.

@@ -15,6 +15,14 @@ def get_latest_field_prompt():
     return resolve_main_prompt_template()
 
 
+def load_llama_runtime():
+    """Load native llama.cpp bindings only when a real triage run needs them."""
+    from llama_cpp import Llama
+    from llama_cpp.llama_chat_format import Llava15ChatHandler
+
+    return Llama, Llava15ChatHandler
+
+
 def main():
     parser = argparse.ArgumentParser(description="Edge-Triage Field Tool")
     parser.add_argument("--image", help="Path to disaster photo")
@@ -26,8 +34,7 @@ def main():
         parser.print_help()
         return
 
-    from llama_cpp import Llama
-    from llama_cpp.llama_chat_format import Llava15ChatHandler
+    Llama, Llava15ChatHandler = load_llama_runtime()
 
     config = TriageRuntimeConfig.local_from_env()
 

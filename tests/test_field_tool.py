@@ -39,9 +39,9 @@ class TestFieldTool(unittest.TestCase):
             "manual flood report",
             "--audio",
             "report.wav",
-        ]), patch.object(edge_triage_cli, "NativeAudioProcessor", return_value=ears), patch(
-            "llama_cpp.llama_chat_format.Llava15ChatHandler", return_value=MagicMock()
-        ), patch("llama_cpp.Llama", return_value=llm):
+        ]), patch.object(edge_triage_cli, "NativeAudioProcessor", return_value=ears), patch.object(
+            edge_triage_cli, "load_llama_runtime", return_value=(MagicMock(return_value=llm), MagicMock(return_value=MagicMock()))
+        ):
             edge_triage_cli.main()
 
         prompt_text = llm.create_chat_completion.call_args.kwargs["messages"][1]["content"][0]["text"]
