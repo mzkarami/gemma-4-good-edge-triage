@@ -22,6 +22,7 @@ CI_SAFE_MODULES = [
     "tests.test_live_deployment",
     "tests.test_local_extractor_sources",
     "tests.test_optional_e2e_smoke",
+    "tests.test_public_claims_checker",
     "tests.test_site_live_ui",
 ]
 
@@ -33,6 +34,7 @@ def run(command: list[str]) -> None:
 
 def main() -> int:
     run([sys.executable, "scripts/check_docs_links.py"])
+    run([sys.executable, "scripts/check_public_claims.py"])
     run([sys.executable, "-m", "unittest", *CI_SAFE_MODULES, "-v"])
     return 0
 

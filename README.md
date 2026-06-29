@@ -50,7 +50,7 @@ The competition-facing source of truth is [`docs/CURRENT_FRONTIER.md`](docs/CURR
 | Volunteer Speed Profile | High-volume field sorting | 0.9794 | see run log | 158.61 ms | 50 | EDG-307 r0 / `20260427T200056Z` |
 | Critical Accuracy Profile | High-stakes review | 0.9818 | 0.9800 | 237.97 ms | 50 | EDG-480 r2 / `20260515T093558Z` |
 
-Both profiles are far below the 4-second field-response budget. Older figures such as 65%, 71.5%, and 90.52% are historical milestones from earlier submission-era or ledger states, not the current frontier.
+Both profiles are far below the 4-second field-response budget. Older lower benchmark figures are historical milestones from earlier submission-era or ledger states, not the current frontier.
 
 ## How the pieces fit
 

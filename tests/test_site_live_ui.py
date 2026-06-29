@@ -99,6 +99,24 @@ class SiteLiveUiTest(unittest.TestCase):
         self.assertIn("Ready for coordinator handoff", js)
         self.assertNotIn("Queued for coordinator sync. Human review required before action.", js)
 
+    def test_coordinator_handoff_polish_is_copyable_and_local_only(self):
+        app = Path("site/app.html").read_text()
+        js = Path("site/app.js").read_text()
+
+        self.assertIn('id="copy-radio-script"', app)
+        self.assertIn('id="copy-handoff-summary"', app)
+        self.assertIn('id="export-review-packet"', app)
+        self.assertIn('id="handoff-review-checklist"', app)
+        self.assertIn("Review before use", app)
+        self.assertIn("no automatic sync, dispatch, diagnosis, or incident-command authority", app)
+        self.assertIn("const buildHandoffSummary", js)
+        self.assertIn("navigator.clipboard", js)
+        self.assertIn("edge-triage-review-packet.json", js)
+        self.assertIn("reviewChecklist", js)
+        self.assertIn("synced: false", js)
+        self.assertNotIn("fetch('/api/sync", js)
+        self.assertNotIn("dispatchIncident", js)
+
 
     def test_judge_walkthrough_compares_surfaces(self):
         html = Path("site/judge.html").read_text()

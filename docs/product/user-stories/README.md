@@ -17,6 +17,7 @@ Stories are product specs and acceptance criteria. They are not benchmark claims
 - [UC-009: Radio Script Mode](uc-009-radio-script-mode.md)
 - [UC-010: Deterministic Guidance Basis](uc-010-guidance-basis.md)
 - [UC-011: Judge Walkthrough](uc-011-judge-walkthrough.md)
+- [UC-012: Coordinator Review and Handoff Polish](uc-012-coordinator-handoff-polish.md)
 
 ## How to use
 

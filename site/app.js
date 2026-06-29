@@ -334,10 +334,14 @@ function initVolunteerConsole() {
   const status = $('#field-console-status');
   const bridgeButton = $('#load-bridge-example');
   const sendButton = $('#send-coordinator');
+  const copyRadioButton = $('#copy-radio-script');
+  const copyHandoffButton = $('#copy-handoff-summary');
+  const exportReviewPacketButton = $('#export-review-packet');
   const exportQueueButton = $('#export-incident-queue');
   if (!form || !reportInput) return;
 
   const bridgeSample = state.data?.samples?.find((sample) => sample.id === 'bridge-flood') || state.data?.samples?.[0];
+  let latestIncident = null;
   const saveDraft = () => {
     const draft = {
       report: reportInput.value,
@@ -422,10 +426,72 @@ function initVolunteerConsole() {
   const renderGuidanceBasis = (guidance) => {
     renderList('#app-guidance-basis', guidance, 'Conservative guidance basis unavailable for this result.');
   };
+  const buildHandoffSummary = (record) => {
+    if (!record) return 'No reviewed triage card is ready yet.';
+    const action = record.nextAction || record.next_action || 'Safe next action unavailable.';
+    return [
+      `Report: ${record.report || 'No field report supplied.'}`,
+      `Label: ${record.label || 'unknown'}`,
+      `Priority: ${record.priority || 'unknown'}`,
+      `Safe next action: ${action}`,
+      'Boundary: Decision support only; human review required before coordinator action.'
+    ].join('\n');
+  };
+  const copyText = async (text, successMessage) => {
+    if (!text || text.includes('unavailable') || text.includes('No reviewed triage card')) {
+      setVolunteerError('Run Edge-Triage before copying a handoff artifact.');
+      return;
+    }
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(text);
+      } else {
+        const fallback = document.createElement('textarea');
+        fallback.value = text;
+        fallback.setAttribute('readonly', '');
+        fallback.style.position = 'fixed';
+        fallback.style.left = '-9999px';
+        document.body.appendChild(fallback);
+        fallback.select();
+        document.execCommand('copy');
+        fallback.remove();
+      }
+      status.textContent = successMessage;
+      status.classList.add('complete');
+      status.classList.remove('error');
+    } catch (error) {
+      console.error(error);
+      setVolunteerError('Copy failed in this browser. You can still read the text on screen.');
+    }
+  };
+  const exportReviewPacket = () => {
+    if (!latestIncident) {
+      setVolunteerError('Run Edge-Triage before exporting a review packet.');
+      return;
+    }
+    const packet = {
+      ...latestIncident,
+      handoffSummary: buildHandoffSummary(latestIncident),
+      reviewChecklist: [
+        'Confirm location, time, source, affected people, and visible hazards through normal coordinator channels.',
+        'Review red flags and safe next action before assigning volunteer movement.',
+        'Treat this as a local handoff aid only; no automatic sync, dispatch, diagnosis, or incident-command authority.'
+      ]
+    };
+    const link = document.createElement('a');
+    link.href = `data:application/json;charset=utf-8,${encodeURIComponent(JSON.stringify(packet, null, 2))}`;
+    link.download = 'edge-triage-review-packet.json';
+    link.click();
+    status.textContent = 'Exported single review packet. No network sync, dispatch, or acknowledgement was performed.';
+    status.classList.add('complete');
+    status.classList.remove('error');
+  };
   const saveIncident = (record) => {
     const key = 'edge-triage-incident-queue';
     const queue = JSON.parse(localStorage.getItem(key) || '[]');
-    queue.push({ ...record, savedAt: new Date().toISOString(), synced: false });
+    const incident = { ...record, savedAt: new Date().toISOString(), synced: false };
+    queue.push(incident);
+    latestIncident = incident;
     localStorage.setItem(key, JSON.stringify(queue));
     $('#handoff-status').textContent = `${queue.length} local incident${queue.length === 1 ? '' : 's'} queued`;
     return queue.length;
@@ -452,7 +518,7 @@ function initVolunteerConsole() {
     renderRedFlags(sample.redFlags || []);
     renderGuidanceBasis(sample.guidanceBasis || []);
     $('#app-radio-script').textContent = sample.radioScript || 'Radio script unavailable for this curated scenario.';
-    const queued = saveIncident({ report, label: sample.label, priority: sample.priority, source: 'curated-demo', actionPack: sample.actionPack, radioScript: sample.radioScript, guidanceBasis: sample.guidanceBasis });
+    const queued = saveIncident({ report, label: sample.label, priority: sample.priority, nextAction: sample.nextAction, source: 'curated-demo', actionPack: sample.actionPack, radioScript: sample.radioScript, guidanceBasis: sample.guidanceBasis, redFlags: sample.redFlags || [] });
     $('#app-handoff').textContent = `Saved locally as incident ${queued}. Ready for coordinator handoff after review. Human review required before operational decisions.`;
     $('#phone-report-title').textContent = title;
     $('#phone-report-note').textContent = report;
@@ -473,7 +539,7 @@ function initVolunteerConsole() {
     renderRedFlags(result.red_flags || []);
     renderGuidanceBasis(result.guidance_basis || []);
     $('#app-radio-script').textContent = result.radio_script || 'Radio script unavailable for this result.';
-    const queued = saveIncident({ report, label: result.label, priority: result.priority, source: result.live_model ? 'live-gemma' : 'guarded-fallback', actionPack: result.action_pack, radioScript: result.radio_script, redFlags: result.red_flags || [], guidanceBasis: result.guidance_basis || [] });
+    const queued = saveIncident({ report, label: result.label, priority: result.priority, nextAction: result.next_action, source: result.live_model ? 'live-gemma' : 'guarded-fallback', actionPack: result.action_pack, radioScript: result.radio_script, redFlags: result.red_flags || [], guidanceBasis: result.guidance_basis || [] });
     $('#app-handoff').textContent = `Saved locally as incident ${queued}. Ready for coordinator handoff after review. Human review required before operational decisions.`;
     $('#phone-report-title').textContent = title;
     $('#phone-report-note').textContent = report || `Image selected: ${fileName}`;
@@ -538,11 +604,19 @@ function initVolunteerConsole() {
     renderFieldResult(bridgeSample, reportInput.value);
   });
   sendButton?.addEventListener('click', () => {
-    status.textContent = 'Ready for coordinator handoff. This prototype keeps the handoff local for the judge demo.';
+    if (!latestIncident) {
+      setVolunteerError('Run Edge-Triage before marking a report ready for coordinator review.');
+      return;
+    }
+    $('#app-handoff').textContent = buildHandoffSummary(latestIncident);
+    status.textContent = 'Marked ready for coordinator review. This prototype keeps the handoff local for the judge demo.';
     status.classList.add('complete');
     status.classList.remove('error');
-    $('#handoff-status').textContent = 'Ready for coordinator handoff';
+    $('#handoff-status').textContent = 'Ready for coordinator review';
   });
+  copyRadioButton?.addEventListener('click', () => copyText(latestIncident?.radioScript || $('#app-radio-script').textContent, 'Copied radio script for human-reviewed handoff.'));
+  copyHandoffButton?.addEventListener('click', () => copyText(buildHandoffSummary(latestIncident), 'Copied coordinator handoff summary.'));
+  exportReviewPacketButton?.addEventListener('click', exportReviewPacket);
   exportQueueButton?.addEventListener('click', exportIncidentQueue);
   form.addEventListener('submit', (event) => {
     event.preventDefault();

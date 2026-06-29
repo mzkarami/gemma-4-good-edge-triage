@@ -93,7 +93,10 @@
 
         <div class="field-actions">
           <button class="primary-button" type="submit" id="run-field-console">Run Edge-Triage</button>
-          <button class="ghost-button" type="button" id="send-coordinator">Send to coordinator</button>
+          <button class="ghost-button" type="button" id="send-coordinator">Mark ready for coordinator review</button>
+          <button class="ghost-button" type="button" id="copy-radio-script">Copy radio script</button>
+          <button class="ghost-button" type="button" id="copy-handoff-summary">Copy handoff summary</button>
+          <button class="ghost-button" type="button" id="export-review-packet">Export review packet</button>
           <button class="ghost-button" type="button" id="export-incident-queue">Export local queue</button>
           <button class="ghost-button" type="button" id="load-bridge-example">Load bridge example</button>
         </div>
@@ -136,6 +139,14 @@
         <div class="handoff-card">
           <span class="callout-label">Coordinator handoff</span>
           <p id="app-handoff">Ready for coordinator handoff after review. Human review required before operational decisions.</p>
+        </div>
+        <div class="callout insight-callout review-checklist">
+          <span class="callout-label">Review before use</span>
+          <ul class="result-list" id="handoff-review-checklist">
+            <li>Confirm location, time, source, affected people, and visible hazards through normal coordinator channels.</li>
+            <li>Review red flags and safe next action before assigning any volunteer movement.</li>
+            <li>Use the review packet as a local handoff aid only; no automatic sync, dispatch, diagnosis, or incident-command authority.</li>
+          </ul>
         </div>
         <p class="muted small"><a id="live-gemma-link" href="index.html#volunteer">Use the guarded Live Gemma preview for a real model call →</a></p>
       </article>

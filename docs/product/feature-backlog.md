@@ -28,8 +28,11 @@ Shared core attaches deterministic conservative guidance snippets by label and r
 
 Public site includes a walkthrough that compares curated demo, guarded live preview, CLI, local queue/export, and metrics evidence.
 
+### FB-007 Coordinator review/handoff polish
+
+Volunteer console provides copyable radio scripts, copyable handoff summaries, single-record review-packet export, and a review-before-use checklist without network sync or dispatch claims.
+
 ## Next candidates
 
-- Private operator runbook for actual incident-queue handling.
-- Copyable radio script and exported queue review affordances.
+- Keep public/private boundary notes aligned with the private incident-queue runbook.
 - Optional TTS only after text scripts are stable and reviewed.

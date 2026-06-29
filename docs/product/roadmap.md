@@ -15,11 +15,12 @@ Status: product direction, not automatic public claim.
 - Scoped English/Spanish radio-script text mode.
 - Deterministic guidance-basis snippets attached to responses.
 - Judge walkthrough comparing curated demo, live preview, CLI, queue, and metrics surfaces.
+- Coordinator review/handoff polish: copyable radio scripts, copyable handoff summaries, single-record review-packet export, and review-before-use checklist.
 
 ## Near-term
 
 - Keep guidance snippets aligned with action-pack/red-flag behavior as new labels or field workflows are added.
-- Private operator runbook for actual incident queue handling.
+- Initial private operator runbook exists outside the public repo; keep public docs limited to safe boundary language.
 - Public-claim checker for stale benchmark numbers.
 
 ## Target/future
