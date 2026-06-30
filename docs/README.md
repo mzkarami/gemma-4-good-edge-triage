@@ -11,13 +11,14 @@ This directory is the home for Edge-Triage product, architecture, research, test
 - [Testing and evaluation](testing/README.md) - test strategy, validation reports, CI, and benchmark evidence.
 - [Operations](operations/README.md) - deployment, public demo checklist, live API runbook, GitHub Actions, and local field operations.
 - [Research](research/README.md) - current frontier, experiment methodology, ledger rules, and EDG research logs.
-- [Submission](submission/README.md) - Kaggle-facing writeups, video script, and public submission materials.
+- [Submission](submission/README.md) - submitted-package reference material, Kaggle-facing writeups, video script, and public submission materials.
 - [Reference](reference/README.md) - historical or compatibility material that should not override current docs.
 
 ## Canonical sources for current work
 
 - `instructions/` for project principles, safety/privacy rules, architecture rules, testing strategy, and agent workflow.
 - `docs/CURRENT_FRONTIER.md` for public benchmark claims until the research docs migration is complete.
+- `docs/product/evaluation-window-stability.md` for the closed-submission / active-evaluation operating posture.
 - `docs/architecture/` for current runtime boundaries and decisions.
 - `docs/testing/` for validation evidence and verification expectations.
 - `docs/operations/` and `docs/DEPLOYMENT.md` for deployment and public-demo operations until the operations migration is complete.
@@ -39,7 +40,8 @@ When documents disagree:
 3. `instructions/`, this file, and `docs/architecture/` define current project rules.
 4. `docs/CURRENT_FRONTIER.md` defines public benchmark claims.
 5. `docs/testing/` defines validation evidence.
-6. `docs/reference/`, `docs/superpowers/research_logs/`, and older submission drafts are historical/reference unless promoted by a current doc.
+6. Submitted-package docs remain reference material during the evaluation window; do not label them obsolete while judges may still inspect submitted links.
+7. `docs/reference/`, `docs/superpowers/research_logs/`, and older submission drafts are historical/reference unless promoted by a current doc.
 
 ## Public vs private boundary
 

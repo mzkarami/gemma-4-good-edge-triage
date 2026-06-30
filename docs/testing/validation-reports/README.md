@@ -9,6 +9,7 @@ Validation reports summarize what changed, what was verified, and what remains r
 - [2026-06-27 shared core import-boundary validation](2026-06-27-shared-core-import-boundary-validation.md)
 - [2026-06-27 feature slice: action packs, red flags, queue, and radio scripts](2026-06-27-feature-slice-action-pack-red-flags-queue-radio.md)
 - [2026-06-27 submission polish: guidance basis and judge walkthrough](2026-06-27-submission-polish-guidance-judge-walkthrough.md)
+- [2026-06-30 evaluation-window stability alignment](2026-06-30-evaluation-window-stability-alignment.md)
 
 ## Template
 

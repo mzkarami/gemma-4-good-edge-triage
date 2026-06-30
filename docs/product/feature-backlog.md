@@ -32,7 +32,12 @@ Public site includes a walkthrough that compares curated demo, guarded live prev
 
 Volunteer console provides copyable radio scripts, copyable handoff summaries, single-record review-packet export, and a review-before-use checklist without network sync or dispatch claims.
 
+### FB-008 Evaluation-window stability
+
+Documented the closed-submission / active-evaluation posture, preserved submitted public routes and reference docs, and added a checker for stability surfaces.
+
 ## Next candidates
 
 - Keep public/private boundary notes aligned with the private incident-queue runbook.
+- Add a lightweight public demo route smoke before public pushes.
 - Optional TTS only after text scripts are stable and reviewed.

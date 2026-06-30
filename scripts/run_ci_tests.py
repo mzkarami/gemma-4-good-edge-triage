@@ -16,6 +16,7 @@ CI_SAFE_MODULES = [
     "tests.test_bootloader",
     "tests.test_cli_import_boundary",
     "tests.test_edge_triage_core",
+    "tests.test_evaluation_window_stability",
     "tests.test_field_tool",
     "tests.test_live_api",
     "tests.test_live_api_security_controls",
@@ -35,6 +36,7 @@ def run(command: list[str]) -> None:
 def main() -> int:
     run([sys.executable, "scripts/check_docs_links.py"])
     run([sys.executable, "scripts/check_public_claims.py"])
+    run([sys.executable, "scripts/check_evaluation_window_stability.py"])
     run([sys.executable, "-m", "unittest", *CI_SAFE_MODULES, "-v"])
     return 0
 

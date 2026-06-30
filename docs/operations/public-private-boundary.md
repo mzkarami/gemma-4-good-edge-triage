@@ -2,6 +2,10 @@
 
 Status: current operating rule.
 
+## Evaluation-window stability
+
+The submission package is closed, but judges may still evaluate submitted public links. During this window, keep public URLs, submitted-package reference docs, and `docs/CURRENT_FRONTIER.md` stable and non-contradictory while continuing additive project improvements.
+
 ## Public repository may include
 
 - Product and architecture docs.
@@ -9,6 +13,7 @@ Status: current operating rule.
 - Public benchmark claims and research logs.
 - CI and local verification commands.
 - Generic reverse-proxy and Docker guidance.
+- Evaluation-window stability notes that do not expose private infrastructure.
 
 ## Public repository must not include
 

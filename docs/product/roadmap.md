@@ -16,12 +16,14 @@ Status: product direction, not automatic public claim.
 - Deterministic guidance-basis snippets attached to responses.
 - Judge walkthrough comparing curated demo, live preview, CLI, queue, and metrics surfaces.
 - Coordinator review/handoff polish: copyable radio scripts, copyable handoff summaries, single-record review-packet export, and review-before-use checklist.
+- Public-claim checker for stale benchmark numbers.
+- Evaluation-window stability posture for a closed submission while judges may still evaluate public links.
 
 ## Near-term
 
 - Keep guidance snippets aligned with action-pack/red-flag behavior as new labels or field workflows are added.
-- Initial private operator runbook exists outside the public repo; keep public docs limited to safe boundary language.
-- Public-claim checker for stale benchmark numbers.
+- Keep the private incident-queue/operator runbook aligned with public-safe boundary language.
+- Preserve public demo routes, submitted-package reference docs, and `docs/CURRENT_FRONTIER.md` consistency while judging may still be active.
 
 ## Target/future
 

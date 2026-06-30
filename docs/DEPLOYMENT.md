@@ -2,7 +2,7 @@
 
 Target public URL: `https://kaggle.nelly.work/`
 
-This public repository should be deployable without private infrastructure knowledge. The recommended public deployment is a static judge demo plus an optional guarded same-origin Live Gemma preview. Do not expose a full development checkout, `.env` file, model directory, notebook server, raw Python dev server, Docker socket, SSH material, or internal services.
+This public repository should be deployable without private infrastructure knowledge. The recommended public deployment is a stable public demo plus an optional guarded same-origin Live Gemma preview. During the evaluation window, preserve submitted public links and avoid disruptive route changes. Do not expose a full development checkout, `.env` file, model directory, notebook server, raw Python dev server, Docker socket, SSH material, or internal services.
 
 ## Recommended architecture
 
@@ -22,7 +22,7 @@ ports:
   - "${DEMO_BIND_ADDRESS:-127.0.0.1}:4173:8080"
 ```
 
-For public judging, keep the app itself localhost-only and put a public HTTPS reverse proxy in front of it.
+For public evaluation, keep the app itself localhost-only and put a public HTTPS reverse proxy in front of it.
 
 ## Why Docker is safer than `python3 -m http.server`
 

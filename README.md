@@ -27,9 +27,9 @@ That split is the whole product: simple for volunteers, measurable for researche
 
 The self-improving research loop is inspired by Andrej Karpathy's AutoResearch-style pattern: a fixed benchmark harness, an agent-editable sandbox, and a measured keep/discard rule. In Edge-Triage, that idea is adapted for NGO/humanitarian use through the templates in [`agents/`](agents/), with human review before deployment defaults change.
 
-## Judge-facing experiences and model profiles
+## Public evaluation experiences and model profiles
 
-Edge-Triage has two public Web UI experiences:
+Edge-Triage has two public Web UI experiences. The Kaggle submission package is closed, but judges may still evaluate the submitted public links, so these routes should stay stable while the repository continues to improve:
 
 - **Volunteer Mode:** the field-facing workflow for high-volume sorting. This is what a volunteer would use during an incident.
 - **Optimization Mode:** the research cockpit showing autonomous experiments, keep/discard decisions, and the Pareto frontier. This is what a data science or response lead uses to understand why a profile was chosen.
@@ -43,7 +43,7 @@ The curated offline demo in `site/` works without a hosted model so judges alway
 
 ## Current frontier
 
-The competition-facing source of truth is [`docs/CURRENT_FRONTIER.md`](docs/CURRENT_FRONTIER.md). Use that file when updating public claims, the demo site, or the video script.
+The public benchmark source of truth is [`docs/CURRENT_FRONTIER.md`](docs/CURRENT_FRONTIER.md). Use that file when updating public claims, the demo site, or the video script.
 
 | Profile | Use case | F1 | Accuracy | Latency | Samples | Run |
 | --- | --- | ---: | ---: | ---: | ---: | --- |
@@ -160,7 +160,7 @@ Start here if you are new:
 
 - [`docs/README.md`](docs/README.md) — canonical documentation map and current/target/reference rules.
 - [`instructions/README.md`](instructions/README.md) — team/agent operating layer, principles, testing expectations, and acceptance gate.
-- [`docs/product/README.md`](docs/product/README.md) — product brief, roadmap, public-claims guidance, and user stories.
+- [`docs/product/README.md`](docs/product/README.md) — product brief, roadmap, public-claims guidance, evaluation-window stability, and user stories.
 - [`docs/product/user-stories/README.md`](docs/product/user-stories/README.md) — numbered field, judge, live-demo, research, and maintainer user stories.
 - [`docs/architecture/README.md`](docs/architecture/README.md) — current architecture, runtime boundaries, data flow, diagrams, and ADRs.
 - [`docs/testing/README.md`](docs/testing/README.md) — test strategy, validation reports, performance evidence, and CI checks.
